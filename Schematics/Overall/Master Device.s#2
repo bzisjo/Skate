@@ -8880,12 +8880,6 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 Qian Ma
 Charles Hu</text>
 <text x="322.58" y="-7.62" size="1.778" layer="97">1</text>
-<text x="391.16" y="157.48" size="1.778" layer="97">Changes to V12:
-
--0402 --&gt; 0603
--Changed Z-Axis symbol to reflect proper
- orientation from circle with x to circle with dot
--Changed NET labels in schematic to flags</text>
 </plain>
 <instances>
 <instance part="MICROCONTROLLER" gate="G$1" x="139.7" y="45.72"/>
