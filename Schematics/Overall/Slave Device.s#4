@@ -8146,17 +8146,13 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="R1" library="SparkFun-Resistors" deviceset="68OHM" device="-0603-1/10W-1%" value="68 Ohm"/>
 <part name="R2" library="SparkFun-Resistors" deviceset="68OHM" device="-0603-1/10W-1%" value="68 Ohm"/>
 <part name="RESET" library="SparkFun-Switches" deviceset="MOMENTARY-SWITCH-SPST" device="-PTH-6.0MM" value=""/>
-<part name="PAIR/START" library="SparkFun-Switches" deviceset="MOMENTARY-SWITCH-SPST" device="-PTH-6.0MM" value=""/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
-<part name="GND11" library="supply1" deviceset="GND" device=""/>
 <part name="R6" library="SparkFun-Resistors" deviceset="10KOHM-1/10W-1%(0603)" device="0603" value="10K"/>
-<part name="R7" library="SparkFun-Resistors" deviceset="10KOHM-1/10W-1%(0603)" device="0603" value="10K"/>
 <part name="V_REG" library="SparkFun-IC-Power" deviceset="V_REG_LD1117VXX" device="" value="LD1117V33"/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
 <part name="+3V1" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V2" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V3" library="supply1" deviceset="+3V3" device=""/>
-<part name="+3V4" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V6" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V7" library="supply1" deviceset="+3V3" device=""/>
@@ -8219,17 +8215,13 @@ Charles Hu</text>
 <instance part="R1" gate="G$1" x="187.96" y="10.16" rot="R90"/>
 <instance part="R2" gate="G$1" x="195.58" y="10.16" rot="R90"/>
 <instance part="RESET" gate="G$1" x="200.66" y="25.4" rot="R270"/>
-<instance part="PAIR/START" gate="G$1" x="205.74" y="25.4" rot="R270"/>
 <instance part="GND9" gate="1" x="200.66" y="2.54"/>
-<instance part="GND11" gate="1" x="205.74" y="2.54"/>
 <instance part="R6" gate="G$1" x="200.66" y="55.88" rot="R90"/>
-<instance part="R7" gate="G$1" x="205.74" y="73.66" rot="R90"/>
 <instance part="V_REG" gate="G$1" x="144.78" y="149.86"/>
 <instance part="GND12" gate="1" x="144.78" y="137.16"/>
 <instance part="+3V1" gate="G$1" x="160.02" y="157.48"/>
 <instance part="+3V2" gate="G$1" x="106.68" y="83.82"/>
 <instance part="+3V3" gate="G$1" x="200.66" y="83.82"/>
-<instance part="+3V4" gate="G$1" x="205.74" y="83.82"/>
 <instance part="+3V5" gate="G$1" x="106.68" y="127"/>
 <instance part="+3V6" gate="G$1" x="177.8" y="157.48"/>
 <instance part="+3V7" gate="G$1" x="185.42" y="157.48"/>
@@ -8326,11 +8318,6 @@ Charles Hu</text>
 <pinref part="RESET" gate="G$1" pin="2"/>
 <pinref part="GND9" gate="1" pin="GND"/>
 <wire x1="200.66" y1="5.08" x2="200.66" y2="20.32" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="GND11" gate="1" pin="GND"/>
-<pinref part="PAIR/START" gate="G$1" pin="2"/>
-<wire x1="205.74" y1="5.08" x2="205.74" y2="20.32" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND12" gate="1" pin="GND"/>
@@ -8447,17 +8434,6 @@ Charles Hu</text>
 <junction x="200.66" y="43.18"/>
 </segment>
 </net>
-<net name="N$3" class="0">
-<segment>
-<pinref part="R7" gate="G$1" pin="1"/>
-<pinref part="PAIR/START" gate="G$1" pin="1"/>
-<wire x1="205.74" y1="68.58" x2="205.74" y2="63.5" width="0.1524" layer="91"/>
-<pinref part="MICROCONTROLLER" gate="G$1" pin="PC3(ADC3)"/>
-<wire x1="205.74" y1="63.5" x2="205.74" y2="30.48" width="0.1524" layer="91"/>
-<wire x1="165.1" y1="63.5" x2="205.74" y2="63.5" width="0.1524" layer="91"/>
-<junction x="205.74" y="63.5"/>
-</segment>
-</net>
 <net name="N$8" class="0">
 <segment>
 <pinref part="C1" gate="G$1" pin="1"/>
@@ -8494,11 +8470,6 @@ Charles Hu</text>
 <pinref part="R6" gate="G$1" pin="2"/>
 <wire x1="200.66" y1="81.28" x2="200.66" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="+3V3" gate="G$1" pin="+3V3"/>
-</segment>
-<segment>
-<pinref part="R7" gate="G$1" pin="2"/>
-<wire x1="205.74" y1="81.28" x2="205.74" y2="78.74" width="0.1524" layer="91"/>
-<pinref part="+3V4" gate="G$1" pin="+3V3"/>
 </segment>
 <segment>
 <pinref part="HC-05" gate="G$1" pin="1"/>
