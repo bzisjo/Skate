@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.0.2">
+<eagle version="7.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -10155,7 +10155,7 @@ Source: AVX .. aphvc.pdf</description>
 <part name="+3V3" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V4" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
-<part name="SDCARD_READER" library="SparkFun-Connectors" deviceset="CONN_07" device=""/>
+<part name="SDCARD_READER" library="SparkFun-Connectors" deviceset="CONN_07" device="" value="SD_READER"/>
 <part name="+3V11" library="supply1" deviceset="+3V3" device=""/>
 <part name="GND13" library="supply1" deviceset="GND" device=""/>
 <part name="+3V12" library="supply1" deviceset="+3V3" device=""/>
@@ -10211,7 +10211,7 @@ Source: AVX .. aphvc.pdf</description>
 <part name="FSR2" library="SparkFun-Connectors" deviceset="CONN_02" device=""/>
 <part name="RESET" library="SparkFun-Switches" deviceset="MOMENTARY-SWITCH-SPST" device="-PTH-RIGHT-ANGLE-KIT" value="PTH-RIGHT"/>
 <part name="PAIR/START" library="SparkFun-Switches" deviceset="MOMENTARY-SWITCH-SPST" device="-PTH-RIGHT-ANGLE-KIT" value="PTH-RIGHT"/>
-<part name="MPU_BO" library="SparkFun-Connectors" deviceset="CONN_05" device=""/>
+<part name="MPU_BO" library="SparkFun-Connectors" deviceset="CONN_05" device="" value="MPU_BO"/>
 </parts>
 <sheets>
 <sheet>
@@ -10442,6 +10442,7 @@ Charles Hu</text>
 <segment>
 <pinref part="MPU_BO" gate="G$1" pin="4"/>
 <wire x1="304.8" y1="127" x2="302.26" y2="127" width="0.1524" layer="91"/>
+<label x="302.26" y="127" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -10467,6 +10468,7 @@ Charles Hu</text>
 <segment>
 <pinref part="MPU_BO" gate="G$1" pin="3"/>
 <wire x1="304.8" y1="129.54" x2="302.26" y2="129.54" width="0.1524" layer="91"/>
+<label x="302.26" y="129.54" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="SCL" class="0">
@@ -10485,6 +10487,7 @@ Charles Hu</text>
 <segment>
 <pinref part="MPU_BO" gate="G$1" pin="2"/>
 <wire x1="304.8" y1="132.08" x2="302.26" y2="132.08" width="0.1524" layer="91"/>
+<label x="302.26" y="132.08" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="N$4" class="0">
@@ -10642,6 +10645,7 @@ Charles Hu</text>
 <segment>
 <pinref part="MPU_BO" gate="G$1" pin="5"/>
 <wire x1="304.8" y1="124.46" x2="302.26" y2="124.46" width="0.1524" layer="91"/>
+<label x="302.26" y="124.46" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="TXA" class="0">
@@ -10762,6 +10766,7 @@ Charles Hu</text>
 <segment>
 <pinref part="MPU_BO" gate="G$1" pin="1"/>
 <wire x1="304.8" y1="134.62" x2="302.26" y2="134.62" width="0.1524" layer="91"/>
+<label x="302.26" y="134.62" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="FSYNC" class="0">
