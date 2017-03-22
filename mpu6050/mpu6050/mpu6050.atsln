@@ -7,6 +7,8 @@ Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "mpu6050", "mpu6050\mpu6050.
 EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "uart_teststring", "uart_teststring\uart_teststring.cproj", "{D1F94698-E8B4-4377-9265-DAD5B25569DA}"
 EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "mpu_manual", "mpu_manual\mpu_manual.cproj", "{62BF2D4C-7F7D-483A-A782-56E2A1604648}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -21,6 +23,10 @@ Global
 		{D1F94698-E8B4-4377-9265-DAD5B25569DA}.Debug|AVR.Build.0 = Debug|AVR
 		{D1F94698-E8B4-4377-9265-DAD5B25569DA}.Release|AVR.ActiveCfg = Release|AVR
 		{D1F94698-E8B4-4377-9265-DAD5B25569DA}.Release|AVR.Build.0 = Release|AVR
+		{62BF2D4C-7F7D-483A-A782-56E2A1604648}.Debug|AVR.ActiveCfg = Debug|AVR
+		{62BF2D4C-7F7D-483A-A782-56E2A1604648}.Debug|AVR.Build.0 = Debug|AVR
+		{62BF2D4C-7F7D-483A-A782-56E2A1604648}.Release|AVR.ActiveCfg = Release|AVR
+		{62BF2D4C-7F7D-483A-A782-56E2A1604648}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

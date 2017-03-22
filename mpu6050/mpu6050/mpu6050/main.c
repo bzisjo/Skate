@@ -9,7 +9,7 @@
 
 #include "mpu6050/mpu6050.h"
 
-#define UART_BAUD_RATE 28800
+#define UART_BAUD_RATE 57600
 #include "uart/uart.h"
 
 int main(void) {

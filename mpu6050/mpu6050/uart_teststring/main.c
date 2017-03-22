@@ -23,7 +23,7 @@ DESCRIPTION:
 #endif
 
 /* Define UART buad rate here */
-#define UART_BAUD_RATE      38400      
+#define UART_BAUD_RATE      57600      
 
 
 int main(void)
@@ -40,7 +40,7 @@ int main(void)
      *  or 
      *  UART_BAUD_SELECT_DOUBLE_SPEED() ( double speed mode)
      */
-    uart_init( UART_BAUD_SELECT_DOUBLE_SPEED(UART_BAUD_RATE,F_CPU) ); 
+    uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU) ); 
     
     /*
      * now enable interrupt, since UART library is interrupt controlled
