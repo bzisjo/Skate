@@ -221,6 +221,7 @@ int main()
 
     while(1)
     {
+		uart_puts_p(PSTR("going into init\n"));
         /* setup sd card slot */
         if(!sd_raw_init())
         {
