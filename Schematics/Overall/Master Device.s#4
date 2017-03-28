@@ -10211,7 +10211,11 @@ Source: AVX .. aphvc.pdf</description>
 <part name="FSR2" library="SparkFun-Connectors" deviceset="CONN_02" device=""/>
 <part name="RESET" library="SparkFun-Switches" deviceset="MOMENTARY-SWITCH-SPST" device="-PTH-RIGHT-ANGLE-KIT" value="PTH-RIGHT"/>
 <part name="PAIR/START" library="SparkFun-Switches" deviceset="MOMENTARY-SWITCH-SPST" device="-PTH-RIGHT-ANGLE-KIT" value="PTH-RIGHT"/>
+<<<<<<< HEAD
 <part name="MPU_BO" library="SparkFun-Connectors" deviceset="CONN_05" device="" value="MPU_BO"/>
+=======
+<part name="MPU_BO" library="SparkFun-Connectors" deviceset="CONN_05" device="" value="1"/>
+>>>>>>> master
 </parts>
 <sheets>
 <sheet>

@@ -10323,9 +10323,12 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="RESET" library="SparkFun-Switches" deviceset="MOMENTARY-SWITCH-SPST" device="-PTH-RIGHT-ANGLE-KIT" value="PTH-RIGHT"/>
 <part name="PAIR/START" library="SparkFun-Switches" deviceset="MOMENTARY-SWITCH-SPST" device="-PTH-RIGHT-ANGLE-KIT" value="PTH-RIGHT"/>
 <part name="MPU_BO" library="SparkFun-Connectors" deviceset="CONN_05" device="" value="MPU_BO"/>
+<<<<<<< HEAD
 <part name="Y1" library="SparkFun-Clocks" deviceset="CRYSTAL-16MHZ" device="PTH-HC49US" value="16MHz"/>
 <part name="C10" library="SparkFun-Capacitors" deviceset="22PF" device="-PTH-2.54MM-200V-5%" value="22pF"/>
 <part name="C11" library="SparkFun-Capacitors" deviceset="22PF" device="-PTH-2.54MM-200V-5%" value="22pF"/>
+=======
+>>>>>>> master
 </parts>
 <sheets>
 <sheet>

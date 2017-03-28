@@ -10324,8 +10324,13 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="PAIR/START" library="SparkFun-Switches" deviceset="MOMENTARY-SWITCH-SPST" device="-PTH-RIGHT-ANGLE-KIT" value="PTH-RIGHT"/>
 <part name="MPU_BO" library="SparkFun-Connectors" deviceset="CONN_05" device="" value="MPU_BO"/>
 <part name="Y1" library="SparkFun-Clocks" deviceset="CRYSTAL-16MHZ" device="PTH-HC49US" value="16MHz"/>
+<<<<<<< HEAD
 <part name="C12" library="SparkFun-Capacitors" deviceset="22PF" device="-0603-50V-5%" value="22pF"/>
 <part name="C13" library="SparkFun-Capacitors" deviceset="22PF" device="-0603-50V-5%" value="22pF"/>
+=======
+<part name="C10" library="SparkFun-Capacitors" deviceset="22PF" device="-PTH-2.54MM-200V-5%" value="22pF"/>
+<part name="C11" library="SparkFun-Capacitors" deviceset="22PF" device="-PTH-2.54MM-200V-5%" value="22pF"/>
+>>>>>>> master
 </parts>
 <sheets>
 <sheet>
@@ -10415,8 +10420,13 @@ Charles Hu</text>
 <instance part="PAIR/START" gate="G$1" x="210.82" y="25.4" rot="R90"/>
 <instance part="MPU_BO" gate="G$1" x="312.42" y="129.54" rot="R180"/>
 <instance part="Y1" gate="G$1" x="109.22" y="43.18" rot="R90"/>
+<<<<<<< HEAD
 <instance part="C12" gate="G$1" x="106.68" y="45.72" rot="R90"/>
 <instance part="C13" gate="G$1" x="106.68" y="40.64" rot="R90"/>
+=======
+<instance part="C10" gate="G$1" x="106.68" y="45.72" rot="R90"/>
+<instance part="C11" gate="G$1" x="106.68" y="40.64" rot="R90"/>
+>>>>>>> master
 </instances>
 <busses>
 </busses>
@@ -10440,12 +10450,21 @@ Charles Hu</text>
 <junction x="106.68" y="15.24"/>
 <pinref part="MICROCONTROLLER" gate="G$1" pin="GND@1"/>
 <wire x1="116.84" y1="17.78" x2="106.68" y2="17.78" width="0.1524" layer="91"/>
+<<<<<<< HEAD
 <wire x1="101.6" y1="45.72" x2="101.6" y2="40.64" width="0.1524" layer="91"/>
 <wire x1="101.6" y1="40.64" x2="101.6" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="101.6" y1="5.08" x2="106.68" y2="5.08" width="0.1524" layer="91"/>
 <junction x="106.68" y="5.08"/>
 <pinref part="C12" gate="G$1" pin="1"/>
 <pinref part="C13" gate="G$1" pin="1"/>
+=======
+<pinref part="C11" gate="G$1" pin="1"/>
+<wire x1="101.6" y1="40.64" x2="101.6" y2="5.08" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="5.08" x2="106.68" y2="5.08" width="0.1524" layer="91"/>
+<junction x="106.68" y="5.08"/>
+<pinref part="C10" gate="G$1" pin="1"/>
+<wire x1="101.6" y1="45.72" x2="101.6" y2="40.64" width="0.1524" layer="91"/>
+>>>>>>> master
 <junction x="101.6" y="40.64"/>
 </segment>
 <segment>
@@ -10966,18 +10985,30 @@ Charles Hu</text>
 <net name="N$13" class="0">
 <segment>
 <pinref part="Y1" gate="G$1" pin="1"/>
+<<<<<<< HEAD
 <pinref part="MICROCONTROLLER" gate="G$1" pin="PB7(XTAL2/TOSC2)"/>
 <wire x1="116.84" y1="40.64" x2="109.22" y2="40.64" width="0.1524" layer="91"/>
 <pinref part="C13" gate="G$1" pin="2"/>
+=======
+<pinref part="C11" gate="G$1" pin="2"/>
+<pinref part="MICROCONTROLLER" gate="G$1" pin="PB7(XTAL2/TOSC2)"/>
+<wire x1="116.84" y1="40.64" x2="109.22" y2="40.64" width="0.1524" layer="91"/>
+>>>>>>> master
 <junction x="109.22" y="40.64"/>
 </segment>
 </net>
 <net name="N$15" class="0">
 <segment>
 <pinref part="Y1" gate="G$1" pin="2"/>
+<<<<<<< HEAD
 <pinref part="MICROCONTROLLER" gate="G$1" pin="PB6(XTAL1/TOSC1)"/>
 <wire x1="109.22" y1="45.72" x2="116.84" y2="45.72" width="0.1524" layer="91"/>
 <pinref part="C12" gate="G$1" pin="2"/>
+=======
+<pinref part="C10" gate="G$1" pin="2"/>
+<pinref part="MICROCONTROLLER" gate="G$1" pin="PB6(XTAL1/TOSC1)"/>
+<wire x1="109.22" y1="45.72" x2="116.84" y2="45.72" width="0.1524" layer="91"/>
+>>>>>>> master
 <junction x="109.22" y="45.72"/>
 </segment>
 </net>

@@ -10759,10 +10759,13 @@ Charles Hu</text>
 <wire x1="165.1" y1="43.18" x2="170.18" y2="43.18" width="0.1524" layer="91"/>
 <label x="170.18" y="43.18" size="1.016" layer="95" xref="yes"/>
 </segment>
+<<<<<<< HEAD
 <segment>
 <pinref part="MPU_BO" gate="G$1" pin="1"/>
 <wire x1="304.8" y1="134.62" x2="302.26" y2="134.62" width="0.1524" layer="91"/>
 </segment>
+=======
+>>>>>>> master
 </net>
 <net name="FSYNC" class="0">
 <segment>

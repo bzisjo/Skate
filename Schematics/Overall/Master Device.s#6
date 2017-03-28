@@ -10442,7 +10442,10 @@ Charles Hu</text>
 <segment>
 <pinref part="MPU_BO" gate="G$1" pin="4"/>
 <wire x1="304.8" y1="127" x2="302.26" y2="127" width="0.1524" layer="91"/>
+<<<<<<< HEAD
 <label x="302.26" y="127" size="1.016" layer="95" rot="R180" xref="yes"/>
+=======
+>>>>>>> master
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -10468,7 +10471,10 @@ Charles Hu</text>
 <segment>
 <pinref part="MPU_BO" gate="G$1" pin="3"/>
 <wire x1="304.8" y1="129.54" x2="302.26" y2="129.54" width="0.1524" layer="91"/>
+<<<<<<< HEAD
 <label x="302.26" y="129.54" size="1.016" layer="95" rot="R180" xref="yes"/>
+=======
+>>>>>>> master
 </segment>
 </net>
 <net name="SCL" class="0">
@@ -10487,7 +10493,10 @@ Charles Hu</text>
 <segment>
 <pinref part="MPU_BO" gate="G$1" pin="2"/>
 <wire x1="304.8" y1="132.08" x2="302.26" y2="132.08" width="0.1524" layer="91"/>
+<<<<<<< HEAD
 <label x="302.26" y="132.08" size="1.016" layer="95" rot="R180" xref="yes"/>
+=======
+>>>>>>> master
 </segment>
 </net>
 <net name="N$4" class="0">
@@ -10645,7 +10654,10 @@ Charles Hu</text>
 <segment>
 <pinref part="MPU_BO" gate="G$1" pin="5"/>
 <wire x1="304.8" y1="124.46" x2="302.26" y2="124.46" width="0.1524" layer="91"/>
+<<<<<<< HEAD
 <label x="302.26" y="124.46" size="1.016" layer="95" rot="R180" xref="yes"/>
+=======
+>>>>>>> master
 </segment>
 </net>
 <net name="TXA" class="0">
@@ -10766,7 +10778,10 @@ Charles Hu</text>
 <segment>
 <pinref part="MPU_BO" gate="G$1" pin="1"/>
 <wire x1="304.8" y1="134.62" x2="302.26" y2="134.62" width="0.1524" layer="91"/>
+<<<<<<< HEAD
 <label x="302.26" y="134.62" size="1.016" layer="95" rot="R180" xref="yes"/>
+=======
+>>>>>>> master
 </segment>
 </net>
 <net name="FSYNC" class="0">

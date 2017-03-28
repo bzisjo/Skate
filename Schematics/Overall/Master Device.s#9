@@ -9304,6 +9304,7 @@ Source: AVX .. aphvc.pdf</description>
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
+<<<<<<< HEAD
 </connects>
 <technologies>
 <technology name=""/>
@@ -9313,12 +9314,18 @@ Source: AVX .. aphvc.pdf</description>
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
+=======
+>>>>>>> master
 </connects>
 <technologies>
 <technology name=""/>
 </technologies>
 </device>
+<<<<<<< HEAD
 <device name="275-113X316" package="C275-113X316">
+=======
+<device name="275-093X316" package="C275-093X316">
+>>>>>>> master
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
@@ -9327,6 +9334,21 @@ Source: AVX .. aphvc.pdf</description>
 <technology name=""/>
 </technologies>
 </device>
+<<<<<<< HEAD
+<device name="275-134X316" package="C275-134X316">
+=======
+<device name="275-113X316" package="C275-113X316">
+>>>>>>> master
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<<<<<<< HEAD
+=======
 <device name="275-134X316" package="C275-134X316">
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
@@ -9336,6 +9358,7 @@ Source: AVX .. aphvc.pdf</description>
 <technology name=""/>
 </technologies>
 </device>
+>>>>>>> master
 <device name="275-205X316" package="C275-205X316">
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
@@ -9932,6 +9955,7 @@ Charles Hu</text>
 </net>
 <net name="N$2" class="0">
 <segment>
+<<<<<<< HEAD
 <wire x1="203.2" y1="50.8" x2="203.2" y2="40.64" width="0.1524" layer="91"/>
 <pinref part="R6" gate="G$1" pin="1"/>
 <pinref part="RESET" gate="G$1" pin="2"/>
@@ -9939,6 +9963,15 @@ Charles Hu</text>
 <wire x1="203.2" y1="40.64" x2="203.2" y2="30.48" width="0.1524" layer="91"/>
 <wire x1="165.1" y1="40.64" x2="203.2" y2="40.64" width="0.1524" layer="91"/>
 <junction x="203.2" y="40.64"/>
+=======
+<pinref part="MICROCONTROLLER" gate="G$1" pin="PD2(INT0)"/>
+<wire x1="165.1" y1="43.18" x2="203.2" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="203.2" y1="43.18" x2="203.2" y2="30.48" width="0.1524" layer="91"/>
+<pinref part="R6" gate="G$1" pin="1"/>
+<wire x1="203.2" y1="43.18" x2="203.2" y2="50.8" width="0.1524" layer="91"/>
+<junction x="203.2" y="43.18"/>
+<pinref part="RESET" gate="G$1" pin="2"/>
+>>>>>>> master
 </segment>
 </net>
 <net name="N$3" class="0">
