@@ -2585,6 +2585,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 &lt;br&gt;
 You are welcome to use this library for commercial purposes. For attribution, we ask that when you begin to sell your device using our footprint, you email us with a link to the product being sold. We want bragging rights that we helped (in a very small part) to create your 8th world wonder. We would like the opportunity to feature your device on our homepage.</description>
 <packages>
+<<<<<<< HEAD
 <package name="0603">
 <description>&lt;p&gt;&lt;b&gt;Generic 1608 (0603) package&lt;/b&gt;&lt;/p&gt;
 &lt;p&gt;0.2mm courtyard excess rounded to nearest 0.05mm.&lt;/p&gt;</description>
@@ -2601,6 +2602,15 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <rectangle x1="-0.8382" y1="-0.4699" x2="-0.3381" y2="0.4801" layer="51"/>
 <rectangle x1="0.3302" y1="-0.4699" x2="0.8303" y2="0.4801" layer="51"/>
 <rectangle x1="-0.1999" y1="-0.3" x2="0.1999" y2="0.3" layer="35"/>
+=======
+<package name="CAP-PTH-2.54">
+<description>2 PTH spaced 0.1" apart</description>
+<wire x1="0" y1="0.635" x2="0" y2="-0.635" width="0.2032" layer="21"/>
+<pad name="1" x="-1.27" y="0" drill="0.7" diameter="1.651"/>
+<pad name="2" x="1.27" y="0" drill="0.7" diameter="1.651"/>
+<text x="0" y="1.016" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;Name</text>
+<text x="0" y="-1.016" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;Value</text>
+>>>>>>> master
 </package>
 </packages>
 </library>
@@ -2873,6 +2883,7 @@ design rules under a new name.</description>
 <element name="SDCARD_READER" library="SparkFun-Connectors" package="1X07" value="SD_READER" x="25.8" y="33.48" rot="R270"/>
 <element name="U1" library="Testing" package="QFN-24-4MM2" value="MPU-6050-1" x="39.02" y="9.55" rot="R180"/>
 <element name="V_REG" library="SparkFun-IC-Power" package="78XXL" value="LD1117V33" x="18.86" y="10.65" rot="R180"/>
+<<<<<<< HEAD
 <element name="Y1" library="SparkFun-Clocks" package="HC49US" value="16MHz" x="9" y="46" rot="R90">
 <attribute name="PROD_ID" value="XTAL-08181" x="9" y="46" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SF_ID" value="COM-00536" x="9" y="46" size="1.778" layer="27" rot="R90" display="off"/>
@@ -2882,6 +2893,17 @@ design rules under a new name.</description>
 </element>
 <element name="C13" library="SparkFun-Capacitors" package="0603" value="22pF" x="7.9" y="57.8" rot="R180">
 <attribute name="PROD_ID" value="CAP-07876" x="7.9" y="57.8" size="1.778" layer="27" rot="R180" display="off"/>
+=======
+<element name="Y1" library="SparkFun-Clocks" package="HC49US" value="16MHz" x="-7" y="-30">
+<attribute name="PROD_ID" value="XTAL-08181" x="-7" y="-30" size="1.778" layer="27" display="off"/>
+<attribute name="SF_ID" value="COM-00536" x="-7" y="-30" size="1.778" layer="27" display="off"/>
+</element>
+<element name="C10" library="SparkFun-Capacitors" package="CAP-PTH-2.54" value="22pF" x="-8" y="-47">
+<attribute name="PROD_ID" value="CAP-09128" x="-8" y="-47" size="1.778" layer="27" display="off"/>
+</element>
+<element name="C11" library="SparkFun-Capacitors" package="CAP-PTH-2.54" value="22pF" x="-8" y="-64">
+<attribute name="PROD_ID" value="CAP-09128" x="-8" y="-64" size="1.778" layer="27" display="off"/>
+>>>>>>> master
 </element>
 </elements>
 <signals>
@@ -3051,6 +3073,10 @@ design rules under a new name.</description>
 <wire x1="10.75" y1="54.55" x2="13.55" y2="51.75" width="0.4064" layer="1"/>
 <wire x1="13.55" y1="51.75" x2="13.86" y2="51.75" width="0.4064" layer="1"/>
 =======
+<contactref element="C11" pad="1"/>
+<contactref element="C10" pad="1"/>
+<wire x1="-9.27" y1="-47" x2="-9.27" y2="-64" width="0" layer="19" extent="1-1"/>
+<wire x1="3.26" y1="3.28" x2="-9.27" y2="-47" width="0" layer="19" extent="1-1"/>
 >>>>>>> master
 </signal>
 <signal name="N$1">
@@ -3295,7 +3321,8 @@ design rules under a new name.</description>
 <wire x1="28" y1="46" x2="24" y2="46" width="0.6096" layer="16"/>
 <wire x1="24" y1="46" x2="24" y2="49.21" width="0.6096" layer="16"/>
 <wire x1="24" y1="49.21" x2="21.48" y2="49.21" width="0.6096" layer="16"/>
-<wire x1="21" y1="30.94" x2="25.8" y2="33.48" width="0" layer="19" extent="16-16"/>
+<wire x1="21" y1="30.94" x2="23.54" y2="33.48" width="0.6096" layer="16"/>
+<wire x1="23.54" y1="33.48" x2="25.8" y2="33.48" width="0.6096" layer="16"/>
 </signal>
 <signal name="TXA">
 <contactref element="MICROCONTROLLER" pad="3"/>
@@ -3497,6 +3524,7 @@ design rules under a new name.</description>
 </signal>
 <signal name="N$13">
 <contactref element="Y1" pad="1"/>
+<<<<<<< HEAD
 <contactref element="MICROCONTROLLER" pad="10"/>
 <contactref element="C13" pad="2"/>
 <wire x1="13.86" y1="46.67" x2="10.65" y2="43.46" width="0.4064" layer="1"/>
@@ -3519,7 +3547,24 @@ design rules under a new name.</description>
 <signal name="SD_CS">
 <contactref element="SDCARD_READER" pad="2"/>
 <contactref element="MICROCONTROLLER" pad="16"/>
-<wire x1="25.8" y1="30.94" x2="21.48" y2="39.05" width="0" layer="19" extent="1-1"/>
+<wire x1="21.48" y1="39.05" x2="20" y2="37.57" width="0.4064" layer="16"/>
+<wire x1="20" y1="37.57" x2="20" y2="29" width="0.4064" layer="16"/>
+<wire x1="20" y1="29" x2="23" y2="29" width="0.4064" layer="16"/>
+<wire x1="23" y1="29" x2="24.94" y2="30.94" width="0.4064" layer="16"/>
+<wire x1="24.94" y1="30.94" x2="25.8" y2="30.94" width="0.4064" layer="16"/>
+=======
+<contactref element="C11" pad="2"/>
+<contactref element="MICROCONTROLLER" pad="10"/>
+<wire x1="-9.54" y1="-30" x2="-6.73" y2="-64" width="0" layer="19" extent="1-1"/>
+<wire x1="13.86" y1="46.67" x2="-9.54" y2="-30" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="N$15">
+<contactref element="Y1" pad="2"/>
+<contactref element="C10" pad="2"/>
+<contactref element="MICROCONTROLLER" pad="9"/>
+<wire x1="-4.46" y1="-30" x2="13.86" y2="49.21" width="0" layer="19" extent="1-1"/>
+<wire x1="-6.73" y1="-47" x2="-4.46" y2="-30" width="0" layer="19" extent="1-1"/>
+>>>>>>> master
 </signal>
 </signals>
 </board>
