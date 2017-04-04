@@ -136,6 +136,7 @@ extern void mpu6050_writeBit(uint8_t regAddr, uint8_t bitNum, uint8_t data);
 extern void mpu6050_updateQuaternion();
 extern void mpu6050_getQuaternion(double *qw, double *qx, double *qy, double *qz);
 extern void mpu6050_getRollPitchYaw(double *pitch, double *roll, double *yaw);
+extern void mpu6050_getConvData(double* axg, double* ayg, double* azg, double* gxds, double* gyds, double* gzds);
 #endif
 
 #if MPU6050_GETATTITUDE == 2
