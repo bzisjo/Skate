@@ -14,6 +14,24 @@
 #define UART_BAUD_RATE 9600
 #include "uart/uart.h"
 
+#if MPU6050_GETATTITUDE == 1
+/*
+	calculates the roll pitch and yaw based on acceleration data
+*/
+void anglesFromAccel(double * rollA, double * pitchA, double ax, double ay, double az){
+	*rollA = atan2f(ay, sqrt(square(ax) + square(az)));
+	*pitchA = atan2f(ax, sqrt(square(ay) + square(az)));
+	//theta = atan2f(az/(sqrt(square(ax) + square(ay))));
+}
+	
+/*
+	filters roll pitch and yaw using complementary filter 
+*/
+void applyCompFilter(double * filteredAngle, double accelAngle, double gyroAngle, double alpha){
+	*filteredAngle = alpha * gyroAngle + (1-alpha) * accelAngle;
+}
+#endif
+
 int main(void) {
 
 	#if MPU6050_GETATTITUDE == 0
@@ -28,7 +46,7 @@ int main(void) {
 	double azg = 0;
 	double gxds = 0;
 	double gyds = 0;
-	double gzds = 0;
+	double gzds = 0; 
 	#endif
 	
 	#if MPU6050_GETATTITUDE == 1 || MPU6050_GETATTITUDE == 2
@@ -44,12 +62,29 @@ int main(void) {
 	double qx = 0.0f;
 	double qy = 0.0f;
 	double qz = 0.0f;
-	double roll = 0.0f;
-	double pitch = 0.0f;
-	double yaw = 0.0f;
+	double roll = 0.0f;		//around x axis
+	double pitch = 0.0f;	//around y axis
+	double yaw = 0.0f;		//around z axis
 	double roll_d = 0.0f;		//used to convert to degrees
 	double pitch_d = 0.0f;
 	double yaw_d = 0.0f;
+	
+	//used for complementary filter
+	double tau = 1.0;		//desired time constant
+	double dt = .005;		//based on sampling frequency (200Hz)
+	double alpha = tau / (tau + dt);
+	double rollFilt = 0.0;	//filtered angles
+	double pitchFilt = 0.0;
+	//double yawFilt = 0.0;
+	double rollAccel = 0.0;	//angles calculated from acceleration data
+	double pitchAccel = 0.0;
+	//double yawAccel = 0,0;
+	double axg = 0;
+	double ayg = 0;
+	double azg = 0;
+	double gxds = 0;
+	double gyds = 0;
+	double gzds = 0;
 	#endif
 
 	//init uart
@@ -84,6 +119,11 @@ int main(void) {
 		//mpu6050_updateQuaternion();	//applies mahony filter to deal with drift?
 		//uart_puts("B\r\n");
 		mpu6050_getRollPitchYaw(&roll, &pitch, &yaw);
+		mpu6050_getConvData(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
+		anglesFromAccel(&rollAccel, &pitchAccel, axg, ayg, azg);
+		mpu6050_getRollPitchYaw(&roll, &pitch, &yaw);
+		applyCompFilter(&rollFilt, rollAccel, roll, alpha);
+		applyCompFilter(&pitchFilt, pitchAccel, pitch, alpha);
 		_delay_ms(10);
 		#endif
 		
