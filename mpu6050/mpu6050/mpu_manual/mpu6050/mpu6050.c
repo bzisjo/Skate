@@ -535,6 +535,8 @@ void mpu6050_getConvData(double* axg, double* ayg, double* azg, double* gxds, do
 #if MPU6050_GETATTITUDE == 1
 
 volatile float q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;
+double accelX = 0.0f, accelY = 0.0f, accelZ = 0.0f;		//used for getting accelerometer data in interrupt
+double gyroXds = 0.0f, gyroYds = 0.0f, gyroZds = 0.0f;
 volatile float integralFBx = 0.0f,  integralFBy = 0.0f, integralFBz = 0.0f;
 /*
  * Mahony update function (for 6DOF)
@@ -662,6 +664,19 @@ void mpu6050_updateQuaternion() {
  */
 ISR(TIMER0_OVF_vect) {
 	mpu6050_updateQuaternion();
+	mpu6050_getConvData(&accelX, &accelY, &accelZ, &gyroXds, &gyroYds, &gyroZds);
+}
+
+/*
+	Gets angles calculated from acceleration
+*/
+void mpu6050_getAnglesFromAccel(double * rollA, double * pitchA){
+	/*	reference
+	*rollA = atan2f(ay, sqrt(square(ax) + square(az)));
+	*pitchA = atan2f(ax, sqrt(square(ay) + square(az)));
+	*/
+	*rollA = atan2f(accelY, sqrt(square(accelX) + square(accelZ)));
+	*pitchA = atan2f(accelX, sqrt(square(accelY) + square(accelZ)));
 }
 
 /*

@@ -14,16 +14,17 @@
 #define UART_BAUD_RATE 9600
 #include "uart/uart.h"
 
-#if MPU6050_GETATTITUDE == 1
+#if MPU6050_GETATTITUDE == 1	//changed from 1 because trying to debug
 /*
 	calculates the roll pitch and yaw based on acceleration data
 */
+/*
 void anglesFromAccel(double * rollA, double * pitchA, double ax, double ay, double az){
 	*rollA = atan2f(ay, sqrt(square(ax) + square(az)));
 	*pitchA = atan2f(ax, sqrt(square(ay) + square(az)));
 	//theta = atan2f(az/(sqrt(square(ax) + square(ay))));
 }
-	
+	*/
 /*
 	filters roll pitch and yaw using complementary filter 
 */
@@ -70,7 +71,7 @@ int main(void) {
 	double yaw_d = 0.0f;
 	
 	//used for complementary filter
-	double tau = 1.0;		//desired time constant
+	double tau = 0.1;		//desired time constant
 	double dt = .005;		//based on sampling frequency (200Hz)
 	double alpha = tau / (tau + dt);
 	double rollFilt = 0.0;	//filtered angles
@@ -79,12 +80,15 @@ int main(void) {
 	double rollAccel = 0.0;	//angles calculated from acceleration data
 	double pitchAccel = 0.0;
 	//double yawAccel = 0,0;
-	double axg = 0;
+	/*double axg = 0;
 	double ayg = 0;
 	double azg = 0;
 	double gxds = 0;
 	double gyds = 0;
 	double gzds = 0;
+	*/
+	//testing freezing
+	int n = 0;
 	#endif
 
 	//init uart
@@ -116,14 +120,16 @@ int main(void) {
 		mpu6050_getQuaternion(&qw, &qx, &qy, &qz);
 		//mpu6050_getRawData(&ax, &ay, &az, &gx, &gy, &gz);
 		//uart_puts("A\r\n");
-		//mpu6050_updateQuaternion();	//applies mahony filter to deal with drift?
 		//uart_puts("B\r\n");
 		mpu6050_getRollPitchYaw(&roll, &pitch, &yaw);
-		mpu6050_getConvData(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
-		anglesFromAccel(&rollAccel, &pitchAccel, axg, ayg, azg);
-		mpu6050_getRollPitchYaw(&roll, &pitch, &yaw);
+		mpu6050_getAnglesFromAccel(&rollAccel, &pitchAccel);
+		
+		//mpu6050_getConvData(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
+		//anglesFromAccel(&rollAccel, &pitchAccel, axg, ayg, azg);
+		//mpu6050_getRollPitchYaw(&roll, &pitch, &yaw);
 		applyCompFilter(&rollFilt, rollAccel, roll, alpha);
 		applyCompFilter(&pitchFilt, pitchAccel, pitch, alpha);
+		n += 1;
 		_delay_ms(10);
 		#endif
 		
@@ -181,11 +187,12 @@ int main(void) {
 		*/
 		
 		//change values to degrees
-		roll_d = roll*180/3.1415;
-		pitch_d = pitch*180/3.1415;
+		roll_d = rollFilt*180/3.1415;
+		pitch_d = pitchFilt*180/3.1415;
 		yaw_d = yaw*180/3.1415;
 		
 		char itmp[10];
+		//dtostrf(n, 3, 5, itmp); uart_puts(itmp); uart_puts("\r\n");
 		dtostrf(roll_d, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		dtostrf(pitch_d, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		dtostrf(yaw_d, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
