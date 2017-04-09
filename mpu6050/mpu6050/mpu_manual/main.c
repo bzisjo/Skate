@@ -71,7 +71,7 @@ int main(void) {
 	double yaw_d = 0.0f;
 	
 	//used for complementary filter
-	double tau = 0.005;		//desired time constant
+	double tau = 1.0;		//desired time constant
 	double dt = .005;		//based on sampling frequency (200Hz)
 	double alpha = tau / (tau + dt);
 	double rollFilt = 0.0;	//filtered angles
