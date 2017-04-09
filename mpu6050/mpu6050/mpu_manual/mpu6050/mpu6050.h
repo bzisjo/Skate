@@ -33,12 +33,12 @@ References:
 //0 disabled
 //1 mahony filter
 //2 dmp chip processor
-#define MPU6050_GETATTITUDE 1
+#define MPU6050_GETATTITUDE 0
 
 //definitions for raw data
 //gyro and acc scale
 // WHERE RANGE IS SET FOR THE IMU
-#define MPU6050_GYRO_FS MPU6050_GYRO_FS_500
+#define MPU6050_GYRO_FS MPU6050_GYRO_FS_250
 #define MPU6050_ACCEL_FS MPU6050_ACCEL_FS_2
 
 #define MPU6050_GYRO_LSB_250 131.0

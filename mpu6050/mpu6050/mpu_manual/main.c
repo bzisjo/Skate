@@ -14,22 +14,37 @@
 #define UART_BAUD_RATE 9600
 #include "uart/uart.h"
 
-#if MPU6050_GETATTITUDE == 1	//changed from 1 because trying to debug
-/*
-	calculates the roll pitch and yaw based on acceleration data
-*/
-/*
-void anglesFromAccel(double * rollA, double * pitchA, double ax, double ay, double az){
-	*rollA = atan2f(ay, sqrt(square(ax) + square(az)));
-	*pitchA = atan2f(ax, sqrt(square(ay) + square(az)));
-	//theta = atan2f(az/(sqrt(square(ax) + square(ay))));
-}
-	*/
+#if MPU6050_GETATTITUDE == 1 || MPU6050_GETATTITUDE == 0	//changed from 1 because trying to debug
 /*
 	filters roll pitch and yaw using complementary filter 
 */
 void applyCompFilter(double * filteredAngle, double accelAngle, double gyroAngle, double alpha){
 	*filteredAngle = alpha * gyroAngle + (1-alpha) * accelAngle;
+}
+#endif
+
+#if MPU6050_GETATTITUDE == 0
+/*
+	calculates the roll pitch and yaw based on acceleration data
+*/
+void anglesFromAccel(double * rollA, double * pitchA, double ax, double ay, double az){
+	*rollA = atan2f(ay, sqrt(square(ax) + square(az)));
+	*pitchA = atan2f(ax, sqrt(square(ay) + square(az)));
+	//theta = atan2f(az/(sqrt(square(ax) + square(ay))));
+}
+
+/*
+	calculates integration using runge-kutta integrator
+*/
+void rk_integrator(double* angle, double dps, double* prev_dps){
+	double dps_1 = *prev_dps;
+	double dps_2 = *(prev_dps + 1);
+	double dps_3 = *(prev_dps + 2);
+	*angle = *angle + (dps_3 + 2 * dps_2 + 2 * dps_1 + dps) / 6;
+	// updating previous angular velocity array
+	*(prev_dps + 2) = dps_2;
+	*(prev_dps + 1) = dps_1;
+	*prev_dps = dps;
 }
 #endif
 
@@ -48,17 +63,24 @@ int main(void) {
 	double gxds = 0;
 	double gyds = 0;
 	double gzds = 0; 
+	//offset used for calibrating to zero
+	double axg_offset = 0.0;
+	double ayg_offset = 0.0;
+	double azg_offset = 0.0;
+	double gxds_offset = 0.0;
+	double gyds_offset = 0.0;
+	double gzds_offset = 0.0;
+	//for runge-kutta integrator
+	double angleX = 0.0;
+	double angleY = 0.0;
+	double angleZ = 0.0;
+	double prev_Xdps[3] = {0.0, 0.0, 0.0};
+	double prev_Ydps[3] = {0.0, 0.0, 0.0};
+	double prev_Zdps[3] = {0.0, 0.0, 0.0};
 	#endif
 	
 	#if MPU6050_GETATTITUDE == 1 || MPU6050_GETATTITUDE == 2
-	//long *ptr = 0;
-	/*int16_t ax = 0;	//used because need to get raw data for mahony filter
-	int16_t ay = 0;
-	int16_t az = 0;
-	int16_t gx = 0;
-	int16_t gy = 0;
-	int16_t gz = 0;
-	*/
+
 	double qw = 1.0f;
 	double qx = 0.0f;
 	double qy = 0.0f;
@@ -71,7 +93,7 @@ int main(void) {
 	double yaw_d = 0.0f;
 	
 	//used for complementary filter
-	double tau = 0.003;		//desired time constant
+	double tau = 1.0;		//desired time constant
 	double dt = .005;		//based on sampling frequency (200Hz)
 	double alpha = tau / (tau + dt);
 	double rollFilt = 0.0;	//filtered angles
@@ -110,10 +132,12 @@ int main(void) {
 	_delay_ms(10);
 	#endif
 	for(;;) {
-		//uart_puts("running");
 		#if MPU6050_GETATTITUDE == 0
 		mpu6050_getRawData(&ax, &ay, &az, &gx, &gy, &gz);
 		mpu6050_getConvData(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
+		rk_integrator(&angleX, gxds, prev_Xdps);
+		rk_integrator(&angleY, gyds, prev_Ydps);
+		rk_integrator(&angleZ, gzds, prev_Zdps);
 		#endif
 		
 		#if MPU6050_GETATTITUDE == 1
@@ -122,13 +146,13 @@ int main(void) {
 		//uart_puts("A\r\n");
 		//uart_puts("B\r\n");
 		mpu6050_getRollPitchYaw(&roll, &pitch, &yaw);
-		mpu6050_getAnglesFromAccel(&rollAccel, &pitchAccel);
+		//mpu6050_getAnglesFromAccel(&rollAccel, &pitchAccel);
 		
 		//mpu6050_getConvData(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
 		//anglesFromAccel(&rollAccel, &pitchAccel, axg, ayg, azg);
 		//mpu6050_getRollPitchYaw(&roll, &pitch, &yaw);
-		applyCompFilter(&rollFilt, rollAccel, roll, alpha);
-		applyCompFilter(&pitchFilt, pitchAccel, pitch, alpha);
+		//applyCompFilter(&rollFilt, rollAccel, roll, alpha);
+		//applyCompFilter(&pitchFilt, pitchAccel, pitch, alpha);
 		n += 1;
 		_delay_ms(10);
 		#endif
@@ -142,6 +166,7 @@ int main(void) {
 
 		#if MPU6050_GETATTITUDE == 0
 		char itmp[10];
+		/*
 		uart_puts("Printing from getRawData \r\n");
 		ltoa(ax, itmp, 10); uart_putc(' '); uart_puts(itmp); uart_putc(' ');
 		ltoa(ay, itmp, 10); uart_putc(' '); uart_puts(itmp); uart_putc(' ');
@@ -150,45 +175,37 @@ int main(void) {
 		ltoa(gy, itmp, 10); uart_putc(' '); uart_puts(itmp); uart_putc(' ');
 		ltoa(gz, itmp, 10); uart_putc(' '); uart_puts(itmp); uart_putc(' ');
 		uart_puts("\r\n");
-
-		uart_puts("Printing from getConvData\r\n");
+*/
+		//uart_puts("Printing from getConvData\r\n");
 		dtostrf(axg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		dtostrf(ayg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		dtostrf(azg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		dtostrf(gxds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		dtostrf(gyds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		dtostrf(gzds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+		/*uart_puts("\r\n");
+	
+		uart_puts("X prev_dps array:");
+		dtostrf(*prev_Xdps, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+		dtostrf(*(prev_Xdps+1), 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+		dtostrf(*(prev_Xdps+2), 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		uart_puts("\r\n");
-
+			
+		uart_puts("Angles:");
+		dtostrf(angleX, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+		dtostrf(angleY, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+		dtostrf(angleZ, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		uart_puts("\r\n");
-
+		*/
+		uart_puts("\r\n");
 		_delay_ms(1000);
 		#endif
 		
 		#if MPU6050_GETATTITUDE == 1 || MPU6050_GETATTITUDE == 2
-		/*//roll pitch yaw
-		ptr = (long *)(&roll);
-		uart_putc(*ptr);
-		uart_putc(*ptr>>8);
-		uart_putc(*ptr>>16);
-		uart_putc(*ptr>>24);
-		ptr = (long *)(&pitch);
-		uart_putc(*ptr);
-		uart_putc(*ptr>>8);
-		uart_putc(*ptr>>16);
-		uart_putc(*ptr>>24);
-		ptr = (long *)(&yaw);
-		uart_putc(*ptr);
-		uart_putc(*ptr>>8);
-		uart_putc(*ptr>>16);
-		uart_putc(*ptr>>24);
-
-		uart_putc('\n');
-		*/
 		
 		//change values to degrees
-		roll_d = rollFilt*180/3.1415;
-		pitch_d = pitchFilt*180/3.1415;
+		roll_d = roll*180/3.1415;
+		pitch_d = pitch*180/3.1415;
 		yaw_d = yaw*180/3.1415;
 		
 		char itmp[10];
@@ -200,7 +217,7 @@ int main(void) {
 		
 		uart_puts("\r\n");
 		
-		_delay_ms(1000);
+		_delay_ms(100);
 		#endif
 		
 	}
