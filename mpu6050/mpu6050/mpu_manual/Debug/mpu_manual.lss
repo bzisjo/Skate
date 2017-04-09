@@ -694,10 +694,10 @@ int main(void) {
 */
 void applyCompFilter(double * filteredAngle, double accelAngle, double gyroAngle, double alpha){
 	*filteredAngle = alpha * gyroAngle + (1-alpha) * accelAngle;
-     42c:	2c ee       	ldi	r18, 0xEC	; 236
-     42e:	35 e9       	ldi	r19, 0x95	; 149
-     430:	4e e7       	ldi	r20, 0x7E	; 126
-     432:	5f e3       	ldi	r21, 0x3F	; 63
+     42c:	21 e0       	ldi	r18, 0x01	; 1
+     42e:	30 e0       	ldi	r19, 0x00	; 0
+     430:	40 ec       	ldi	r20, 0xC0	; 192
+     432:	5e e3       	ldi	r21, 0x3E	; 62
      434:	69 89       	ldd	r22, Y+17	; 0x11
      436:	7a 89       	ldd	r23, Y+18	; 0x12
      438:	8b 89       	ldd	r24, Y+19	; 0x13
@@ -706,9 +706,9 @@ void applyCompFilter(double * filteredAngle, double accelAngle, double gyroAngle
      440:	6b 01       	movw	r12, r22
      442:	7c 01       	movw	r14, r24
      444:	20 e0       	ldi	r18, 0x00	; 0
-     446:	3a e0       	ldi	r19, 0x0A	; 10
-     448:	45 eb       	ldi	r20, 0xB5	; 181
-     44a:	5b e3       	ldi	r21, 0x3B	; 59
+     446:	30 e0       	ldi	r19, 0x00	; 0
+     448:	40 e2       	ldi	r20, 0x20	; 32
+     44a:	5f e3       	ldi	r21, 0x3F	; 63
      44c:	6d 8d       	ldd	r22, Y+29	; 0x1d
      44e:	7e 8d       	ldd	r23, Y+30	; 0x1e
      450:	8f 8d       	ldd	r24, Y+31	; 0x1f
@@ -721,10 +721,10 @@ void applyCompFilter(double * filteredAngle, double accelAngle, double gyroAngle
      460:	0e 94 73 0e 	call	0x1ce6	; 0x1ce6 <__addsf3>
      464:	2b 01       	movw	r4, r22
      466:	3c 01       	movw	r6, r24
-     468:	2c ee       	ldi	r18, 0xEC	; 236
-     46a:	35 e9       	ldi	r19, 0x95	; 149
-     46c:	4e e7       	ldi	r20, 0x7E	; 126
-     46e:	5f e3       	ldi	r21, 0x3F	; 63
+     468:	21 e0       	ldi	r18, 0x01	; 1
+     46a:	30 e0       	ldi	r19, 0x00	; 0
+     46c:	40 ec       	ldi	r20, 0xC0	; 192
+     46e:	5e e3       	ldi	r21, 0x3E	; 62
      470:	6d 89       	ldd	r22, Y+21	; 0x15
      472:	7e 89       	ldd	r23, Y+22	; 0x16
      474:	8f 89       	ldd	r24, Y+23	; 0x17
@@ -733,9 +733,9 @@ void applyCompFilter(double * filteredAngle, double accelAngle, double gyroAngle
      47c:	6b 01       	movw	r12, r22
      47e:	7c 01       	movw	r14, r24
      480:	20 e0       	ldi	r18, 0x00	; 0
-     482:	3a e0       	ldi	r19, 0x0A	; 10
-     484:	45 eb       	ldi	r20, 0xB5	; 181
-     486:	5b e3       	ldi	r21, 0x3B	; 59
+     482:	30 e0       	ldi	r19, 0x00	; 0
+     484:	40 e2       	ldi	r20, 0x20	; 32
+     486:	5f e3       	ldi	r21, 0x3F	; 63
      488:	69 a1       	ldd	r22, Y+33	; 0x21
      48a:	7a a1       	ldd	r23, Y+34	; 0x22
      48c:	8b a1       	ldd	r24, Y+35	; 0x23
