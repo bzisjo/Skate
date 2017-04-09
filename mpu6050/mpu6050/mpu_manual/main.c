@@ -14,22 +14,37 @@
 #define UART_BAUD_RATE 9600
 #include "uart/uart.h"
 
-#if MPU6050_GETATTITUDE == 1	//changed from 1 because trying to debug
-/*
-	calculates the roll pitch and yaw based on acceleration data
-*/
-/*
-void anglesFromAccel(double * rollA, double * pitchA, double ax, double ay, double az){
-	*rollA = atan2f(ay, sqrt(square(ax) + square(az)));
-	*pitchA = atan2f(ax, sqrt(square(ay) + square(az)));
-	//theta = atan2f(az/(sqrt(square(ax) + square(ay))));
-}
-	*/
+#if MPU6050_GETATTITUDE == 1 || MPU6050_GETATTITUDE == 0	//changed from 1 because trying to debug
 /*
 	filters roll pitch and yaw using complementary filter 
 */
 void applyCompFilter(double * filteredAngle, double accelAngle, double gyroAngle, double alpha){
 	*filteredAngle = alpha * gyroAngle + (1-alpha) * accelAngle;
+}
+#endif
+
+#if MPU6050_GETATTITUDE == 0
+/*
+	calculates the roll pitch and yaw based on acceleration data
+*/
+void anglesFromAccel(double * rollA, double * pitchA, double ax, double ay, double az){
+	*rollA = atan2f(ay, sqrt(square(ax) + square(az)));
+	*pitchA = atan2f(ax, sqrt(square(ay) + square(az)));
+	//theta = atan2f(az/(sqrt(square(ax) + square(ay))));
+}
+
+/*
+	calculates integration using runge-kutta integrator
+*/
+void rk_integrator(double* angle, double dps, double prev_dps[3]){
+	double dps_1 = prev_dps[0];
+	double dps_2 = prev_dps[1];
+	double dps_3 = prev_dps[2];
+	*angle = *angle + 1/6 * (dps_3 + 2 * dps_2 + 2 * dps_1 + dps);
+	// updating previous angular velocity array
+	prev_dps[2] = dps_2;
+	prev_dps[1] = dps_1;
+	prev_dps[0] = dps;
 }
 #endif
 
@@ -48,6 +63,14 @@ int main(void) {
 	double gxds = 0;
 	double gyds = 0;
 	double gzds = 0; 
+	
+	//for runge-kutta integrator
+	double angleX = 0.0;
+	double angleY = 0.0;
+	double angleZ = 0.0;
+	double prev_Xdps[3];
+	double prev_Ydps[3];
+	double prev_Zdps[3];
 	#endif
 	
 	#if MPU6050_GETATTITUDE == 1 || MPU6050_GETATTITUDE == 2
@@ -71,7 +94,7 @@ int main(void) {
 	double yaw_d = 0.0f;
 	
 	//used for complementary filter
-	double tau = 0.003;		//desired time constant
+	double tau = 1.0;		//desired time constant
 	double dt = .005;		//based on sampling frequency (200Hz)
 	double alpha = tau / (tau + dt);
 	double rollFilt = 0.0;	//filtered angles
@@ -166,29 +189,10 @@ int main(void) {
 		#endif
 		
 		#if MPU6050_GETATTITUDE == 1 || MPU6050_GETATTITUDE == 2
-		/*//roll pitch yaw
-		ptr = (long *)(&roll);
-		uart_putc(*ptr);
-		uart_putc(*ptr>>8);
-		uart_putc(*ptr>>16);
-		uart_putc(*ptr>>24);
-		ptr = (long *)(&pitch);
-		uart_putc(*ptr);
-		uart_putc(*ptr>>8);
-		uart_putc(*ptr>>16);
-		uart_putc(*ptr>>24);
-		ptr = (long *)(&yaw);
-		uart_putc(*ptr);
-		uart_putc(*ptr>>8);
-		uart_putc(*ptr>>16);
-		uart_putc(*ptr>>24);
-
-		uart_putc('\n');
-		*/
 		
 		//change values to degrees
-		roll_d = rollFilt*180/3.1415;
-		pitch_d = pitchFilt*180/3.1415;
+		roll_d = roll*180/3.1415;
+		pitch_d = pitch*180/3.1415;
 		yaw_d = yaw*180/3.1415;
 		
 		char itmp[10];
