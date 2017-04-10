@@ -33,11 +33,12 @@ References:
 //0 disabled
 //1 mahony filter
 //2 dmp chip processor
-#define MPU6050_GETATTITUDE 0
+#define MPU6050_GETATTITUDE 1
 
 //definitions for raw data
 //gyro and acc scale
-#define MPU6050_GYRO_FS MPU6050_GYRO_FS_2000
+// WHERE RANGE IS SET FOR THE IMU
+#define MPU6050_GYRO_FS MPU6050_GYRO_FS_500
 #define MPU6050_ACCEL_FS MPU6050_ACCEL_FS_2
 
 #define MPU6050_GYRO_LSB_250 131.0
@@ -135,6 +136,8 @@ extern void mpu6050_writeBit(uint8_t regAddr, uint8_t bitNum, uint8_t data);
 extern void mpu6050_updateQuaternion();
 extern void mpu6050_getQuaternion(double *qw, double *qx, double *qy, double *qz);
 extern void mpu6050_getRollPitchYaw(double *pitch, double *roll, double *yaw);
+extern void mpu6050_getAnglesFromAccel(double * rollA, double * pitchA);
+//extern void mpu6050_getConvData(double* axg, double* ayg, double* azg, double* gxds, double* gyds, double* gzds);
 #endif
 
 #if MPU6050_GETATTITUDE == 2
