@@ -4,7 +4,7 @@ Takes in a character at a time and sends it right back out,
  displaying the ASCII value on the LEDs.
 */
 
-#define F_CPU 8000000
+//#define F_CPU 8000000
 
 // ------- Preamble -------- //
 #include <avr/io.h>

@@ -121,17 +121,17 @@ void initUSART(void) {                                /* requires BAUD */
   UBRR0H = UBRRH_VALUE;                        /* defined in setbaud.h */
   ac:	10 92 c5 00 	sts	0x00C5, r1	; 0x8000c5 <__TEXT_REGION_LENGTH__+0x7e00c5>
   UBRR0L = UBRRL_VALUE;
-  b0:	88 e0       	ldi	r24, 0x08	; 8
+  b0:	87 e6       	ldi	r24, 0x67	; 103
   b2:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
 #if USE_2X
   UCSR0A |= (1 << U2X0);
+#else
+  UCSR0A &= ~(1 << U2X0);
   b6:	e0 ec       	ldi	r30, 0xC0	; 192
   b8:	f0 e0       	ldi	r31, 0x00	; 0
   ba:	80 81       	ld	r24, Z
-  bc:	82 60       	ori	r24, 0x02	; 2
+  bc:	8d 7f       	andi	r24, 0xFD	; 253
   be:	80 83       	st	Z, r24
-#else
-  UCSR0A &= ~(1 << U2X0);
 #endif
                                   /* Enable USART transmitter/receiver */
   UCSR0B = (1 << TXEN0) | (1 << RXEN0);
