@@ -379,14 +379,12 @@ plot(accelX_move_100ms(:,1:3));
 legend('show');
 legend('AccelX', 'AccelY', 'AccelZ');
 title('Translational Data of X axis Translational Test (100ms)')
-axis([0 120 -2 2]);
 
 subplot(2,1,2)
 plot(accelX_move_100ms(:,4:6));
 legend('show');
 legend('GyroX', 'GyroY', 'GyroZ');
 title('Rotational Data of X axis Translational Test (100ms)')
-axis([0 120 -400 400]);
 
 figure(36)
 subplot(2,1,1)
@@ -394,28 +392,25 @@ plot(accelY_move_100ms(:,1:3));
 legend('show');
 legend('AccelX', 'AccelY', 'AccelZ');
 title('Translational Data of Y axis Translational Test (100ms)')
-axis([0 140 -2 2])
 
 subplot(2,1,2)
 plot(accelY_move_100ms(:,4:6));
 legend('show');
 legend('GyroX', 'GyroY', 'GyroZ');
 title('Rotational Data of Y axis Translational Test (100ms)')
-axis([0 140 -400 400]);
 
 figure(37)
 subplot(2,1,1)
-plot(accelZ_move_100ms(:,1:3));
+plot(accelX_move_100ms(:,1:3));
 legend('show');
 legend('AccelX', 'AccelY', 'AccelZ');
-title('Translational Data of Z axis Translational Test (100ms)')
-axis([0 120 -2 2])
+title('Translational Data of X axis Translational Test (100ms)')
 
 subplot(2,1,2)
-plot(accelZ_move_100ms(:,4:6));
+plot(accelX_move_100ms(:,4:6));
 legend('show');
 legend('GyroX', 'GyroY', 'GyroZ');
-title('Rotational Data of Z axis Translational Test (100ms)')
-axis([0 120 -400 400]);
+title('Rotational Data of X axis Translational Test (100ms)')
+
 
 
