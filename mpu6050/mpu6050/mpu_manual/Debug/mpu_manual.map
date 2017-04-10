@@ -821,21 +821,21 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1dac
+.debug_info     0x00000000     0x1e0c
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_info    0x000005f4      0x22d i2chw/twimastertimeout.o
- .debug_info    0x00000821      0x826 main.o
- .debug_info    0x00001047      0xa37 mpu6050/mpu6050.o
- .debug_info    0x00001a7e      0x32e uart/uart.o
+ .debug_info    0x00000821      0x886 main.o
+ .debug_info    0x000010a7      0xa37 mpu6050/mpu6050.o
+ .debug_info    0x00001ade      0x32e uart/uart.o
 
-.debug_abbrev   0x00000000      0xc1c
+.debug_abbrev   0x00000000      0xc2b
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_abbrev  0x000005a2       0xff i2chw/twimastertimeout.o
- .debug_abbrev  0x000006a1      0x1b9 main.o
- .debug_abbrev  0x0000085a      0x27f mpu6050/mpu6050.o
- .debug_abbrev  0x00000ad9      0x143 uart/uart.o
+ .debug_abbrev  0x000006a1      0x1c8 main.o
+ .debug_abbrev  0x00000869      0x27f mpu6050/mpu6050.o
+ .debug_abbrev  0x00000ae8      0x143 uart/uart.o
 
 .debug_line     0x00000000      0xe19
  *(.debug_line .debug_line.* .debug_line_end)
@@ -852,16 +852,16 @@ END GROUP
  .debug_frame   0x0000020c      0x278 mpu6050/mpu6050.o
  .debug_frame   0x00000484      0x100 uart/uart.o
 
-.debug_str      0x00000000      0x79a
+.debug_str      0x00000000      0x7df
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_str     0x00000208      0x1d7 i2chw/twimastertimeout.o
                                 0x20b (size before relaxing)
- .debug_str     0x000003df      0x19a main.o
-                                0x317 (size before relaxing)
- .debug_str     0x00000579      0x129 mpu6050/mpu6050.o
+ .debug_str     0x000003df      0x1df main.o
+                                0x35c (size before relaxing)
+ .debug_str     0x000005be      0x129 mpu6050/mpu6050.o
                                 0x381 (size before relaxing)
- .debug_str     0x000006a2       0xf8 uart/uart.o
+ .debug_str     0x000006e7       0xf8 uart/uart.o
                                 0x298 (size before relaxing)
 
 .debug_loc      0x00000000     0x1b4c

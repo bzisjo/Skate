@@ -198,7 +198,7 @@ int main(void) {
 		uart_puts("\r\n");
 		*/
 		uart_puts("\r\n");
-		_delay_ms(1000);
+		_delay_ms(100);	//originally 1000
 		#endif
 		
 		#if MPU6050_GETATTITUDE == 1 || MPU6050_GETATTITUDE == 2
