@@ -664,7 +664,7 @@ void mpu6050_updateQuaternion() {
  */
 ISR(TIMER0_OVF_vect) {
 	mpu6050_updateQuaternion();
-	mpu6050_getConvData(&accelX, &accelY, &accelZ, &gyroXds, &gyroYds, &gyroZds);
+	//mpu6050_getConvData(&accelX, &accelY, &accelZ, &gyroXds, &gyroYds, &gyroZds);
 }
 
 /*
