@@ -957,8 +957,8 @@ int main(void) {
      62e:	91 e0       	ldi	r25, 0x01	; 1
      630:	0e 94 ff 05 	call	0xbfe	; 0xbfe <uart_puts>
      634:	9f ef       	ldi	r25, 0xFF	; 255
-     636:	20 e7       	ldi	r18, 0x70	; 112
-     638:	82 e0       	ldi	r24, 0x02	; 2
+     636:	21 ee       	ldi	r18, 0xE1	; 225
+     638:	84 e0       	ldi	r24, 0x04	; 4
      63a:	91 50       	subi	r25, 0x01	; 1
      63c:	20 40       	sbci	r18, 0x00	; 0
      63e:	80 40       	sbci	r24, 0x00	; 0
