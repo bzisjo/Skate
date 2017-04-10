@@ -10,6 +10,7 @@
 #include <string.h>
 #include <avr/pgmspace.h>
 #include <avr/sleep.h>
+#include <avr/interrupt.h>
 #include "fat.h"
 #include "fat_config.h"
 #include "partition.h"
@@ -18,6 +19,8 @@
 #include "uart.h"
 
 #define DEBUG 1
+
+#define UART_BAUD_RATE 9600
 
 /**
  * \mainpage MMC/SD/SDHC card library
@@ -217,7 +220,10 @@ int main()
     set_sleep_mode(SLEEP_MODE_IDLE);
 
     /* setup uart */
-    uart_init();
+    //uart_init();
+
+	uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU) ); 
+	sei();
 
     while(1)
     {
