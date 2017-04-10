@@ -175,12 +175,15 @@ accelZ_mean = mean(accelZ_offsets)
 accelZ_std = std(accelZ_offsets)
 
 gyroX_mean = mean(gyroX_offsets)
+gyroX_median = median(gyroX_offsets)
 gyroX_std = std(gyroX_offsets)
 
 gyroY_mean = mean(gyroY_offsets)
+gyroY_median = median(gyroY_offsets)
 gyroY_std = std(gyroY_offsets)
 
 gyroZ_mean = mean(gyroZ_offsets)
+gyroZ_median = median(gyroZ_offsets)
 gyroZ_std = std(gyroZ_offsets)
 
 %% Graphs for accelerometer still offsets
