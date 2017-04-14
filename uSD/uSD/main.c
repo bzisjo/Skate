@@ -78,7 +78,7 @@ int main()
 
 
         /* print some card information as a boot message */
-        print_disk_info(fs);    
+        //print_disk_info(fs);    
 
        /* char file[] = "test.txt";
 
@@ -104,7 +104,17 @@ int main()
         }
         fat_close_file(fd);*/
 
-		char file2[] = "testwrite.txt";
+
+    /*    char file1[] = "file1.txt";
+
+        struct fat_dir_entry_struct file_entry;
+        if(!fat_create_file(dd, file1, &file_entry)){
+            uart_puts_p(PSTR("error creating file: "));
+            uart_puts(file1);
+            uart_putc('\n');
+        }*/
+
+		char file2[] = "file1.txt";
 		//char* offset_value = file2;
 
         //while(*offset_value != ' ' && *offset_value != '\0')
@@ -134,7 +144,7 @@ int main()
             fat_close_file(fd);
             continue;
         }
-        char testwrite[] = "Thisistext";
+        char testwrite[] = "This is text";
         //uart_puts(testwrite); uart_putc('\n');
         uart_puts_p(PSTR("writing happens now\n"));
         if(fat_write_file(fd, (uint8_t*) testwrite, (uint8_t)sizeof(testwrite)) != (uint8_t)sizeof(testwrite))
@@ -142,8 +152,12 @@ int main()
             uart_puts_p(PSTR("error writing to file\n"));
             break;
         }
+
+
         fat_close_file(fd);
 
+        if(!sd_raw_sync())
+                    uart_puts_p(PSTR("error syncing disk\n"));
 		/* close directory */
 		fat_close_dir(dd);
 
