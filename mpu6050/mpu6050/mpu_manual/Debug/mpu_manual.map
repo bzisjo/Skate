@@ -103,7 +103,11 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 mpu6050/mpu6050dmp6.o
  .debug_line    0x00000000       0x1a mpu6050/mpu6050dmp6.o
+<<<<<<< HEAD
  .debug_str     0x00000000      0x170 mpu6050/mpu6050dmp6.o
+=======
+ .debug_str     0x00000000      0x15c mpu6050/mpu6050dmp6.o
+>>>>>>> q
  .comment       0x00000000       0x31 mpu6050/mpu6050dmp6.o
  .text          0x00000000        0x0 uart/uart.o
  .data          0x00000000        0x0 uart/uart.o
@@ -814,6 +818,7 @@ END GROUP
  .debug_frame   0x00000218      0x278 mpu6050/mpu6050.o
  .debug_frame   0x00000490      0x100 uart/uart.o
 
+<<<<<<< HEAD
 .debug_str      0x00000000      0x7cf
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
@@ -825,6 +830,19 @@ END GROUP
                                 0x371 (size before relaxing)
  .debug_str     0x000006d7       0xf8 uart/uart.o
                                 0x288 (size before relaxing)
+=======
+.debug_str      0x00000000      0x7bb
+ *(.debug_str)
+ .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
+ .debug_str     0x00000208      0x1b3 i2chw/twimastertimeout.o
+                                0x1e7 (size before relaxing)
+ .debug_str     0x000003bb      0x1df main.o
+                                0x338 (size before relaxing)
+ .debug_str     0x0000059a      0x129 mpu6050/mpu6050.o
+                                0x35d (size before relaxing)
+ .debug_str     0x000006c3       0xf8 uart/uart.o
+                                0x274 (size before relaxing)
+>>>>>>> q
 
 .debug_loc      0x00000000     0x1a6a
  *(.debug_loc)
