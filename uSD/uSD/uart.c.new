@@ -493,6 +493,10 @@ Returns:  none
 **************************************************************************/
 void uart_putc(unsigned char data)
 {
+
+    if(data == '\n')
+        uart_putc('\r');
+    
     unsigned char tmphead;
 
     

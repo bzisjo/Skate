@@ -1,0 +1,16 @@
+
+mpu6050/mpu6050/\.vs/mpu6050/v14/\.atsuo
+
+*.d
+
+*.o
+
+*.elf
+
+*.hex
+
+*.lss
+
+*.map
+
+*.srec
