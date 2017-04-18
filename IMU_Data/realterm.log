@@ -1,0 +1,165 @@
+APRO v4.06
+Compiler : Delphi 7
+Operating System : WinNT 6.2 
+Device: COM3
+Date/time: 17/04/17, 21:41:51
+Time      Type      SubType       Data      OtherData
+--------  --------  ------------  --------  ---------
+0218.921  Trigger   Timer         00000040  
+0218.935  Dispatch  ReadCom       00000002  0.
+0218.935  Trigger   Avail         00000002  
+0218.935  TrDatChg  Timer         00000040  [01][00][00][00]
+0218.951  Dispatch  ReadCom       0000000F  00381[20]0.00538[20]1
+0218.951  Trigger   Avail         0000000F  
+0218.967  Dispatch  ReadCom       0000000F  .00228[20]0.27328[20]
+0218.967  Trigger   Avail         0000000F  
+0218.983  Dispatch  ReadCom       00000010  0.06317[20]-0.60521
+0218.983  Trigger   Avail         00000010  
+0218.999  Dispatch  ReadCom       00000003  [20][0D][0A]
+0218.999  Trigger   Avail         00000003  
+0218.999  Trigger   Timer         00000040  
+0219.062  Dispatch  ReadCom       00000009  0.00320[20]0
+0219.062  Trigger   Avail         00000009  
+0219.064  TrDatChg  Timer         00000040  [01][00][00][00]
+0219.078  Dispatch  ReadCom       0000000F  .00757[20]1.00082[20]
+0219.078  Trigger   Avail         0000000F  
+0219.094  Dispatch  ReadCom       0000000F  -0.39745[20]0.1241
+0219.094  Trigger   Avail         0000000F  
+0219.110  Dispatch  ReadCom       0000000D  5[20]-0.30033[20][0D][0A]
+0219.110  Trigger   Avail         0000000D  
+0219.160  Trigger   Timer         00000040  
+0219.190  Dispatch  ReadCom       0000000E  0.00442[20]0.0044
+0219.190  Trigger   Avail         0000000E  
+0219.190  TrDatChg  Timer         00000040  [01][00][00][00]
+0219.206  Dispatch  ReadCom       00000010  0[20]1.00485[20]-0.092
+0219.206  Trigger   Avail         00000010  
+0219.222  Dispatch  ReadCom       0000000F  58[20]0.36805[20]0.18
+0219.222  Trigger   Avail         0000000F  
+0219.238  Dispatch  ReadCom       00000006  748[20][0D][0A]
+0219.238  Trigger   Avail         00000006  
+0219.288  Trigger   Timer         00000040  
+0219.301  Dispatch  ReadCom       00000006  0.0046
+0219.301  Trigger   Avail         00000006  
+0219.302  TrDatChg  Timer         00000040  [01][00][00][00]
+0219.317  Dispatch  ReadCom       0000000F  7[20]0.00355[20]0.999
+0219.317  Trigger   Avail         0000000F  
+0219.333  Dispatch  ReadCom       00000010  23[20]0.21230[20]0.307
+0219.333  Trigger   Avail         00000010  
+0219.349  Dispatch  ReadCom       0000000E  08[20]-0.36130[20][0D][0A]
+0219.349  Trigger   Avail         0000000E  
+0219.400  Trigger   Timer         00000040  
+0219.429  Dispatch  ReadCom       0000000D  0.00394[20]0.006
+0219.429  Trigger   Avail         0000000D  
+0219.429  TrDatChg  Timer         00000040  [01][00][00][00]
+0219.445  Dispatch  ReadCom       0000000F  35[20]1.00033[20]0.02
+0219.445  Trigger   Avail         0000000F  
+0219.461  Dispatch  ReadCom       00000010  938[20]-0.36366[20]0.0
+0219.461  Trigger   Avail         00000010  
+0219.477  Dispatch  ReadCom       00000007  0455[20][0D][0A]
+0219.477  Trigger   Avail         00000007  
+0219.527  Trigger   Timer         00000040  
+0219.540  Dispatch  ReadCom       00000005  0.003
+0219.540  Trigger   Avail         00000005  
+0219.541  TrDatChg  Timer         00000040  [01][00][00][00]
+0219.556  Dispatch  ReadCom       0000000F  45[20]0.00550[20]1.00
+0219.556  Trigger   Avail         0000000F  
+0219.572  Dispatch  ReadCom       0000000F  668[20]-0.15355[20]0.
+0219.572  Trigger   Avail         0000000F  
+0219.588  Dispatch  ReadCom       0000000F  55098[20]-0.17838[20]
+0219.588  Trigger   Avail         0000000F  
+0219.604  Dispatch  ReadCom       00000002  [0D][0A]
+0219.604  Trigger   Avail         00000002  
+0219.654  Trigger   Timer         00000040  
+0219.668  Dispatch  ReadCom       0000000A  0.00552[20]0.
+0219.668  Trigger   Avail         0000000A  
+0219.668  TrDatChg  Timer         00000040  [01][00][00][00]
+0219.684  Dispatch  ReadCom       00000010  00867[20]1.00021[20]0.
+0219.684  Trigger   Avail         00000010  
+0219.700  Dispatch  ReadCom       0000000F  02938[20]-0.48561[20]
+0219.700  Trigger   Avail         0000000F  
+0219.716  Dispatch  ReadCom       0000000B  -0.42228[20][0D][0A]
+0219.716  Trigger   Avail         0000000B  
+0219.765  Trigger   Timer         00000040  
+0219.779  Dispatch  ReadCom       00000001  0
+0219.779  Trigger   Avail         00000001  
+0219.780  TrDatChg  Timer         00000040  [01][00][00][00]
+0219.795  Dispatch  ReadCom       0000000F  .00418[20]0.00709[20]
+0219.795  Trigger   Avail         0000000F  
+0219.811  Dispatch  ReadCom       00000010  0.99874[20]-0.33648
+0219.811  Trigger   Avail         00000010  
+0219.827  Dispatch  ReadCom       0000000F  [20]0.12415[20]-0.422
+0219.827  Trigger   Avail         0000000F  
+0219.843  Dispatch  ReadCom       00000005  28[20][0D][0A]
+0219.843  Trigger   Avail         00000005  
+0219.893  Trigger   Timer         00000040  
+0219.907  Dispatch  ReadCom       00000007  0.00198
+0219.907  Trigger   Avail         00000007  
+0219.907  TrDatChg  Timer         00000040  [01][00][00][00]
+0219.923  Dispatch  ReadCom       0000000F  [20]0.00770[20]1.0038
+0219.923  Trigger   Avail         0000000F  
+0219.939  Dispatch  ReadCom       00000010  7[20]0.21230[20]-0.119
+0219.939  Trigger   Avail         00000010  
+0219.955  Dispatch  ReadCom       0000000E  75[20]-0.23935[20][0D][0A]
+0219.955  Trigger   Avail         0000000E  
+0220.005  Trigger   Timer         00000040  
+0220.034  Dispatch  ReadCom       0000000D  0.00296[20]0.007
+0220.034  Trigger   Avail         0000000D  
+0220.035  TrDatChg  Timer         00000040  [01][00][00][00]
+0220.050  Dispatch  ReadCom       0000000F  57[20]1.00118[20]-0.0
+0220.050  Trigger   Avail         0000000F  
+0220.066  Dispatch  ReadCom       0000000F  3160[20]0.30708[20]0.
+0220.066  Trigger   Avail         0000000F  
+0220.082  Dispatch  ReadCom       00000008  12650[20][0D][0A]
+0220.082  Trigger   Avail         00000008  
+0220.132  Trigger   Timer         00000040  
+0220.146  Dispatch  ReadCom       00000004  0.00
+0220.146  Trigger   Avail         00000004  
+0220.146  TrDatChg  Timer         00000040  [01][00][00][00]
+0220.162  Dispatch  ReadCom       00000010  357[20]0.00721[20]1.00
+0220.162  Trigger   Avail         00000010  
+0220.178  Dispatch  ReadCom       0000000F  472[20]-0.33648[20]-0
+0220.178  Trigger   Avail         0000000F  
+0220.194  Dispatch  ReadCom       0000000F  .18073[20]-0.48326
+0220.194  Trigger   Avail         0000000F  
+0220.210  Dispatch  ReadCom       00000003  [20][0D][0A]
+0220.210  Trigger   Avail         00000003  
+0220.260  Trigger   Timer         00000040  
+0220.273  Dispatch  ReadCom       00000009  0.00333[20]0
+0220.273  Trigger   Avail         00000009  
+0220.275  TrDatChg  Timer         00000040  [01][00][00][00]
+0220.289  Dispatch  ReadCom       00000010  .00623[20]1.00216[20]0
+0220.289  Trigger   Avail         00000010  
+0220.305  Dispatch  ReadCom       0000000F  .02938[20]-0.18073
+0220.305  Trigger   Avail         0000000F  
+0220.321  Dispatch  ReadCom       0000000C  [20]-0.11740[20][0D][0A]
+0220.321  Trigger   Avail         0000000C  
+0220.371  Trigger   Timer         00000040  
+0220.401  Dispatch  ReadCom       0000000F  0.00638[20]0.00684
+0220.401  Trigger   Avail         0000000F  
+0220.401  TrDatChg  Timer         00000040  [01][00][00][00]
+0220.417  Dispatch  ReadCom       00000010  [20]1.00314[20]0.15133
+0220.417  Trigger   Avail         00000010  
+0220.433  Dispatch  ReadCom       0000000F  [20]-0.05878[20]-0.23
+0220.433  Trigger   Avail         0000000F  
+0220.449  Dispatch  ReadCom       00000006  935[20][0D][0A]
+0220.449  Trigger   Avail         00000006  
+0220.499  Trigger   Timer         00000040  
+0220.512  Dispatch  ReadCom       00000006  0.0019
+0220.512  Trigger   Avail         00000006  
+0220.513  TrDatChg  Timer         00000040  [01][00][00][00]
+0220.528  Dispatch  ReadCom       0000000F  8[20]0.00587[20]1.004
+0220.528  Trigger   Avail         0000000F  
+0220.544  Dispatch  ReadCom       0000000F  24[20]-0.27550[20]0.0
+0220.544  Trigger   Avail         0000000F  
+0220.560  Dispatch  ReadCom       00000010  0220[20]-0.11740[20][0D][0A]
+0220.560  Trigger   Avail         00000010  
+0220.610  Trigger   Timer         00000040  
+0220.640  Dispatch  ReadCom       0000000C  0.00503[20]0.00
+0220.640  Trigger   Avail         0000000C  
+0220.640  TrDatChg  Timer         00000040  [01][00][00][00]
+0220.656  Dispatch  ReadCom       0000000F  709[20]1.00143[20]0.0
+0220.656  Trigger   Avail         0000000F  
+0220.672  Dispatch  ReadCom       0000000F  2938[20]0.30708[20]-0
+0220.672  Trigger   Avail         0000000F  
+0220.688  Dispatch  ReadCom       00000009  .17838[20][0D][0A]
+0220.688  Trigger   Avail         00000009  

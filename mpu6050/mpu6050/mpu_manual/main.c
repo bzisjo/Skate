@@ -14,16 +14,35 @@
 #define UART_BAUD_RATE 9600
 #include "uart/uart.h"
 
-#if MPU6050_GETATTITUDE == 1 || MPU6050_GETATTITUDE == 0	//changed from 1 because trying to debug
 /*
+#if MPU6050_GETATTITUDE == 1 || MPU6050_GETATTITUDE == 0	//changed from 1 because trying to debug
+
 	filters roll pitch and yaw using complementary filter 
-*/
+
 void applyCompFilter(double * filteredAngle, double accelAngle, double gyroAngle, double alpha){
 	*filteredAngle = alpha * gyroAngle + (1-alpha) * accelAngle;
 }
 #endif
-
+*/
 #if MPU6050_GETATTITUDE == 0
+
+//for changing printing between raw converted data or angles from integrator
+#define SERIALPRINTMODE 0		//0 for printing raw converted data
+								//1 for printing angles from integrator
+// for changing between tests for filtering and integrating obtained data	
+#define DATAPROCESSINGTEST 0	//0 for no tests, only run integrator
+								//1 for test 1
+								//2 for test 2
+								//3 for test 3
+
+//offset used for calibrating to zero
+#define ACCEL_X_OFFSET 0.0206f
+#define ACCEL_Y_OFFSET 0.0216f
+#define ACCEL_Z_OFFSET -0.0870f
+#define GYRO_X_OFFSET 2.5316f	//2.5610f	these offsets give negative drift
+#define GYRO_Y_OFFSET 9.7539f	//9.7561f
+#define GYRO_Z_OFFSET 12.3735f	//12.3781f
+
 /*
 	calculates the roll pitch and yaw based on acceleration data
 */
@@ -46,6 +65,26 @@ void rk_integrator(double* angle, double dps, double* prev_dps){
 	*(prev_dps + 1) = dps_1;
 	*prev_dps = dps;
 }
+
+/*
+	applies offset calibration values to raw converted data
+*/
+void applyOffset(double* axg, double* ayg, double* azg, double* gxds, double* gyds, double* gzds){
+	*axg = *axg - ACCEL_X_OFFSET;
+	*ayg = *ayg - ACCEL_Y_OFFSET;
+	*azg = *azg - ACCEL_Z_OFFSET;
+	*gxds = *gxds - GYRO_X_OFFSET;
+	*gyds = *gyds - GYRO_Y_OFFSET;
+	*gzds = *gzds - GYRO_Z_OFFSET;	
+}
+
+/*
+	filters roll pitch and yaw using complementary filter 
+*/
+void applyCompFilter(double * filteredAngle, double accelAngle, double gyroAngle, double alpha){
+	*filteredAngle = alpha * gyroAngle + (1-alpha) * accelAngle;
+}
+
 #endif
 
 int main(void) {
@@ -63,20 +102,30 @@ int main(void) {
 	double gxds = 0;
 	double gyds = 0;
 	double gzds = 0; 
-	//offset used for calibrating to zero
-	double axg_offset = 0.0;
-	double ayg_offset = 0.0;
-	double azg_offset = 0.0;
-	double gxds_offset = 0.0;
-	double gyds_offset = 0.0;
-	double gzds_offset = 0.0;
+	/*//offset used for calibrating to zero
+	double axg_offset = 0.0206;
+	double ayg_offset = 0.0216;
+	double azg_offset = -0.0870;
+	double gxds_offset = 2.5316;
+	double gyds_offset = 9.7539;
+	double gzds_offset = 12.3735;*/
 	//for runge-kutta integrator
-	double angleX = 0.0;
-	double angleY = 0.0;
-	double angleZ = 0.0;
-	double prev_Xdps[3] = {0.0, 0.0, 0.0};
-	double prev_Ydps[3] = {0.0, 0.0, 0.0};
+	double angleX = 0.0;	//roll
+	double angleY = 0.0;	//pitch
+	double angleZ = 0.0;	//yaw
+	double prev_Xdps[3] = {0.0, 0.0, 0.0};	//holds last three gyro values for 
+	double prev_Ydps[3] = {0.0, 0.0, 0.0};	// runge-kutta integrator
 	double prev_Zdps[3] = {0.0, 0.0, 0.0};
+	double outAngleX = 0.0;		//angles that are outputted to serial port
+	double outAngleY = 0.0;
+	double outAngleZ = 0.0;
+	//used for complementary filter
+	double tau = 1.0;		//desired time constant
+	double dt = .005;		//based on sampling frequency (200Hz)
+	double alpha = tau / (tau + dt);
+	//double yawFilt = 0.0;
+	double rollAccel = 0.0;	//angles calculated from acceleration data
+	double pitchAccel = 0.0;
 	#endif
 	
 	#if MPU6050_GETATTITUDE == 1 || MPU6050_GETATTITUDE == 2
@@ -109,8 +158,6 @@ int main(void) {
 	double gyds = 0;
 	double gzds = 0;
 	*/
-	//testing freezing
-	int n = 0;
 	#endif
 
 	//init uart
@@ -131,13 +178,50 @@ int main(void) {
 	mpu6050_dmpEnable();
 	_delay_ms(10);
 	#endif
+	
+/*
+ *	Main Loop 
+ */	
 	for(;;) {
 		#if MPU6050_GETATTITUDE == 0
 		mpu6050_getRawData(&ax, &ay, &az, &gx, &gy, &gz);
 		mpu6050_getConvData(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
-		rk_integrator(&angleX, gxds, prev_Xdps);
+		applyOffset(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
+		/*rk_integrator(&angleX, gxds, prev_Xdps);
 		rk_integrator(&angleY, gyds, prev_Ydps);
-		rk_integrator(&angleZ, gzds, prev_Zdps);
+		rk_integrator(&angleZ, gzds, prev_Zdps);*/
+		
+		//No tests are run
+		#if DATAPROCESSINGTEST == 0
+			rk_integrator(&angleX, gxds, prev_Xdps);
+			rk_integrator(&angleY, gyds, prev_Ydps);
+			rk_integrator(&angleZ, gzds, prev_Zdps);
+			outAngleX = angleX;
+			outAngleY = angleY;
+			outAngleZ = angleZ;
+		#endif
+		
+		
+		//Test 1:integrate then apply fusion filter
+		#if DATAPROCESSINGTEST == 1
+			rk_integrator(&angleX, gxds, prev_Xdps);
+			rk_integrator(&angleY, gyds, prev_Ydps);
+			rk_integrator(&angleZ, gzds, prev_Zdps);
+			
+			anglesFromAccel(&rollAccel, &pitchAccel, axg, ayg, azg);
+			applyCompFilter(&outAngleX, rollAccel, angleX, alpha);
+			applyCompFilter(&outAngleY, pitchAccel, angleY, alpha);
+			outAngleZ = angleZ; 
+		#endif
+		//Test 2: integrate then apply low pass filter to gyro angle then fusion filter
+		#if DATAPROCESSINGTEST == 2
+			
+		#endif
+		
+		//Test 3: apply low pass filter to gyro data, integrate, then fusion filter 
+		#if DATAPROCESSINGTEST == 3
+		#endif
+		
 		#endif
 		
 		#if MPU6050_GETATTITUDE == 1
@@ -153,7 +237,6 @@ int main(void) {
 		//mpu6050_getRollPitchYaw(&roll, &pitch, &yaw);
 		//applyCompFilter(&rollFilt, rollAccel, roll, alpha);
 		//applyCompFilter(&pitchFilt, pitchAccel, pitch, alpha);
-		n += 1;
 		_delay_ms(10);
 		#endif
 		
@@ -164,6 +247,9 @@ int main(void) {
 		_delay_ms(10);
 		#endif
 
+/*
+ *	Serial Printing via UART
+*/
 		#if MPU6050_GETATTITUDE == 0
 		char itmp[10];
 		/*
@@ -176,27 +262,41 @@ int main(void) {
 		ltoa(gz, itmp, 10); uart_putc(' '); uart_puts(itmp); uart_putc(' ');
 		uart_puts("\r\n");
 */
+		
 		//uart_puts("Printing from getConvData\r\n");
-		dtostrf(axg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
-		dtostrf(ayg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
-		dtostrf(azg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
-		dtostrf(gxds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
-		dtostrf(gyds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
-		dtostrf(gzds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+		#if SERIALPRINTMODE == 0
+			dtostrf(axg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(ayg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(azg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(gxds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(gyds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(gzds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+		#endif
 		/*uart_puts("\r\n");
+		
 	
 		uart_puts("X prev_dps array:");
 		dtostrf(*prev_Xdps, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		dtostrf(*(prev_Xdps+1), 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		dtostrf(*(prev_Xdps+2), 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 		uart_puts("\r\n");
+			*/
+		//uart_puts("Angles:");
+		#if SERIALPRINTMODE == 1
+			dtostrf(outAngleX, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(outAngleY, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(outAngleZ, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
 			
-		uart_puts("Angles:");
-		dtostrf(angleX, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
-		dtostrf(angleY, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
-		dtostrf(angleZ, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
-		uart_puts("\r\n");
-		*/
+			/*//temporarily here for testing 
+			dtostrf(axg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(ayg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(azg, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(gxds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(gyds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');
+			dtostrf(gzds, 3, 5, itmp); uart_puts(itmp); uart_putc(' ');*/
+			uart_puts("\r\n");
+		#endif
+		
 		uart_puts("\r\n");
 		_delay_ms(100);	//originally 1000
 		#endif
