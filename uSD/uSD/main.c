@@ -23,8 +23,8 @@ static uint8_t print_disk_info(const struct fat_fs_struct* fs);
 int main()
 {
     set_sleep_mode(SLEEP_MODE_IDLE);
-	uart_init();
-	//uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU) ); 
+	//uart_init();
+	uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU) ); 
 	sei();
 
 	 while(1)
@@ -105,16 +105,16 @@ int main()
         fat_close_file(fd);*/
 
 
-    /*    char file1[] = "file1.txt";
+        char file1[] = "uSD_Verification.txt";
 
         struct fat_dir_entry_struct file_entry;
         if(!fat_create_file(dd, file1, &file_entry)){
             uart_puts_p(PSTR("error creating file: "));
             uart_puts(file1);
             uart_putc('\n');
-        }*/
+        }
 
-		char file2[] = "file1.txt";
+		char file2[] = "uSD_Verification.txt";
 		//char* offset_value = file2;
 
         //while(*offset_value != ' ' && *offset_value != '\0')
@@ -144,7 +144,7 @@ int main()
             fat_close_file(fd);
             continue;
         }
-        char testwrite[] = "This is text";
+        char testwrite[] = "Device is capable of writing to the uSD connected to the SPI ports on the AVR.";
         //uart_puts(testwrite); uart_putc('\n');
         uart_puts_p(PSTR("writing happens now\n"));
         if(fat_write_file(fd, (uint8_t*) testwrite, (uint8_t)sizeof(testwrite)) != (uint8_t)sizeof(testwrite))
