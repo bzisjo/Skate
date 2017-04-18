@@ -15,11 +15,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 00000180  00000000  00000000  000016f8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00001eee  00000000  00000000  00001878  2**0
+  6 .debug_info   00001eed  00000000  00000000  00001878  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000c4b  00000000  00000000  00003766  2**0
+  7 .debug_abbrev 00000c4b  00000000  00000000  00003765  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000e61  00000000  00000000  000043b1  2**0
+  8 .debug_line   00000e61  00000000  00000000  000043b0  2**0
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  000005d0  00000000  00000000  00005214  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -880,7 +880,7 @@ int main(void) {
 
 	//init uart
 	uart_init(UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU));
-     5ce:	87 e6       	ldi	r24, 0x67	; 103
+     5ce:	89 e1       	ldi	r24, 0x19	; 25
      5d0:	90 e0       	ldi	r25, 0x00	; 0
      5d2:	0e 94 56 06 	call	0xcac	; 0xcac <uart_init>
 

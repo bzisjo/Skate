@@ -11,7 +11,7 @@
 
 #include "mpu6050/mpu6050.h"
 
-#define UART_BAUD_RATE 9600
+#define UART_BAUD_RATE 38400
 #include "uart/uart.h"
 
 /*

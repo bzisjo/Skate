@@ -824,13 +824,13 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1eee
+.debug_info     0x00000000     0x1eed
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_info    0x000005f4      0x22d i2chw/twimastertimeout.o
- .debug_info    0x00000821      0x968 main.o
- .debug_info    0x00001189      0xa37 mpu6050/mpu6050.o
- .debug_info    0x00001bc0      0x32e uart/uart.o
+ .debug_info    0x00000821      0x967 main.o
+ .debug_info    0x00001188      0xa37 mpu6050/mpu6050.o
+ .debug_info    0x00001bbf      0x32e uart/uart.o
 
 .debug_abbrev   0x00000000      0xc4b
  *(.debug_abbrev)
