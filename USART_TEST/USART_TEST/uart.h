@@ -84,7 +84,6 @@ Date        Description
  
 /**@{*/
 
-#include <stdint.h>
 
 #if (__GNUC__ * 100 + __GNUC_MINOR__) < 304
 #error "This library requires AVR-GCC 3.4 or later, update to newer AVR-GCC compiler !"
@@ -223,14 +222,6 @@ extern int uart_available(void);
  *  @return  none
  */
 extern void uart_flush(void);
-
-
-extern void uart_putc_hex(uint8_t b);
-extern void uart_putw_hex(uint16_t w);
-extern void uart_putdw_hex(uint32_t dw);
-
-extern void uart_putw_dec(uint16_t w);
-extern void uart_putdw_dec(uint32_t dw);
 
 
 /** @brief  Initialize USART1 (only available on selected ATmegas) @see uart_init */

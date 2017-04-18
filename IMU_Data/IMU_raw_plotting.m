@@ -175,12 +175,15 @@ accelZ_mean = mean(accelZ_offsets)
 accelZ_std = std(accelZ_offsets)
 
 gyroX_mean = mean(gyroX_offsets)
+gyroX_median = median(gyroX_offsets)
 gyroX_std = std(gyroX_offsets)
 
 gyroY_mean = mean(gyroY_offsets)
+gyroY_median = median(gyroY_offsets)
 gyroY_std = std(gyroY_offsets)
 
 gyroZ_mean = mean(gyroZ_offsets)
+gyroZ_median = median(gyroZ_offsets)
 gyroZ_std = std(gyroZ_offsets)
 
 %% Graphs for accelerometer still offsets
@@ -193,6 +196,7 @@ set(accelX_low_refline, 'LineStyle', ':');
 accelX_high_refline = refline(0, accelX_mean + accelX_std);
 set(accelX_high_refline, 'LineStyle', ':');
 title('X Accelerometer Still Data')
+ylabel('g')
 hold off
 
 figure(17)
@@ -204,6 +208,7 @@ set(accelY_low_refline, 'LineStyle', ':');
 accelY_high_refline = refline(0, accelY_mean + accelY_std);
 set(accelY_high_refline, 'LineStyle', ':');
 title('Y Accelerometer Still Data')
+ylabel('g')
 hold off
 
 figure(18)
@@ -215,6 +220,7 @@ set(accelZ_low_refline, 'LineStyle', ':');
 accelZ_high_refline = refline(0, accelZ_mean + accelZ_std);
 set(accelZ_high_refline, 'LineStyle', ':');
 title('Z Accelerometer Still Data')
+ylabel('g')
 hold off
 
 %% Graphs for gyroscope still offsets
@@ -227,6 +233,7 @@ set(gyroX_low_refline, 'LineStyle', ':');
 gyroX_high_refline = refline(0, gyroX_mean + gyroX_std);
 set(gyroX_high_refline, 'LineStyle', ':');
 title('X Gyroscope Still Data')
+ylabel('deg/sec')
 hold off
 
 figure(20)
@@ -238,6 +245,7 @@ set(gyroY_low_refline, 'LineStyle', ':');
 gyroY_high_refline = refline(0, gyroY_mean + gyroY_std);
 set(gyroY_high_refline, 'LineStyle', ':');
 title('Y Gyroscope Still Data')
+ylabel('deg/sec')
 hold off
 
 figure(21)
@@ -249,6 +257,7 @@ set(gyroZ_low_refline, 'LineStyle', ':');
 gyroZ_high_refline = refline(0, gyroZ_mean + gyroZ_std);
 set(gyroZ_high_refline, 'LineStyle', ':');
 title('Z Gyroscope Still Data')
+ylabel('deg/sec')
 hold off
 
 %% Loading converted raw data for movement tests
@@ -336,10 +345,80 @@ legend('show')
 legend('GyroX', 'GyroY', 'GyroZ');
 title('Rotational Data of Z Axis Rotational Test (Yaw)')
 
+%% Loading for replotting tests done with 10 ms between data reads instead of 1 s
+accelX_move_10ms = importdata('accelX_10ms.txt');
+accelY_move_10ms = importdata('accelY_10ms.txt');
+accelZ_move_10ms = importdata('accelZ_10ms.txt');
 
+ %%
+figure(34)
+subplot(2,1,1)
+plot(accelX_move_10ms(:,1:3));
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+title('Translational Data of X axis Translational Test (10ms)')
 
+subplot(2,1,2)
+plot(accelX_move_10ms(:,4:6));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Rotational Data of X axis Translational Test (10ms)')
 
+%% Plotting for 50 ms because 10 ms did not completly capture data
+accelX_move_50ms = importdata('accelX_50ms.txt');
+accelY_move_50ms = importdata('accelY_50ms.txt');
+accelZ_move_50ms = importdata('accelZ_50ms.txt');
 
+%% Plotting for 50 ms because 10 ms did not completly capture data
+accelX_move_100ms = importdata('accelX_100ms.txt');
+accelY_move_100ms = importdata('accelY_100ms.txt');
+accelZ_move_100ms = importdata('accelZ_100ms.txt');
 
+%%
+
+figure(35)
+subplot(2,1,1)
+plot(accelX_move_100ms(:,1:3));
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+title('Translational Data of X axis Translational Test (100ms)')
+axis([0 120 -2 2]);
+
+subplot(2,1,2)
+plot(accelX_move_100ms(:,4:6));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Rotational Data of X axis Translational Test (100ms)')
+axis([0 120 -400 400]);
+
+figure(36)
+subplot(2,1,1)
+plot(accelY_move_100ms(:,1:3));
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+title('Translational Data of Y axis Translational Test (100ms)')
+axis([0 140 -2 2])
+
+subplot(2,1,2)
+plot(accelY_move_100ms(:,4:6));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Rotational Data of Y axis Translational Test (100ms)')
+axis([0 140 -400 400]);
+
+figure(37)
+subplot(2,1,1)
+plot(accelZ_move_100ms(:,1:3));
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+title('Translational Data of Z axis Translational Test (100ms)')
+axis([0 120 -2 2])
+
+subplot(2,1,2)
+plot(accelZ_move_100ms(:,4:6));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Rotational Data of Z axis Translational Test (100ms)')
+axis([0 120 -400 400]);
 
 
