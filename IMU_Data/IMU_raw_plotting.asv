@@ -427,18 +427,4 @@ accelY_move_10ms = importdata('accelY_10ms.txt');
 accelZ_move_10ms = importdata('accelZ_10ms.txt');
 
 %% testing integration with matlab int function
-time = 0:.01:.01*(size(accelX_move_10ms(:,1))-1);
-integral = cumtrapz(accelX_move_10ms(:,1))
-figure()
-plot(integral)
-
-
-%% Speed Verification Test
- speed = importdata('speedVerification_10ms.txt')
-
-
-
-
-
-
-
+time = 0:01:.01*(size(accel
