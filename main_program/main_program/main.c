@@ -53,6 +53,25 @@ ISR(PCINT1_vect)
 
 int main(void)
 {
+	//*^_^* 
+	//timer 1 without interrupt
+	//OCRn: set value that you want to count to 01F3 = 499(10)
+	//Using 16-bit timer 1, each count up takes 1/16M*1024 = 64us
+	//To achieve 31.2Hz, use count top = 499
+	//Period = 64u * 500 = 0.032s
+ 	OCR1A = 0x01F3;
+
+    // Mode 4, CTC top on OCR1A
+    TCCR1B |= (1 << WGM12);
+ 
+    //disbale timer for now by setting CS12 and CS10 to 0 
+    TCCR1B &= ~(1 << CS12) 
+    TCCR1B &= ~(1 << CS10);
+
+    //init ADC
+    init_ADC();
+	//*^_^*
+
 	//Init inputs
 	//DDRC &= ~(1 << PORTC3);  //set input mode for button A (start/state switch)
 
@@ -125,7 +144,6 @@ int main(void)
 	//Init state
 	state = 1;
 
-    /* Replace with your application code */
     while (1) 
     {
 		switch(state)
@@ -154,10 +172,13 @@ int main(void)
 				escape = 0;
 				while(escape == 0)
 				{
-					//TODO: Do something to check timmer
+					//set prescaler for Timer 1 to clk/1024
+					TCCR1B |= (1 << CS12) | (1 << CS10);
+					//start timer count
 					char itmp[10];
 					char space = ' ';
 					char nl = '\n';
+					uint8_t fsr[2];
 					mpu6050_getConvData(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
 					dtostrf(axg, 3, 5, itmp); 
 					fat_write_file(fd, (uint8_t*) itmp, 10);
@@ -178,9 +199,15 @@ int main(void)
 					fat_write_file(fd, (uint8_t*) itmp, 10);
 					fat_write_file(fd, (uint8_t*) &space, 1);
 
-					//TODO: Add lines to read from FSR
-					
+					//read from FSR
+					fsr[0] = FSR_read(); 
+					fsr[1] = FSR_read();
+
+
 					fat_write_file(fd, (uint8_t*) &nl, 1);
+					while( (TIFR0 & (1 << TOV0) ) > 0) //wait for timer overflow event
+					{
+					}
 					
 				}
 				sd_raw_sync();
@@ -200,7 +227,81 @@ int main(void)
 	return 1;
 }
 
+//*^_^*
+//FSR functions
+void init_ADC()
+{
+	/*
+	ADMUX - ADC Multiplexer Selection Register
+	
+	bit          7           6          5         4        3         2          1          0
+	name       REFS1       REFS0      ADLAR       -       MUX3      MUX2       MUX1       MUX0
+	set to       0           1          1         0        0         1          0          1
+	
+	REFS1 = 0    use AVCC for reference voltage
+	REFS0 = 1
+	
+	ADLAR = 1    left justify ADC result in ADCH/ADCL
+	
+	bit 4 = 0
+	
+	MUX3 = 0     start with using ADC0 (pin 23) for input
+	MUX2 = 0
+	MUX1 = 0
+	MUX0 = 0
+	*/
+	ADMUX = 0b01100000;
 
+		/*
+	ADCSRA - ADC Control and Status Register A
+	
+	bit          7           6            5          4          3            2           1           0
+	name        ADEN        ADSC        ADATE       ADIF       ADIE        ADPS2       ADPS1       ADPS0
+	set to       1           0            0          0          0            0           1           1
+	
+	ADEN = 1     enable ADC
+	ADSC = 0     don't start ADC yet
+	ADATE = 0    don't enable ADC auto trigger (i.e. use single conversion mode)
+	ADIF = 0     don't set ADC interrupt flag
+	ADIE = 0     don't set ADC interrupt enable
+	
+	ADPS2 = 1
+	ADPS1 = 1    16 MHz clock / 128 = 125 kHz ADC clock
+	ADPS0 = 1
+	*/
+	ADCSRA = 0b10000111;
+	
+	/*
+	ADCSRB - ADC Control and Status Register B
+	
+	bit         7           6           5           4           3         2           1           0
+	name        -          ACME         -           -           -       ADTS2       ADTS1       ADTS0
+	set to      0           0           0           0           0         0           0           0
+	
+	bit 7 = 0
+	ACME = 0     don't enable analog comparator multiplexer
+	bit 5 = 0
+	bit 4 = 0
+	bit 3 = 0
+	ADTS2 = 0
+	ADTS1 = 0    register ADCSRA bit ADATE set to 0 so these bits have no effect
+	ADTS0 = 0
+	*/
+	ADCSRB = 0b00000000;
+}
+
+//reading values from analog pins
+uint8_t FSR_read()
+{	
+	// start ADC conversion
+	ADCSRA |= (1 << ADSC);		
+	// wait here until the chip clears the ADSC bit for us, which means the ADC is complete			
+	while(bit_is_set(ADCSRA, ADSC)) {}	
+	// toggle ADMUX PC0 bit to switch between pin23 and pin24				
+	ADMUX ^= (1 << PC0);					
+	return ADCH;
+}
+//*^_^*
 
 //uSD functions
 uint8_t find_file_in_dir(struct fat_fs_struct* fs, struct fat_dir_struct* dd, const char* name, struct fat_dir_entry_struct* dir_entry)
