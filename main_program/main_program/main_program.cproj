@@ -91,7 +91,7 @@
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>DEBUG</Value>
-      <Value>F_CPU = 16000000UL</Value>
+      <Value>F_CPU=16000000UL</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
@@ -134,7 +134,25 @@
     <Compile Include="fat_config.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="i2chw\i2cmaster.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="i2chw\twimastertimeout.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mpu6050\mpu6050.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mpu6050\mpu6050.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mpu6050\mpu6050dmp6.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mpu6050\mpu6050registers.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="partition.c">
@@ -164,6 +182,10 @@
     <Compile Include="uart.h">
       <SubType>compile</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="i2chw" />
+    <Folder Include="mpu6050" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
