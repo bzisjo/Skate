@@ -186,7 +186,7 @@ int main(void) {
 		#if MPU6050_GETATTITUDE == 0
 		mpu6050_getRawData(&ax, &ay, &az, &gx, &gy, &gz);
 		mpu6050_getConvData(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
-		applyOffset(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
+		//applyOffset(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
 		/*rk_integrator(&angleX, gxds, prev_Xdps);
 		rk_integrator(&angleY, gyds, prev_Ydps);
 		rk_integrator(&angleZ, gzds, prev_Zdps);*/

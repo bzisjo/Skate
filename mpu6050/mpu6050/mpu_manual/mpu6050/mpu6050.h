@@ -33,7 +33,7 @@ References:
 //0 disabled
 //1 mahony filter
 //2 dmp chip processor
-#define MPU6050_GETATTITUDE 0
+#define MPU6050_GETATTITUDE 1
 
 //definitions for raw data
 //gyro and acc scale
@@ -69,7 +69,7 @@ References:
 #define MPU6050_AGAIN MPU6050_ACCEL_LSB_16
 #endif
 
-#define MPU6050_CALIBRATEDACCGYRO 1 //set to 1 if is calibrated
+#define MPU6050_CALIBRATEDACCGYRO 0 //set to 1 if is calibrated
 #if MPU6050_CALIBRATEDACCGYRO == 1
 #define MPU6050_AXOFFSET 0
 #define MPU6050_AYOFFSET 0
