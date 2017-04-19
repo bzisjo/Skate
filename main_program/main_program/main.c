@@ -21,9 +21,6 @@
 #include "uart.h"
 #include "mpu6050/mpu6050.h"
 
-#ifndef bit_is_clear(sfr,bit)
-	#define bit_is_clear(sfr,bit) (!(_SFR_BYTE(sfr) & _BV(bit)))
-#endif
 
 #define UART_BAUD_RATE 9600
 
@@ -40,12 +37,15 @@ ISR(PCINT1_vect)
 	{
 		switch(state)
 		{
+			case 1: ;
+				state = 2;
+				break;
 			case 2: ;
 				if(state == 2 && escape == 0)
 				{
 					escape = 1;
 				}
-			break;
+				break;
 		}
 	}
 }
@@ -153,6 +153,7 @@ int main(void)
 				escape = 0;
 				while(escape == 0)
 				{
+					//TODO: Do something to check timmer
 					char itmp[10];
 					char space = ' ';
 					char nl = '\n';
@@ -169,14 +170,14 @@ int main(void)
 					dtostrf(gxds, 3, 5, itmp);
 					fat_write_file(fd, (uint8_t*) itmp, 10);
 					fat_write_file(fd, (uint8_t*) &space, 1);
-					dtostrf(gyds, 3, 5, itmp);
-					fat_write_file(fd, (uint8_t*) itmp, 10);
-					fat_write_file(fd, (uint8_t*) &space, 1);
+					//dtostrf(gyds, 3, 5, itmp);
+					//fat_write_file(fd, (uint8_t*) itmp, 10);
+					//fat_write_file(fd, (uint8_t*) &space, 1);
 					dtostrf(gzds, 3, 5, itmp);
 					fat_write_file(fd, (uint8_t*) itmp, 10);
 					fat_write_file(fd, (uint8_t*) &space, 1);
 
-					//Add lines to read from FSR
+					//TODO: Add lines to read from FSR
 					
 					fat_write_file(fd, (uint8_t*) &nl, 1);
 					
