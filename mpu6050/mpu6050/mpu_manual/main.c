@@ -35,13 +35,13 @@ void applyCompFilter(double * filteredAngle, double accelAngle, double gyroAngle
 								//2 for test 2
 								//3 for test 3
 
-//offset used for calibrating to zero
-#define ACCEL_X_OFFSET 0.0206f
-#define ACCEL_Y_OFFSET 0.0216f
-#define ACCEL_Z_OFFSET -0.0870f
-#define GYRO_X_OFFSET 2.5316f	//2.5610f	these offsets give negative drift
-#define GYRO_Y_OFFSET 9.7539f	//9.7561f
-#define GYRO_Z_OFFSET 12.3735f	//12.3781f
+//offset used for calibrating to zero (means)
+#define ACCEL_X_OFFSET 0.0222f
+#define ACCEL_Y_OFFSET 0.0371f
+#define ACCEL_Z_OFFSET 0.9134f
+#define GYRO_X_OFFSET 0.0084f	//2.5610f	these offsets give negative drift
+#define GYRO_Y_OFFSET 1.2963f	//9.7561f
+#define GYRO_Z_OFFSET 1.2545f	//12.3781f
 
 /*
 	calculates the roll pitch and yaw based on acceleration data
