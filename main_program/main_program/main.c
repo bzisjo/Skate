@@ -2,7 +2,7 @@
  * main_program.c
  *
  * Created: 4/17/2017 7:22:12 PM
- * Author : Jon
+ * Author : Also Charles and Qian
  */ 
 
 #include <stdlib.h>
@@ -28,9 +28,11 @@ volatile uint8_t escape;
 volatile uint8_t state;
 volatile uint8_t error;
 
-static uint8_t read_line(char* buffer, uint8_t buffer_length);
+//static uint8_t read_line(char* buffer, uint8_t buffer_length);
 static uint8_t find_file_in_dir(struct fat_fs_struct* fs, struct fat_dir_struct* dd, const char* name, struct fat_dir_entry_struct* dir_entry);
 static struct fat_file_struct* open_file_in_dir(struct fat_fs_struct* fs, struct fat_dir_struct* dd, const char* name);
+static inline void init_ADC(void);
+static uint8_t FSR_read();
 
 ISR(PCINT1_vect)
 {
@@ -66,7 +68,7 @@ int main(void)
     TCCR1B |= (1 << WGM12);
  
     //disbale timer for now by setting CS12 and CS10 to 0 
-    TCCR1B &= ~(1 << CS12) 
+    TCCR1B &= ~(1 << CS12);
     TCCR1B &= ~(1 << CS10);
 
     //init ADC
@@ -234,7 +236,13 @@ int main(void)
 					//read from FSR
 					fsr[0] = FSR_read(); 
 					fsr[1] = FSR_read();
+					itoa(fsr[0],itmp,10);
+					fat_write_file(fd,(uint8_t*) itmp, 1);
+					fat_write_file(fd, (uint8_t*) &space, 1);
 
+					itoa(fsr[1],itmp,10);
+					fat_write_file(fd,(uint8_t*) itmp, 1);
+					fat_write_file(fd, (uint8_t*) &space, 1);
 
 					fat_write_file(fd, (uint8_t*) &nl, 1);
 					while( (TIFR0 & (1 << TOV0) ) > 0) //wait for timer overflow event
@@ -261,7 +269,7 @@ int main(void)
 
 //*^_^*
 //FSR functions
-void init_ADC()
+static inline void init_ADC()
 {
 	/*
 	ADMUX - ADC Multiplexer Selection Register
