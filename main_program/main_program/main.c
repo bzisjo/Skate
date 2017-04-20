@@ -26,6 +26,7 @@
 
 volatile uint8_t escape;
 volatile uint8_t state;
+volatile uint8_t error;
 
 static uint8_t read_line(char* buffer, uint8_t buffer_length);
 static uint8_t find_file_in_dir(struct fat_fs_struct* fs, struct fat_dir_struct* dd, const char* name, struct fat_dir_entry_struct* dir_entry);
@@ -33,9 +34,9 @@ static struct fat_file_struct* open_file_in_dir(struct fat_fs_struct* fs, struct
 
 ISR(PCINT1_vect)
 {
+	_delay_ms(10);		//primitive debouncing
 	if(bit_is_clear(PINC, PCINT11))
 	{
-		_delay_ms(10);		//primitive debouncing
 		switch(state)
 		{
 			case 1: ;
@@ -74,6 +75,7 @@ int main(void)
 
 	//Init inputs
 	//DDRC &= ~(1 << PORTC3);  //set input mode for button A (start/state switch)
+	DDRD |= (1 << PORTD6) | (1 << PORTD7);	//Set LEDs as output
 
 	//Init interrupts
 	PCICR |= (1 << PCIE2);		//Set port-change interrupt to port C
@@ -100,11 +102,17 @@ int main(void)
 	double gzds = 0;
 	mpu6050_init();
 	_delay_ms(50);
+	
+
+	//Init state
+	state = 1;
 
 	//Init SD
 	if(!sd_raw_init())
 	{
 		//TODO: LED error pattern 1, init failed
+		error = 1;
+		state = 0;
 	}
 	//Open partition
 	struct partition_struct* partition = partition_open(sd_raw_read, sd_raw_read_interval, sd_raw_write, sd_raw_write_interval, 0);
@@ -122,6 +130,8 @@ int main(void)
         if(!partition)
         {
             //TODO: LED error pattern 2, opening partition fail
+			error = 1;
+			state = 0;
         }
     }
 	//Open file system
@@ -129,6 +139,8 @@ int main(void)
 	if(!fs)
 	{
 		//TODO: LED error pattern 2, opening file partition fail
+		error = 1;
+		state = 0;
 	}
 	//Open root directory
 	struct fat_dir_entry_struct directory;
@@ -137,17 +149,28 @@ int main(void)
 	if(!dd)
 	{
 		//TODO: LED error pattern 2, opening root directory failed
+		error = 1;
+		state = 0;
 	}
 	
 
 
-	//Init state
-	state = 1;
+	PORTC |= (1 << PORTD6);		//power LED on
 
     while (1) 
     {
 		switch(state)
 		{
+			//errors
+			case 0: ;
+				while(error)
+				{
+					PORTC |= (1 << PORTD7);
+					_delay_ms(100);
+					PORTC &= ~(1 << PORTD7);
+					_delay_ms(100);
+				}
+				break;
 			//idle
 			case 1: ;
 				//Wait for button A
@@ -158,16 +181,25 @@ int main(void)
 				struct fat_dir_entry_struct file_entry;
 				if(!fat_create_file(dd, file1, &file_entry)){
 					//TODO: LED error pattern 2, create error
+					error = 1;
+					state = 0;
+					break;
 				}
 				struct fat_file_struct* fd = open_file_in_dir(fs, dd, file1);
 				if(!fd)
 				{
 					//TODO: LED error pattern 2, open error
+					error = 1;
+					state = 0;
+					break;
 				}
 				int32_t offset = 0;
 				if(!fat_seek_file(fd, &offset, FAT_SEEK_END))
 				{
 					//TODO: LED error pattern 2, fat seek error
+					error = 1;
+					state = 0;
+					break;
 				}
 				escape = 0;
 				while(escape == 0)
