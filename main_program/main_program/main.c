@@ -32,7 +32,7 @@ volatile uint8_t error;
 static uint8_t find_file_in_dir(struct fat_fs_struct* fs, struct fat_dir_struct* dd, const char* name, struct fat_dir_entry_struct* dir_entry);
 static struct fat_file_struct* open_file_in_dir(struct fat_fs_struct* fs, struct fat_dir_struct* dd, const char* name);
 static inline void init_ADC(void);
-static uint8_t FSR_read();
+static uint8_t FSR_read(int i);
 
 ISR(PCINT1_vect)
 {
@@ -204,15 +204,17 @@ int main(void)
 					break;
 				}
 				escape = 0;
+				uint16_t index = 0;
+				uint16_t Vbattery = 9;
 				while(escape == 0)
-				{
+				{   
 					//set prescaler for Timer 1 to clk/1024
 					TCCR1B |= (1 << CS12) | (1 << CS10);
 					//start timer count
 					char itmp[10];
 					char space = ' ';
 					char nl = '\n';
-					uint8_t fsr[2];
+					uint8_t fsr[3];
 					mpu6050_getConvData(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
 					dtostrf(axg, 3, 5, itmp); 
 					fat_write_file(fd, (uint8_t*) itmp, 10);
@@ -233,9 +235,9 @@ int main(void)
 					fat_write_file(fd, (uint8_t*) itmp, 10);
 					fat_write_file(fd, (uint8_t*) &space, 1);
 
-					//read from FSR
-					fsr[0] = FSR_read(); 
-					fsr[1] = FSR_read();
+					//read from FSR and write the data 
+					fsr[0] = FSR_read(0); 
+					fsr[1] = FSR_read(0);
 					itoa(fsr[0],itmp,10);
 					fat_write_file(fd,(uint8_t*) itmp, 1);
 					fat_write_file(fd, (uint8_t*) &space, 1);
@@ -245,6 +247,23 @@ int main(void)
 					fat_write_file(fd, (uint8_t*) &space, 1);
 
 					fat_write_file(fd, (uint8_t*) &nl, 1);
+					
+					//approximately check battery volrage every 16s
+					if(index % 500 == 0)
+					{   //TODO: DIGITAL PIN TO TURN ON NMOS
+						fsr[3] = FSR_read(1);
+						//let's do math here
+						//fsr3 is a 8-bit value ranging from 0-255, correction factor k = (0.3943/0.3532)
+						//in terms of voltage, Vsense = Vbattery * (6.05/(6.05+11.96)) * k = (fsr[3]/255) * 3.3
+						Vbattery = (fsr[3]/255) * 3.3 / ((6.05/(6.05+11.96)) * (0.3943/0.3532));
+						if(Vbattery < 5)
+						{
+						escape = 1;
+						state = 0;	
+						error = 1; //*this is baaaaaaaaaaaaaad
+						}
+					}
+
 					while( (TIFR0 & (1 << TOV0) ) > 0) //wait for timer overflow event
 					{
 					}
@@ -254,7 +273,7 @@ int main(void)
 				fat_close_file(fd);
 				state = 1;
 				
-				//TODO: after the interrupt, some of the following must be called:
+				//TODO(???): after the interrupt, some of the following must be called:
 					//sd_raw_sync();
 					//fat_close_file(fd);
 					//fat_close_dir(dd);
@@ -331,14 +350,25 @@ static inline void init_ADC()
 }
 
 //reading values from analog pins
-uint8_t FSR_read()
+uint8_t FSR_read(int i)
 {	
+	//read pin25 value as voltage input
+	if(i == 1)
+	{
+		ADMUX &= ~(1 << PC0);//clear PC0 bit
+		ADMUX |= (1 << PC1);
+	}
+	else
+	{
+		ADMUX &= ~(1 << PC1);//clear PC1 bit
+		ADMUX ^= (1 << PC0);	
+	}
 	// start ADC conversion
 	ADCSRA |= (1 << ADSC);		
 	// wait here until the chip clears the ADSC bit for us, which means the ADC is complete			
 	while(bit_is_set(ADCSRA, ADSC)) {}	
 	// toggle ADMUX PC0 bit to switch between pin23 and pin24				
-	ADMUX ^= (1 << PC0);					
+				
 	return ADCH;
 }
 //*^_^*
