@@ -250,7 +250,10 @@ int main(void)
 					
 					//approximately check battery volrage every 16s
 					if(index % 500 == 0)
-					{   //TODO: DIGITAL PIN TO TURN ON NMOS
+					{   //DIGITAL PIN TO TURN ON NMOS
+						//enables PD4 as digital output and set PD4 HIGH
+						DDRD |= (1 << PD4);
+						PORTD |= (1 << PD4);
 						fsr[3] = FSR_read(1);
 						//let's do math here
 						//fsr3 is a 8-bit value ranging from 0-255, correction factor k = (0.3943/0.3532)
@@ -262,6 +265,7 @@ int main(void)
 						state = 0;	
 						error = 1; //*this is baaaaaaaaaaaaaad
 						}
+						DDRD &= ~(1 << PD4);
 					}
 
 					while( (TIFR0 & (1 << TOV0) ) > 0) //wait for timer overflow event
@@ -356,12 +360,12 @@ uint8_t FSR_read(int i)
 	if(i == 1)
 	{
 		ADMUX &= ~(1 << PC0);//clear PC0 bit
-		ADMUX |= (1 << PC1);
+		ADMUX |= (1 << PC1); //enable pin25
 	}
 	else
 	{
-		ADMUX &= ~(1 << PC1);//clear PC1 bit
-		ADMUX ^= (1 << PC0);	
+		ADMUX &= ~(1 << PC1);//clear PC1 bit, disable pin25
+		ADMUX ^= (1 << PC0); //toggle between pin23 and 24	
 	}
 	// start ADC conversion
 	ADCSRA |= (1 << ADSC);		
