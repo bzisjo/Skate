@@ -1,0 +1,929 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"adj6",
+				"adj6_out"
+			],
+			[
+				"cc",
+				"cc_out"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/C/Users/Jon/Desktop/main.c",
+			"settings":
+			{
+				"buffer_size": 22684,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mpu6050/mpu6050/uart_teststring/main.c",
+			"settings":
+			{
+				"buffer_size": 1292,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Drive/ECE 445/AVR/AVR-Programming-master/Chapter06_Digital-Input/toggleButton_debounced/toggleButton_debounced.c",
+			"settings":
+			{
+				"buffer_size": 1375,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/Drive/ECE 445/AVR/AVR-Programming-master/AVR-Programming-Library/pinDefines.h",
+			"settings":
+			{
+				"buffer_size": 3019,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/Drive/ECE 445/AVR/AVR-Programming-master/AVR-Programming-Library/portpins.h",
+			"settings":
+			{
+				"buffer_size": 13901,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/avr/include/avr/iom328p.h",
+			"settings":
+			{
+				"buffer_size": 19528,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/outarray4.sv",
+			"settings":
+			{
+				"buffer_size": 739,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "uSD/uSD/main.c",
+			"settings":
+			{
+				"buffer_size": 8386,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "mpu6050/mpu6050/mpu6050/main.c",
+			"settings":
+			{
+				"buffer_size": 3412,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "main_program/main_program/main.c",
+			"settings":
+			{
+				"buffer_size": 10704,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "main_program/main_program/sd_raw.c",
+			"settings":
+			{
+				"buffer_size": 27531,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "main_program/main_program/fat.h",
+			"settings":
+			{
+				"buffer_size": 4124,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "main_program/main_program/fat.c",
+			"settings":
+			{
+				"buffer_size": 77146,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "00000000:  4465 7669 6365 2069 7320 6361 7061 626c 6520 6f66 2077 7269  :Device is capable of wri\n00000018:  7469 6e67 2074 6f20 7468 6520 7553 4420 636f 6e6e 6563 7465  :ting to the uSD connecte\n00000030:  6420 746f 2074 6865 2053 5049 2070 6f72 7473 206f 6e20 7468  :d to the SPI ports on th\n00000048:  6520 4156 522e 00                                            :e AVR..",
+			"settings":
+			{
+				"buffer_size": 374,
+				"line_ending": "Windows",
+				"name": "uSD_Verification.txt.hex",
+				"read_only": true,
+				"scratch": true
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 219.0,
+		"last_filter": "hex",
+		"selected_items":
+		[
+			[
+				"hex",
+				"HexViewer: Toggle Hex View"
+			],
+			[
+				"syntax:c",
+				"Set Syntax: C"
+			],
+			[
+				"synt:c",
+				"Set Syntax: C"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"packagesy",
+				"PackageSync: Sync Online - Define Online Sync Folder"
+			]
+		],
+		"width": 560.0
+	},
+	"console":
+	{
+		"height": 506.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/E/masterdata.txt",
+		"/C/Users/Jon/Desktop/program.cpp",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/memory.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ANTH 103/Humanitarian Aftershocks/Sample.txt",
+		"/D/Projects/Skate/main_program/main_program/main.c",
+		"/D/Drive/ECE 445/AVR/AVR-Programming-master/Chapter08_Hardware-Interrupts/helloPinChangeInterrupt/helloPinChangeInterrupt.c",
+		"/D/Drive/ECE 445/AVR/AVR-Programming-master/Chapter04_Bit-Twiddling/cylonEyes_8LFSR/8LFSR.c",
+		"/D/Drive/ECE 445/AVR/AVR-Programming-master/Chapter04_Bit-Twiddling/cylonEyes_naive/cylonEyes_naive.c",
+		"/D/Drive/ECE 445/AVR/AVR-Programming-master/Chapter04_Bit-Twiddling/showingOffBits/showingOffBits.c",
+		"/D/Downloads/lineage-14.1-20170418-nightly-gemini-signed/META-INF/com/google/android/updater-script",
+		"/D/Projects/Skate/mpu6050/mpu6050/mpu6050/main.c",
+		"/E/uSD_Verification.txt",
+		"/E/test - Copy.txt",
+		"/E/file1.txt",
+		"/C/Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/avr/include/avr/iom328p.h",
+		"/C/Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/avr/include/avr/io.h",
+		"/E/Downloads/pdfs/chaturbate/chat/chaturbate.txt",
+		"/D/Projects/Skate/uSD/uSD/byteordering.c",
+		"/D/Projects/Skate/uSD/uSD/byteordering.h",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/Homework7/train-images.idx3-ubyte",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.528/main.c",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.953/UART_routines.c",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.621/FAT32.c",
+		"/E/testwrite.txt",
+		"/D/Projects/Skate/temp/capture.txt",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.877/sddemo.c",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.886/main.c",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.578/mmc.c",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.002/ds1307.h",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.460/logger.h",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.076/arduino sd card example.cpp",
+		"/C/Users/Jon/AppData/Local/Temp/scp37987/home/jywang6/ece411/lc420/mp3/control_rom.sv",
+		"/C/Users/Jon/AppData/Local/Temp/scp38838/home/jywang6/ece411/lc420/mp3/mem_access.sv",
+		"/C/Users/Jon/AppData/Local/Temp/scp53455/home/jywang6/ece411/lc420/mp3/execute.sv",
+		"/C/Users/Jon/AppData/Local/Temp/scp17316/home/jywang6/ece411/lc420/mp3/decode.sv",
+		"/C/Users/Jon/AppData/Local/Temp/scp38541/home/jywang6/ece411/lc420/mp3/memory.sv",
+		"/C/Users/Jon/AppData/Local/Temp/scp17551/home/jywang6/ece411/lc420/mp3/fetch.sv",
+		"/C/Users/Jon/AppData/Local/Temp/scp02186/home/jywang6/ece411/lc420/mp3/cpu.sv",
+		"/D/Projects/Skate/uSD/uSD/fat.c",
+		"/C/Users/Jon/Desktop/main.c",
+		"/D/Projects/Skate/uSD/uSD/uart.h",
+		"/D/Projects/Skate/uSD/uSD/uart.c",
+		"/D/Projects/Skate/uSD/uSD/main.c.new",
+		"/E/test.txt",
+		"/D/Projects/Skate/mpu6050/mpu6050/uart_teststring/uart/uart.c",
+		"/D/Projects/Skate/mpu6050/mpu6050/uart_teststring/uart/uart.h",
+		"/C/Users/Jon/Desktop/gayprogram.cpp",
+		"/D/Drive/ECE 445/AVR/AVR-Programming-master/Chapter05_Serial-IO/serialLoopback/Makefile",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/CS498-Applied-Machine-Learning-master/HW5/HW5_P2.R",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/CS498MachineLearning-master/HW5/HW5.R",
+		"/C/Users/Jon/Desktop/Homework6/group.txt",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/Homework2/CS498AML HW2.ipynb",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/Homework3/Homework3.m",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/ifetch.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/pipeline.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/id.sv",
+		"/C/Users/Jon/AppData/Local/Temp/scp50428/home/jywang6/cs225/mp3/list.cpp",
+		"/C/Users/Jon/AppData/Local/Temp/scp02285/home/jywang6/cs225/mp3/list_given.h",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 483/lookupfunc_matlab/Tech0p18.mat",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/CS498-Applied-Machine-Learning-master/HW5/HW5_P1.R",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/Homework6/docword.nips.txt",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/CS498-Applied-Machine-Learning-master/HW5/nips_voc.txt",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/Homework6/vocab.nips.txt",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.728/docword.nips.txt",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/CS498-Applied-Machine-Learning-master/HW5/group.txt",
+		"/C/Users/Jon/AppData/Local/Temp/scp27972/home/jywang6/ece411/lc420/mp3/decode.sv",
+		"/C/Users/Jon/AppData/Local/Temp/scp28191/home/jywang6/ece411/lc420/mp3/mem_access.sv",
+		"/C/Users/Jon/AppData/Local/Temp/scp34963/home/jywang6/ece411/lc420/Documentation/MP3-Paper-Design.pdf",
+		"/C/Users/Jon/AppData/Local/Temp/scp28373/home/jywang6/ece411/lc420/mp3/memory.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/mem.sv",
+		"/C/Users/Jon/AppData/Local/Temp/scp27970/home/jywang6/ece411/lc420/mp3/execute.sv",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/CS498MachineLearning-master/CS498MachineLearning-master/README.md",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/CS498MachineLearning-master/CS498MachineLearning-master/HW7/README",
+		"/D/Projects/Skate/mpu6050_gironi/src/uart/uart.c",
+		"/D/Projects/Skate/uSD/uSD/main.c",
+		"/D/Projects/Skate/sd-reader_source_20120612/Makefile",
+		"/D/Projects/Skate/mpu6050_gironi/src/i2chw/twimastertimeout.c",
+		"/F/test.txt",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 445/Individual Progress Report/biblio.bib",
+		"/D/Downloads/My First Project (1).bib",
+		"/D/Downloads/My First Project (2).bib",
+		"/D/Projects/Skate/USART_TEST/USART_TEST/main.c",
+		"/D/Projects/Skate/USART_TEST/USART_TEST/USART.c",
+		"/D/Projects/Skate/USART_TEST/USART_TEST/USART.h",
+		"/D/Downloads/My First Project.bib",
+		"/D/Projects/Skate/sd-reader_source_20120612/sd_raw_config.h",
+		"/D/Dropbox/UIUC/Fall 2016/ECE 420/Eigenfaces/Eigenfaces Report/Makefile",
+		"/D/Projects/avr-ultimate-driver-pack/README.md",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.291/main.c",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.912/main.c",
+		"/D/Projects/Skate/mpu6050_gironi/src/main.c",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/Homework5/netid.txt",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/arbiter.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/mp3.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/cache_datapath.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/lc3b_types.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/cache.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/d_cache.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/cache_control.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/cache_control2.sv",
+		"/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/victim.sv",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/CS498MachineLearning-master/CS498MachineLearning-master/HW6/HW6.R",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/Homework5/cancer_r.txt",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/Homework5/cancer.txt",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/Homework5/default_features_1059_tracks.txt",
+		"/D/Dropbox/UIUC/Spring 2017/CS 498-AML/CS498MachineLearning-master/CS498MachineLearning-master/HW6/group",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.770/test_uart.c",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.848/twimaster.c",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.235/test_i2cmaster.c",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.615/i2cmaster.h",
+		"/D/Projects/Skate/mpu6050_gironi/src/i2chw/i2cmaster.h",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.078/main.c",
+		"/C/Program Files (x86)/Arduino/libraries/I2Cdev/I2Cdev.h",
+		"/C/Program Files (x86)/Arduino/libraries/I2Cdev/I2Cdev.cpp",
+		"/C/Program Files (x86)/Arduino/hardware/tools/avr/etc/avrdude.conf",
+		"/C/Program Files (x86)/Arduino/libraries/I2Cdev/keywords.txt",
+		"/D/Projects/Skate/README.md",
+		"/D/Drive/ECE 445/AVR/AVR-Programming-master/AVR-Programming-Library/USART.h",
+		"/D/Projects/Skate/USART_elliot/Makefile",
+		"/D/Drive/ECE 445/AVR/AVR-Programming-master/Chapter02_Programming-AVRs/blinkLED/Makefile",
+		"/D/Projects/Skate/GccApplication1/GccApplication1/main.c",
+		"/D/Drive/ECE 445/AVR/AVR-Programming-master/Chapter17_I2C/loggingThermometer/i2c.c",
+		"/C/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/Wire.h",
+		"/C/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/Wire.cpp",
+		"/C/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility/twi.c",
+		"/C/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility/twi.h",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.401/SparkFunLSM6DS3.h",
+		"/C/Users/Jon/AppData/Local/Temp/Rar$DIa0.361/SparkFunLSM6DS3.cpp"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"<open folders>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"pc3",
+			"pot",
+			"pind",
+			"pcint0_vect",
+			"pd2",
+			"assert",
+			"buffer",
+			"sd_raw_write_buffering",
+			"sd_raw_write",
+			"sync",
+			"fat_create_file",
+			"pd2",
+			"portd2",
+			"pd2",
+			"sd_raw_sync",
+			"alu_out",
+			"mem_addr_t",
+			"alumux",
+			"fat_seek_set",
+			"\\r",
+			"point",
+			"log",
+			"tesing",
+			"indirect_reg_out",
+			"external",
+			"coef",
+			"speed",
+			"9600",
+			"baud",
+			"ubrr_",
+			"baud",
+			"led",
+			"LED",
+			"led",
+			"alumux_sel",
+			"zextstb",
+			"storemux_sel",
+			"read",
+			"block_constr",
+			"data_way_mux_sel",
+			"superbl",
+			"datainmux",
+			"datawaymux_out",
+			"data0_out",
+			"datablock_out",
+			"pmem_read",
+			"index",
+			"lc3b_index",
+			"mem_rdata",
+			"loss",
+			"clock",
+			"freq",
+			"speed",
+			"regfilemux_sel",
+			"branch",
+			"mem_ad",
+			"mem_rdata",
+			"alumux_sel",
+			"adj6_out",
+			"cc",
+			"bzisjo"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"jywang6"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 6,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/Users/Jon/Desktop/main.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 22684,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								22473,
+								22475
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 11892.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "mpu6050/mpu6050/uart_teststring/main.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1292,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								839,
+								841
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/D/Drive/ECE 445/AVR/AVR-Programming-master/Chapter06_Digital-Input/toggleButton_debounced/toggleButton_debounced.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1375,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1102,
+								1102
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 45.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/D/Drive/ECE 445/AVR/AVR-Programming-master/AVR-Programming-Library/pinDefines.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3019,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1810,
+								1813
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 718.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/D/Drive/ECE 445/AVR/AVR-Programming-master/AVR-Programming-Library/portpins.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13901,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5161,
+								5161
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2928.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/C/Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/avr/include/avr/iom328p.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 19528,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3810,
+								3810
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2478.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/D/Dropbox/UIUC/Spring 2017/ECE 411/lc3b_processor-master/lc3b_processor-master/outarray4.sv",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 739,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/SystemVerilog/SystemVerilog.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "uSD/uSD/main.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8386,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8175,
+								8177
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "mpu6050/mpu6050/mpu6050/main.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3412,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								789,
+								789
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1795.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "main_program/main_program/main.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10704,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3858.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "main_program/main_program/sd_raw.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 27531,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7044,
+								7047
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 2872.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "main_program/main_program/fat.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4124,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3049,
+								3064
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 1646.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "main_program/main_program/fat.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 77146,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								61972,
+								61987
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 36731.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 374,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11,
+								11
+							]
+						],
+						"settings":
+						{
+							"hex_no_auto_open": true,
+							"hex_viewer_actual_bytes": 24,
+							"hex_viewer_bits": 16,
+							"hex_viewer_bytes": 24,
+							"hex_viewer_fake": false,
+							"hex_viewer_file_name": "E:\\uSD_Verification.txt",
+							"hex_viewer_starting_address": 0,
+							"hex_viewer_temp_file": "c:\\users\\jon\\appdata\\local\\temp\\tmp3yk3z2.hex",
+							"syntax": "Packages/HexViewer/Hex.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.hex_viewer_inspector":
+	{
+		"height": 118.0
+	},
+	"pinned_build_system": "",
+	"project": "Skate main program.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
