@@ -293,13 +293,309 @@ ylabel('deg/sec')
 xlabel('samples')
 hold off
 
+%% Offsets for marked IMU
+
+offsetDataMark = importdata('calibrationRetestMarked.txt');
+
+accelX_offsetsMark = offsetDataMark(:,1);
+accelY_offsetsMark = offsetDataMark(:,2);
+accelZ_offsetsMark = offsetDataMark(:,3);
+gyroX_offsetsMark = offsetDataMark(:,4);
+gyroY_offsetsMark = offsetDataMark(:,5);
+gyroZ_offsetsMark = offsetDataMark(:,6);
+
+accelX_mean = mean(accelX_offsetsMark)
+accelX_std = std(accelX_offsetsMark);
+accelX_med = median(accelX_offsetsMark)
+
+accelY_mean = mean(accelY_offsetsMark)
+accelY_std = std(accelY_offsetsMark);
+accelY_med = median(accelY_offsetsMark)
+
+accelZ_mean = mean(accelZ_offsetsMark)
+accelZ_std = std(accelZ_offsetsMark);
+accelZ_med = median(accelZ_offsetsMark)
+
+gyroX_mean = mean(gyroX_offsetsMark)
+gyroX_median = median(gyroX_offsetsMark)
+gyroX_std = std(gyroX_offsetsMark);
+
+gyroY_mean = mean(gyroY_offsetsMark)
+gyroY_median = median(gyroY_offsetsMark)
+gyroY_std = std(gyroY_offsetsMark);
+
+gyroZ_mean = mean(gyroZ_offsetsMark)
+gyroZ_median = median(gyroZ_offsetsMark)
+gyroZ_std = std(gyroZ_offsetsMark);
+
+%% Graphs for marked accelerometer and gyroscope still offsets
+figure(14)
+subplot(2,1,1)
+plot(accelX_offsetsMark)
+hold on
+meanLine = refline(0, accelX_mean);
+meanLine.Color = 'r';
+accelX_low_refline = refline(0, accelX_mean - accelX_std);
+set(accelX_low_refline, 'LineStyle', ':');
+accelX_high_refline = refline(0, accelX_mean + accelX_std);
+set(accelX_high_refline, 'LineStyle', ':');
+title('X Accelerometer Still Data (run with 10ms delay)')
+ylabel('g')
+xlabel('samples')
+hold off
+
+subplot(2,1,2)
+plot(gyroX_offsetsMark)
+hold on
+meanLine = refline(0, gyroX_mean);
+meanLine.Color = 'r';
+gyroX_low_refline = refline(0, gyroX_mean - gyroX_std);
+set(gyroX_low_refline, 'LineStyle', ':');
+gyroX_high_refline = refline(0, gyroX_mean + gyroX_std);
+set(gyroX_high_refline, 'LineStyle', ':');
+title('X Gyroscope Still Data (run with 10ms delay)')
+ylabel('deg/sec')
+xlabel('samples')
+hold off
+
+figure(15)
+subplot(2,1,1)
+plot(accelY_offsetsMark)
+hold on
+meanLine = refline(0, accelY_mean);
+meanLine.Color = 'r';
+accelY_low_refline = refline(0, accelY_mean - accelY_std);
+set(accelY_low_refline, 'LineStyle', ':');
+accelY_high_refline = refline(0, accelY_mean + accelY_std);
+set(accelY_high_refline, 'LineStyle', ':');
+title('Y Accelerometer Still Data (run with 10ms delay)')
+ylabel('g')
+xlabel('samples')
+hold off
+
+subplot(2,1,2)
+plot(gyroY_offsetsMark)
+hold on
+meanLine = refline(0, gyroY_mean)
+meanLine.Color = 'r';
+gyroY_low_refline = refline(0, gyroY_mean - gyroY_std);
+set(gyroY_low_refline, 'LineStyle', ':');
+gyroY_high_refline = refline(0, gyroY_mean + gyroY_std);
+set(gyroY_high_refline, 'LineStyle', ':');
+title('Y Gyroscope Still Data (run with 10ms delay)')
+ylabel('deg/sec')
+xlabel('samples')
+hold off
+
+figure(16)
+subplot(2,1,1)
+plot(accelZ_offsetsMark)
+hold on
+meanLine = refline(0, accelZ_mean);
+meanLine.Color = 'r';
+accelZ_low_refline = refline(0, accelZ_mean - accelZ_std);
+set(accelZ_low_refline, 'LineStyle', ':');
+accelZ_high_refline = refline(0, accelZ_mean + accelZ_std);
+set(accelZ_high_refline, 'LineStyle', ':');
+title('Z Accelerometer Still Data (run with 10ms delay)')
+ylabel('g')
+xlabel('samples')
+hold off
+
+subplot(2,1,2)
+plot(gyroZ_offsetsMark)
+hold on
+meanLine = refline(0, gyroZ_mean);
+meanLine.Color = 'r';
+gyroZ_low_refline = refline(0, gyroZ_mean - gyroZ_std);
+set(gyroZ_low_refline, 'LineStyle', ':');
+gyroZ_high_refline = refline(0, gyroZ_mean + gyroZ_std);
+set(gyroZ_high_refline, 'LineStyle', ':');
+title('Z Gyroscope Still Data (run with 10ms delay)')
+ylabel('deg/sec')
+xlabel('samples')
+hold off
+
 %% Plotting test of mahony filter
 
 mahonyStill = importdata('re_mahonyFilterStill.txt');
 figure(13)
 plot(mahonyStill)
 
+mahonyX = importdata('mahony_Xrot.txt');
+mahonyY = importdata('mahony_Yrot.txt');
+mahonyZ = importdata('mahony_Zrot.txt');
+
+figure(17)
+plot(mahonyX)
+title('90 degrees X Rotation Test')
+legend('show')
+legend('GyroX', 'GyroY', 'GyroZ');
+
+figure(18)
+plot(mahonyY)
+title('90 degrees Y Rotation Test')
+legend('show')
+legend('GyroX', 'GyroY', 'GyroZ');
+
+figure(19)
+plot(mahonyZ)
+title('90 degrees Z Rotation Test')
+legend('show')
+legend('GyroX', 'GyroY', 'GyroZ');
+
+%% Loading retested raw data
+accelX = importdata('re_accelX.txt');
+accelY = importdata('re_accelY.txt');
+accelZ = importdata('re_accelZ.txt');
+gyroX = importdata('re_gyroX.txt');
+gyroY = importdata('re_gyroY.txt');
+gyroZ = importdata('re_gyroZ.txt');
+
+%including offsets (median)
+accelX_offset = 0.0222; %.0222
+accelY_offset = 0.0371;
+accelZ_offset = 0.9134;
+gyroX_offset = 0.0084;
+gyroY_offset = 1.2963;
+gyroZ_offset = 1.2545;
+
+offsets = [accelX_offset accelY_offset accelZ_offset gyroX_offset gyroY_offset gyroZ_offset];
+
+for n = 1:6
+    accelX(:,n) = accelX(:,n) - offsets(n);
+    accelY(:,n) = accelY(:,n) - offsets(n);
+    accelZ(:,n) = accelZ(:,n) - offsets(n);
+    gyroX(:,n) = gyroX(:,n) - offsets(n);
+    gyroY(:,n) = gyroY(:,n) - offsets(n);
+    gyroZ(:,n) = gyroZ(:,n) - offsets(n);
+end
+
 %% Plotting Test raw data
+%% Translational Data test (10ms delay)
+figure(20)
+subplot(2,1,1)
+plot(accelX(:,1:3));
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+title('Translational Data of X axis Translational Test')
+[m, ~] = size(accelX(:,1));
+axis([0 m -2 2]);
+ylabel('gravity (g)')
+
+subplot(2,1,2)
+plot(accelX(:,4:6));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Rotational Data of X axis Translational Test')
+[m, ~] = size(accelX(:,1));
+axis([0 m -300 300]);
+ylabel('degrees/sec')
+
+figure(21)
+subplot(2,1,1)
+plot(accelY(:,1:3));
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+title('Translational Data of Y axis Translational Test')
+[m, ~] = size(accelY(:,1));
+axis([0 m -2 2])
+ylabel('gravity (g)')
+
+subplot(2,1,2)
+plot(accelY(:,4:6));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Rotational Data of Y axis Translational Test')
+[m, ~] = size(accelY(:,1));
+axis([0 m -300 300]);
+ylabel('degrees/sec')
+
+figure(22)
+subplot(2,1,1)
+plot(accelZ(:,1:3));
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+title('Translational Data of Z axis Translational Test')
+[m, ~] = size(accelZ(:,1));
+axis([0 m -2 2])
+ylabel('gravity (g)')
+
+subplot(2,1,2)
+plot(accelZ(:,4:6));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Rotational Data of Z axis Translational Test')
+[m, ~] = size(accelZ(:,1));
+axis([0 m -300 300]);
+ylabel('degrees/sec')
+
+%% Rotational test (10 ms)
+figure(23)
+subplot(2,1,1)
+plot(gyroX(:,1:3));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Translational Data of X axis Rotational Test')
+[m, ~] = size(gyroX(:,1));
+axis([0 m -2 2]);
+ylabel('gravity (g)')
+
+subplot(2,1,2)
+plot(gyroX(:,4:6));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Rotational Data of X axis Rotational Test')
+[m, n] = size(gyroX(:,1));
+axis([0 m -300 300]);
+ylabel('degrees/sec')
+
+figure(24)
+subplot(2,1,1)
+plot(gyroY(:,1:3));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Translational Data of Y axis Rotational Test')
+[m, ~] = size(gyroY(:,1));
+axis([0 m -2 2])
+ylabel('gravity (g)')
+
+subplot(2,1,2)
+plot(gyroY(:,4:6));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Rotational Data of Y axis Rotational Test')
+[m, ~] = size(gyroY(:,1));
+axis([0 m -300 300]);
+ylabel('degrees/sec')
+
+figure(25)
+subplot(2,1,1)
+plot(gyroZ(:,1:3));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Translational Data of Z axis Rotational Test')
+[m, ~] = size(gyroZ(:,1));
+axis([0 m -2 2])
+ylabel('gravity (g)')
+
+subplot(2,1,2)
+plot(gyroZ(:,4:6));
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+title('Rotational Data of Z axis Rotational Test')
+[m, ~] = size(gyroZ(:,1));
+axis([0 m -300 300]);
+ylabel('degrees/sec')
+
+%% Integrating with Matlab function
+%% Using matlab integrate function to integrate target test axis
+velocityX = cumtrapz(accelX(:,1));
+figure()
+plot(velocityX)
+displacementX = cumtrapz(velocityX);
+figure()
+plot(displacementX)
 
 
 
