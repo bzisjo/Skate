@@ -23,6 +23,7 @@
 
 
 #define UART_BAUD_RATE 9600
+#define IMU 0
 
 volatile uint8_t escape;
 volatile uint8_t state;
@@ -41,6 +42,10 @@ ISR(PCINT1_vect)
 	{
 		switch(state)
 		{
+			case 0: ;
+				if(error)
+					error = ~error;
+				break;
 			case 1: ;
 				state = 2;
 				break;
@@ -62,7 +67,8 @@ int main(void)
 	//Using 16-bit timer 1, each count up takes 1/16M*1024 = 64us
 	//To achieve 31.2Hz, use count top = 499
 	//Period = 64u * 500 = 0.032s
- 	OCR1A = 0x01F3;
+ 	//OCR1A = 0x01F3;
+	OCR1A = 0x0003;
 
     // Mode 4, CTC top on OCR1A
     TCCR1B |= (1 << WGM12);
@@ -96,6 +102,7 @@ int main(void)
 	//int16_t gx = 0;
 	//int16_t gy = 0;
 	//int16_t gz = 0;
+	#if(IMU)
 	double axg = 0;
 	double ayg = 0;
 	double azg = 0;
@@ -103,12 +110,13 @@ int main(void)
 	double gyds = 0;
 	double gzds = 0;
 	mpu6050_init();
-	_delay_ms(50);
+	_delay_ms(50);*/
+	#endif
 	
 
 	//Init state
 	state = 1;
-
+	//uart_putc('a');
 	//Init SD
 	if(!sd_raw_init())
 	{
@@ -157,8 +165,8 @@ int main(void)
 	
 
 
-	PORTC |= (1 << PORTD6);		//power LED on
-
+	PORTD |= (1 << PORTD6);		//power LED on
+	//uart_putc('b');
     while (1) 
     {
 		switch(state)
@@ -167,15 +175,16 @@ int main(void)
 			case 0: ;
 				while(error)
 				{
-					PORTC |= (1 << PORTD7);
+					PORTD |= (1 << PORTD7);
 					_delay_ms(100);
-					PORTC &= ~(1 << PORTD7);
+					PORTD &= ~(1 << PORTD7);
 					_delay_ms(100);
 				}
 				break;
 			//idle
 			case 1: ;
 				//Wait for button A
+				state = 2;//TODO: THIS IS A MARKER
 				break;
 			case 2: ;
 				//Data collection
@@ -206,15 +215,18 @@ int main(void)
 				escape = 0;
 				uint16_t index = 0;
 				uint16_t Vbattery = 9;
+				char itmp[10];
+				char space = ' ';
+				char nl = '\n';
+				uint8_t fsr[3];
 				while(escape == 0)
 				{   
 					//set prescaler for Timer 1 to clk/1024
 					TCCR1B |= (1 << CS12) | (1 << CS10);
 					//start timer count
-					char itmp[10];
-					char space = ' ';
-					char nl = '\n';
-					uint8_t fsr[3];
+
+
+					#if(IMU)
 					mpu6050_getConvData(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
 					dtostrf(axg, 3, 5, itmp); 
 					fat_write_file(fd, (uint8_t*) itmp, 10);
@@ -228,23 +240,33 @@ int main(void)
 					dtostrf(gxds, 3, 5, itmp);
 					fat_write_file(fd, (uint8_t*) itmp, 10);
 					fat_write_file(fd, (uint8_t*) &space, 1);
+
 					//dtostrf(gyds, 3, 5, itmp);
 					//fat_write_file(fd, (uint8_t*) itmp, 10);
 					//fat_write_file(fd, (uint8_t*) &space, 1);
 					dtostrf(gzds, 3, 5, itmp);
 					fat_write_file(fd, (uint8_t*) itmp, 10);
 					fat_write_file(fd, (uint8_t*) &space, 1);
+					#endif
 
 					//read from FSR and write the data 
 					fsr[0] = FSR_read(0); 
 					fsr[1] = FSR_read(0);
+
 					itoa(fsr[0],itmp,10);
+					itmp[1] = space;
+					itoa(fsr[1],itmp+2,10);
+					fat_write_file(fd, (uint8_t*) itmp, 3);
+
+					/*itoa(fsr[0],itmp,10);
 					fat_write_file(fd,(uint8_t*) itmp, 1);
 					fat_write_file(fd, (uint8_t*) &space, 1);
+					//uart_putc(*itmp);
 
 					itoa(fsr[1],itmp,10);
 					fat_write_file(fd,(uint8_t*) itmp, 1);
-					fat_write_file(fd, (uint8_t*) &space, 1);
+					fat_write_file(fd, (uint8_t*) &space, 1);*/
+					//uart_putc(*itmp);
 
 					fat_write_file(fd, (uint8_t*) &nl, 1);
 					
@@ -267,7 +289,8 @@ int main(void)
 						}
 						DDRD &= ~(1 << PD4);
 					}
-
+					itoa((TIFR0 & (1 << TOV0) ) > 0,itmp,10);
+					//uart_putc(*itmp);
 					while( (TIFR0 & (1 << TOV0) ) > 0) //wait for timer overflow event
 					{
 					}
@@ -359,13 +382,13 @@ uint8_t FSR_read(int i)
 	//read pin25 value as voltage input
 	if(i == 1)
 	{
-		ADMUX &= ~(1 << PC0);//clear PC0 bit
-		ADMUX |= (1 << PC1); //enable pin25
+		ADMUX &= ~(1 << PORTC0);//clear PC0 bit
+		ADMUX |= (1 << PORTC1); //enable pin25
 	}
 	else
 	{
-		ADMUX &= ~(1 << PC1);//clear PC1 bit, disable pin25
-		ADMUX ^= (1 << PC0); //toggle between pin23 and 24	
+		ADMUX &= ~(1 << PORTC1);//clear PC1 bit, disable pin25
+		ADMUX ^= (1 << PORTC0); //toggle between pin23 and 24	
 	}
 	// start ADC conversion
 	ADCSRA |= (1 << ADSC);		
