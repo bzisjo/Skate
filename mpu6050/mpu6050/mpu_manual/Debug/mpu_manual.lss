@@ -1305,7 +1305,7 @@ void mpu6050_init() {
      8a6:	0e 94 ad 03 	call	0x75a	; 0x75a <mpu6050_writeBits>
 	//set accel range
 	mpu6050_writeBits(MPU6050_RA_ACCEL_CONFIG, MPU6050_ACONFIG_AFS_SEL_BIT, MPU6050_ACONFIG_AFS_SEL_LENGTH, MPU6050_ACCEL_FS);
-     8aa:	20 e0       	ldi	r18, 0x00	; 0
+     8aa:	21 e0       	ldi	r18, 0x01	; 1
      8ac:	42 e0       	ldi	r20, 0x02	; 2
      8ae:	64 e0       	ldi	r22, 0x04	; 4
      8b0:	8c e1       	ldi	r24, 0x1C	; 28
@@ -1495,8 +1495,8 @@ void mpu6050_getConvData(double* axg, double* ayg, double* azg, double* gxds, do
      9dc:	0e 94 e6 06 	call	0xdcc	; 0xdcc <__floatsisf>
      9e0:	20 e0       	ldi	r18, 0x00	; 0
      9e2:	30 e0       	ldi	r19, 0x00	; 0
-     9e4:	40 e8       	ldi	r20, 0x80	; 128
-     9e6:	58 e3       	ldi	r21, 0x38	; 56
+     9e4:	40 e0       	ldi	r20, 0x00	; 0
+     9e6:	59 e3       	ldi	r21, 0x39	; 57
      9e8:	0e 94 72 07 	call	0xee4	; 0xee4 <__mulsf3>
      9ec:	f3 01       	movw	r30, r6
      9ee:	60 83       	st	Z, r22
@@ -1513,8 +1513,8 @@ void mpu6050_getConvData(double* axg, double* ayg, double* azg, double* gxds, do
      a02:	0e 94 e6 06 	call	0xdcc	; 0xdcc <__floatsisf>
      a06:	20 e0       	ldi	r18, 0x00	; 0
      a08:	30 e0       	ldi	r19, 0x00	; 0
-     a0a:	40 e8       	ldi	r20, 0x80	; 128
-     a0c:	58 e3       	ldi	r21, 0x38	; 56
+     a0a:	40 e0       	ldi	r20, 0x00	; 0
+     a0c:	59 e3       	ldi	r21, 0x39	; 57
      a0e:	0e 94 72 07 	call	0xee4	; 0xee4 <__mulsf3>
      a12:	f4 01       	movw	r30, r8
      a14:	60 83       	st	Z, r22
@@ -1531,8 +1531,8 @@ void mpu6050_getConvData(double* axg, double* ayg, double* azg, double* gxds, do
      a28:	0e 94 e6 06 	call	0xdcc	; 0xdcc <__floatsisf>
      a2c:	20 e0       	ldi	r18, 0x00	; 0
      a2e:	30 e0       	ldi	r19, 0x00	; 0
-     a30:	40 e8       	ldi	r20, 0x80	; 128
-     a32:	58 e3       	ldi	r21, 0x38	; 56
+     a30:	40 e0       	ldi	r20, 0x00	; 0
+     a32:	59 e3       	ldi	r21, 0x39	; 57
      a34:	0e 94 72 07 	call	0xee4	; 0xee4 <__mulsf3>
      a38:	f5 01       	movw	r30, r10
      a3a:	60 83       	st	Z, r22
