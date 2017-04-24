@@ -455,7 +455,7 @@ gyroZ = importdata('re_gyroZ.txt');
 %including offsets (median)
 accelX_offset = 0.0222; %.0222
 accelY_offset = 0.0371;
-accelZ_offset = 0.9134;
+accelZ_offset = 0.9134-1;
 gyroX_offset = 0.0084;
 gyroY_offset = 1.2963;
 gyroZ_offset = 1.2545;
@@ -613,7 +613,257 @@ mean(temp)
 % kutta runge integrator seems like same as cumtrapz function
 % mean is .0028 so rk integrator seems to underestimate barely
 
+%% Applying kr integrator to rotation tests
+% scaling (when running at around 60 Hz)
+angles_gyroX = [rk_integrator(gyroX(:,4)/60); rk_integrator(gyroX(:,5)/60); rk_integrator(gyroX(:,6)/60)];
+angles_gyroX = (angles_gyroX).';
+angles_gyroY = [rk_integrator(gyroY(:,4)/60); rk_integrator(gyroY(:,5)/60); rk_integrator(gyroY(:,6)/60)];
+angles_gyroY = (angles_gyroY).';
+angles_gyroZ = [rk_integrator(gyroZ(:,4)/60); rk_integrator(gyroZ(:,5)/60); rk_integrator(gyroZ(:,6)/60)];
+angles_gyroZ = (angles_gyroZ).';
+
+figure(36)
+plot(angles_gyroX);
+title('X Rotation Test');
+ylabel('degrees')
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+
+figure(37)
+plot(angles_gyroY);
+title('Y Rotation Test');
+ylabel('degrees')
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+
+figure(38)      %% looks kind of bad
+plot(angles_gyroZ);
+title('Z Rotation Test');
+ylabel('degrees')
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+
+
+%% temp test of yaw
+temp = importdata('temp.txt');
+%including offsets (median)
+accelX_offset = 0.0222; %.0222
+accelY_offset = 0.0371;
+accelZ_offset = 0.9134-1;
+gyroX_offset = 0.0084;
+gyroY_offset = 1.2963;
+gyroZ_offset = 1.2545;
+
+offsets = [accelX_offset accelY_offset accelZ_offset gyroX_offset gyroY_offset gyroZ_offset];
+
+for n = 1:6
+    temp(:,n) = temp(:,n) - offsets(n);
+end
+
+angles_gyroZ = [rk_integrator(temp(:,4)/60); rk_integrator(temp(:,5)/60); rk_integrator(temp(:,6)/60)];
+angles_gyroZ = (angles_gyroZ).';
+
+figure(38)      %% looks kind of bad
+plot(angles_gyroZ);
+title('Z Rotation Test');
+ylabel('degrees')
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+
+%% test integrating still data
+tempOffsetData = offsetData;
+%including offsets (median)
+accelX_offset = 0.0222; %.0222
+accelY_offset = 0.0371;
+accelZ_offset = 0.9134;
+gyroX_offset = 0.0084;
+gyroY_offset = 1.2963;
+gyroZ_offset = 1.2545;
+
+offsets = [accelX_offset accelY_offset accelZ_offset gyroX_offset gyroY_offset gyroZ_offset];
+
+for n = 1:6
+    tempOffsetData(:,n) = tempOffsetData(:,n) - offsets(n);
+end
+
+angleTempOffset = [rk_integrator(tempOffsetData(:,4)/60); rk_integrator(tempOffsetData(:,5)/60); rk_integrator(tempOffsetData(:,6)/60)];
+angleTempOffset = (angleTempOffset).';
+
+figure()
+plot(angleTempOffset)
+
+%% Complimentary Filter
+% x rotation test
+tau = 1.0;
+dt = 1/60; %.005;
+alpha = tau / (tau + dt);
+
+% low pass filter first
+[m, n] = size(gyroX(:,1:3));
+lpf_accel_Xtest = zeros(m, n);
+
+for i = 1:m
+    if i == 1
+        lpf_accel_Xtest(m,1:3) = (1-alpha)*gyroX(m,1:3);
+    else
+        lpf_accel_Xtest(m,1:3) = (1-alpha)*gyroX(m,1:3) + alpha * lpf_accel_Xtest(m-1,1:3);
+    end
+end
+
+angle_accelX_Xtest = (atan(lpf_accel_Xtest(:,2) ./ sqrt(lpf_accel_Xtest(:,1).^2 + lpf_accel_Xtest(:,3).^2)))*180/pi;
+angle_accelY_Xtest = (- atan(lpf_accel_Xtest(:,1) ./ sqrt(lpf_accel_Xtest(:,2).^2 + lpf_accel_Xtest(:,3).^2)))*180/pi;
+
+angleX_filt = (1-alpha) * angles_gyroX(:,1) + alpha .* angle_accelX_Xtest;
+angleY_filt = (1-alpha) * angles_gyroX(:,2) + alpha .* angle_accelY_Xtest;
+
+figure(2)
+plot(angle_accelX_Xtest)
+figure(3)
+plot(angle_accelY_Xtest)
+
+figure(1)
+plot(angleX_filt)
+hold on
+plot(angles_gyroX(:,1))
+hold off
+
+figure(4)
+plot(angleX_filt - angles_gyroX(:,1))
+
+
 %%
 
+angle_accelX_Xtest = (atan(gyroX(:,2) ./ sqrt(gyroX(:,1).^2 + gyroX(:,3).^2)))*180/pi;
+angle_accelY_Xtest = (- atan(gyroX(:,1) ./ sqrt(gyroX(:,2).^2 + gyroX(:,3).^2)))*180/pi;
+
+angleX_filt = (1-alpha) * angles_gyroX(:,1) + alpha .* angle_accelX_Xtest;
+angleY_filt = (1-alpha) * angles_gyroX(:,2) + alpha .* angle_accelY_Xtest;
+
+figure(2)
+plot(angle_accelX_Xtest)
+figure(3)
+plot(angle_accelY_Xtest)
+
+figure(1)
+plot(angleX_filt)
+hold on
+plot(angles_gyroX(:,1))
+hold off
+
+figure(4)
+plot(angleX_filt - angles_gyroX(:,1))
+
+%%
+% y rotation test
+angle_accelX_Ytest = (atan(gyroY(:,2) ./ sqrt(gyroY(:,1).^2 + gyroY(:,3).^2)))*180/pi;
+angle_accelY_Ytest = (- atan(gyroY(:,1) ./ sqrt(gyroY(:,2).^2 + gyroY(:,3).^2)))*180/pi;
+
+tau = 1.0;
+dt = 1/60; %.005;
+alpha = .5;%tau / (tau + dt);
+
+angleX_filt_Ytest = alpha * angles_gyroY(:,1) + (1-alpha) .* angle_accelX_Ytest;
+angleY_filt_Ytest = alpha * angles_gyroY(:,2) + (1-alpha) .* angle_accelY_Ytest;
+
+figure(2)
+plot(angle_accelX_Ytest)
+figure(3)
+plot(angle_accelY_Ytest)
+
+figure(1)
+plot(angleY_filt_Ytest)
+hold on
+plot(angles_gyroY(:,2))
+hold off
+
+figure(4)
+plot(angleY_filt_Ytest - angles_gyroY(:,2))
 
 
+%%
+%% Drop tests
+
+dropX = importdata('accelDropX.txt');
+dropY = importdata('accelDropY.txt');
+dropZ = importdata('accelDropZ.txt');
+
+%applying offsets
+accelX_offset = 0.0222; %.0222
+accelY_offset = 0.0371;
+accelZ_offset = 0.9134 - 1; %need to subtract 1 to get offset
+gyroX_offset = 0.0084;
+gyroY_offset = 1.2963;
+gyroZ_offset = 1.2545;
+
+offsets = [accelX_offset accelY_offset accelZ_offset gyroX_offset gyroY_offset gyroZ_offset];
+
+for n = 1:6
+    dropX(:,n) = dropX(:,n) - offsets(n);
+    dropY(:,n) = dropY(:,n) - offsets(n);
+    dropZ(:,n) = dropZ(:,n) - offsets(n);
+end
+
+figure(30)
+plot(dropX(:,2));
+title('X axis drop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+
+
+figure(31)
+plot(dropY(:,1:3));
+title('Y axis drop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+
+figure(32)
+plot(dropZ(:,1:3));
+title('Z axis drop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+
+%% Drop test with 4g range
+
+dropX4g = importdata('accelDropX_4g.txt');
+dropY4g = importdata('accelDropY_4g.txt');
+dropZ4g = importdata('accelDropZ_4g.txt');
+
+%applying offsets
+accelX_offset = 0.0222; %.0222
+accelY_offset = 0.0371;
+accelZ_offset = 0.9134 - 1; %need to subtract 1 to get offset
+gyroX_offset = 0.0084;
+gyroY_offset = 1.2963;
+gyroZ_offset = 1.2545;
+
+offsets = [accelX_offset accelY_offset accelZ_offset gyroX_offset gyroY_offset gyroZ_offset];
+
+for n = 1:6
+    dropX4g(:,n) = dropX4g(:,n) - offsets(n);
+    dropY4g(:,n) = dropY4g(:,n) - offsets(n);
+    dropZ4g(:,n) = dropZ4g(:,n) - offsets(n);
+end
+
+figure(33)
+plot(dropX4g(:,1));
+title('X axis drop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+meanLine = refline(0, 0);
+meanLine.Color = 'r';
+
+figure(34)
+plot(dropY4g(:,2));
+title('Y axis drop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+meanLine = refline(0, 0);
+meanLine.Color = 'r';
+
+figure(35)
+plot(dropZ4g(:,3));
+title('Z axis drop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+meanLine = refline(0, 0);
+meanLine.Color = 'r';
