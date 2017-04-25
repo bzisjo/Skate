@@ -694,20 +694,49 @@ plot(angleTempOffset)
 
 %% Complimentary Filter
 % x rotation test
-tau = 1.0;
+tau = .65;
 dt = 1/60; %.005;
 alpha = .7;%tau / (tau + dt);
 
 % low pass filter first
-[m, n] = size(gyro(:,1:2);
+[m, n] = size(gyroX(:,1:3));
 lpf_accel_Xtest = zeros(m, n);
 
 for i = 1:m
     if i == 1
-        lpf_accel_Xtest(m,1:2) = 
-    lpf_accel_Xtest(m,1:2) = (1-alpha)*gyroX(:,1:2) + alpha * lpf_accel_Xtest(m-1,1:2); 
+        lpf_accel_Xtest(i,1:3) = (1-alpha)*gyroX(i,1:3);
+    else
+        lpf_accel_Xtest(i,1:3) = (1-alpha)*gyroX(i,1:3) + alpha * lpf_accel_Xtest(i-1,1:3);
+    end
 end
 
+% high pass filter
+
+
+angle_accelX_Xtest = (atan(lpf_accel_Xtest(:,2) ./ sqrt(lpf_accel_Xtest(:,1).^2 + lpf_accel_Xtest(:,3).^2)))*180/pi;
+angle_accelY_Xtest = (- atan(lpf_accel_Xtest(:,1) ./ sqrt(lpf_accel_Xtest(:,2).^2 + lpf_accel_Xtest(:,3).^2)))*180/pi;
+
+angleX_filt = (1-alpha) * angles_gyroX(:,1) + alpha .* angle_accelX_Xtest;
+angleY_filt = (1-alpha) * angles_gyroX(:,2) + alpha .* angle_accelY_Xtest;
+
+figure(36)
+plot(angle_accelX_Xtest)
+figure(37)
+plot(angle_accelY_Xtest)
+
+figure(38)
+plot(angleX_filt)
+hold on
+plot(angles_gyroX(:,1))
+hold off
+legend('show')
+legend('filtered', 'gyroscope')
+
+figure(39)
+plot(angleX_filt - angles_gyroX(:,1))
+
+
+%%
 
 angle_accelX_Xtest = (atan(gyroX(:,2) ./ sqrt(gyroX(:,1).^2 + gyroX(:,3).^2)))*180/pi;
 angle_accelY_Xtest = (- atan(gyroX(:,1) ./ sqrt(gyroX(:,2).^2 + gyroX(:,3).^2)))*180/pi;
@@ -715,18 +744,20 @@ angle_accelY_Xtest = (- atan(gyroX(:,1) ./ sqrt(gyroX(:,2).^2 + gyroX(:,3).^2)))
 angleX_filt = (1-alpha) * angles_gyroX(:,1) + alpha .* angle_accelX_Xtest;
 angleY_filt = (1-alpha) * angles_gyroX(:,2) + alpha .* angle_accelY_Xtest;
 
-figure(2)
+figure(40)
 plot(angle_accelX_Xtest)
-figure(3)
+figure(41)
 plot(angle_accelY_Xtest)
 
-figure(1)
+figure(42)
 plot(angleX_filt)
 hold on
 plot(angles_gyroX(:,1))
 hold off
+legend('show')
+legend('filtered', 'gyroscope')
 
-figure(4)
+figure(43)
 plot(angleX_filt - angles_gyroX(:,1))
 
 %%
@@ -736,23 +767,23 @@ angle_accelY_Ytest = (- atan(gyroY(:,1) ./ sqrt(gyroY(:,2).^2 + gyroY(:,3).^2)))
 
 tau = 1.0;
 dt = 1/60; %.005;
-alpha = .5;%tau / (tau + dt);
+alpha = .35;%tau / (tau + dt);
 
 angleX_filt_Ytest = alpha * angles_gyroY(:,1) + (1-alpha) .* angle_accelX_Ytest;
 angleY_filt_Ytest = alpha * angles_gyroY(:,2) + (1-alpha) .* angle_accelY_Ytest;
 
-figure(2)
+figure(44)
 plot(angle_accelX_Ytest)
-figure(3)
+figure(45)
 plot(angle_accelY_Ytest)
 
-figure(1)
+figure(46)
 plot(angleY_filt_Ytest)
 hold on
 plot(angles_gyroY(:,2))
 hold off
 
-figure(4)
+figure(47)
 plot(angleY_filt_Ytest - angles_gyroY(:,2))
 
 
@@ -780,7 +811,7 @@ for n = 1:6
 end
 
 figure(30)
-plot(dropX(:,2));
+plot(dropX(:,1:3));
 title('X axis drop');
 legend('show');
 legend('AccelX', 'AccelY', 'AccelZ');
@@ -843,3 +874,47 @@ legend('show');
 legend('AccelX', 'AccelY', 'AccelZ');
 meanLine = refline(0, 0);
 meanLine.Color = 'r';
+
+%% Smoothing acceleration to use as metric instead of trying to calculate velocity and displacement 
+
+% low pass filter
+alpha = .65;
+[m, n] = size(accelX(:,1:3));
+lpf_accel_Xtest = zeros(m, n);
+
+for i = 1:m
+    if i == 1
+        lpf_accel_Xtest(i,1:3) = accelX(i,1:3);  %(1-alpha)*accelX(i,1:3);
+    else
+        lpf_accel_Xtest(i,1:3) = (1-alpha)*accelX(i,1:3) + alpha * lpf_accel_Xtest(i-1,1:3);
+    end
+end
+
+figure(48)
+plot(lpf_accel_Xtest(:,1:3))
+figure(49)
+plot(accelX(:,1:3))
+
+temp = rk_integrator(lpf_accel_Xtest(:,1));
+figure(50)
+plot(temp)
+
+%% low pass filter for drop test
+% low pass filter
+alpha = .65;
+[m, n] = size(dropX4g(:,1:3));
+lpf_accel_Xtest = zeros(m, n);
+
+for i = 1:m
+    if i == 1
+        lpf_accel_Xtest(i,1:3) = (1-alpha)*dropX4g(i,1:3);
+    else
+        lpf_accel_Xtest(i,1:3) = (1-alpha)*dropX4g(i,1:3) + alpha * dropX4g(i-1,1:3);
+    end
+end
+
+figure(51)
+plot(lpf_accel_Xtest)
+figure(52)
+plot(dropX4g(:,1:3))
+
