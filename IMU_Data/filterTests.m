@@ -624,21 +624,21 @@ angles_gyroZ = (angles_gyroZ).';
 
 figure(36)
 plot(angles_gyroX);
-title('X Rotation Test');
+title('X Rotation Test: Gyroscope Data');
 ylabel('degrees')
 legend('show');
 legend('GyroX', 'GyroY', 'GyroZ');
 
 figure(37)
 plot(angles_gyroY);
-title('Y Rotation Test');
+title('Y Rotation Test: Gyroscope Data');
 ylabel('degrees')
 legend('show');
 legend('GyroX', 'GyroY', 'GyroZ');
 
 figure(38)      %% looks kind of bad
 plot(angles_gyroZ);
-title('Z Rotation Test');
+title('Z Rotation Test: Gyroscope Data');
 ylabel('degrees')
 legend('show');
 legend('GyroX', 'GyroY', 'GyroZ');
@@ -731,6 +731,9 @@ plot(angles_gyroX(:,1))
 hold off
 legend('show')
 legend('filtered', 'gyroscope')
+meanLine = refline(0, 83);
+meanLine.Color = 'g';
+
 
 figure(39)
 plot(angleX_filt - angles_gyroX(:,1))
@@ -754,8 +757,13 @@ plot(angleX_filt)
 hold on
 plot(angles_gyroX(:,1))
 hold off
+title('X Axis Data for X Rotation Test with Complimentary Filtering') 
+xlabel('samples')
+ylabel('degrees')
 legend('show')
 legend('filtered', 'gyroscope')
+meanLine = refline(0, 83);
+meanLine.Color = 'g';
 
 figure(43)
 plot(angleX_filt - angles_gyroX(:,1))
@@ -782,6 +790,13 @@ plot(angleY_filt_Ytest)
 hold on
 plot(angles_gyroY(:,2))
 hold off
+title('Y Axis Data for Y Rotation Test with Complimentary Filtering')
+xlabel('samples')
+ylabel('degrees')
+legend('show')
+legend('filtered', 'gyroscope')
+meanLine = refline(0, 83);
+meanLine.Color = 'g';
 
 figure(47)
 plot(angleY_filt_Ytest - angles_gyroY(:,2))
@@ -852,28 +867,34 @@ for n = 1:6
 end
 
 figure(33)
-plot(dropX4g(:,1));
-title('X axis drop');
+plot(dropX4g(:,1:3));
+title('X Axis Drop');
 legend('show');
 legend('AccelX', 'AccelY', 'AccelZ');
 meanLine = refline(0, 0);
-meanLine.Color = 'r';
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
 
 figure(34)
-plot(dropY4g(:,2));
-title('Y axis drop');
+plot(dropY4g(:,1:3));
+title('Y Axis Arop');
 legend('show');
 legend('AccelX', 'AccelY', 'AccelZ');
 meanLine = refline(0, 0);
-meanLine.Color = 'r';
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
 
 figure(35)
-plot(dropZ4g(:,3));
-title('Z axis drop');
+plot(dropZ4g(:,1:3));
+title('Z Axis Arop');
 legend('show');
 legend('AccelX', 'AccelY', 'AccelZ');
 meanLine = refline(0, 0);
-meanLine.Color = 'r';
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
 
 %% Smoothing acceleration to use as metric instead of trying to calculate velocity and displacement 
 
@@ -914,9 +935,20 @@ for i = 1:m
 end
 
 figure(51)
+subplot(2,1,1)
 plot(lpf_accel_Xtest)
-figure(52)
+title('X Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+subplot(2,1,2)
 plot(dropX4g(:,1:3))
+title('X Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
 
 %y test
 [m, n] = size(dropY4g(:,1:3));
@@ -930,10 +962,21 @@ for i = 1:m
     end
 end
 
-figure(51)
-plot(lpf_accel_Ytest)
 figure(52)
+subplot(2,1,1)
+plot(lpf_accel_Ytest)
+title('Y Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+subplot(2,1,2)
 plot(dropY4g(:,1:3))
+title('Y Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
 
 %z test
 [m, n] = size(dropZ4g(:,1:3));
@@ -947,7 +990,84 @@ for i = 1:m
     end
 end
 
-figure(51)
+figure(53)
+subplot(2,1,1)
 plot(lpf_accel_Ztest)
-figure(52)
+title('Z Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+subplot(2,1,2)
 plot(dropZ4g(:,1:3))
+title('Z Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+
+% isolated axis plotting for targeted axis being tested
+% x axis
+figure(54)
+subplot(2,1,1)
+plot(lpf_accel_Xtest(:,1))
+title('X Axis Data for X Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+subplot(2,1,2)
+plot(dropX4g(:,1))
+title('X Axis Data for X Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+
+%y axis
+figure(55)
+subplot(2,1,1)
+plot(lpf_accel_Ytest(:,2))
+title('Y Axis Data for Y Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+subplot(2,1,2)
+plot(dropY4g(:,2))
+title('Y Axis Data for Y Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+
+%z axis
+figure(56)
+subplot(2,1,1)
+plot(lpf_accel_Ztest(:,3))
+title('Z Axis Data for Z Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+subplot(2,1,2)
+plot(dropZ4g(:,3))
+title('Z Axis Data for Z Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+
+
