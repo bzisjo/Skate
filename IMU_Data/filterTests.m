@@ -455,7 +455,7 @@ gyroZ = importdata('re_gyroZ.txt');
 %including offsets (median)
 accelX_offset = 0.0222; %.0222
 accelY_offset = 0.0371;
-accelZ_offset = 0.9134;
+accelZ_offset = 0.9134-1;
 gyroX_offset = 0.0084;
 gyroY_offset = 1.2963;
 gyroZ_offset = 1.2545;
@@ -613,7 +613,461 @@ mean(temp)
 % kutta runge integrator seems like same as cumtrapz function
 % mean is .0028 so rk integrator seems to underestimate barely
 
+%% Applying kr integrator to rotation tests
+% scaling (when running at around 60 Hz)
+angles_gyroX = [rk_integrator(gyroX(:,4)/60); rk_integrator(gyroX(:,5)/60); rk_integrator(gyroX(:,6)/60)];
+angles_gyroX = (angles_gyroX).';
+angles_gyroY = [rk_integrator(gyroY(:,4)/60); rk_integrator(gyroY(:,5)/60); rk_integrator(gyroY(:,6)/60)];
+angles_gyroY = (angles_gyroY).';
+angles_gyroZ = [rk_integrator(gyroZ(:,4)/60); rk_integrator(gyroZ(:,5)/60); rk_integrator(gyroZ(:,6)/60)];
+angles_gyroZ = (angles_gyroZ).';
+
+figure(36)
+plot(angles_gyroX);
+title('X Rotation Test: Gyroscope Data');
+ylabel('degrees')
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+
+figure(37)
+plot(angles_gyroY);
+title('Y Rotation Test: Gyroscope Data');
+ylabel('degrees')
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+
+figure(38)      %% looks kind of bad
+plot(angles_gyroZ);
+title('Z Rotation Test: Gyroscope Data');
+ylabel('degrees')
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+
+
+%% temp test of yaw
+temp = importdata('temp.txt');
+%including offsets (median)
+accelX_offset = 0.0222; %.0222
+accelY_offset = 0.0371;
+accelZ_offset = 0.9134-1;
+gyroX_offset = 0.0084;
+gyroY_offset = 1.2963;
+gyroZ_offset = 1.2545;
+
+offsets = [accelX_offset accelY_offset accelZ_offset gyroX_offset gyroY_offset gyroZ_offset];
+
+for n = 1:6
+    temp(:,n) = temp(:,n) - offsets(n);
+end
+
+angles_gyroZ = [rk_integrator(temp(:,4)/60); rk_integrator(temp(:,5)/60); rk_integrator(temp(:,6)/60)];
+angles_gyroZ = (angles_gyroZ).';
+
+figure(38)      %% looks kind of bad
+plot(angles_gyroZ);
+title('Z Rotation Test');
+ylabel('degrees')
+legend('show');
+legend('GyroX', 'GyroY', 'GyroZ');
+
+%% test integrating still data
+tempOffsetData = offsetData;
+%including offsets (median)
+accelX_offset = 0.0222; %.0222
+accelY_offset = 0.0371;
+accelZ_offset = 0.9134;
+gyroX_offset = 0.0084;
+gyroY_offset = 1.2963;
+gyroZ_offset = 1.2545;
+
+offsets = [accelX_offset accelY_offset accelZ_offset gyroX_offset gyroY_offset gyroZ_offset];
+
+for n = 1:6
+    tempOffsetData(:,n) = tempOffsetData(:,n) - offsets(n);
+end
+
+angleTempOffset = [rk_integrator(tempOffsetData(:,4)/60); rk_integrator(tempOffsetData(:,5)/60); rk_integrator(tempOffsetData(:,6)/60)];
+angleTempOffset = (angleTempOffset).';
+
+figure()
+plot(angleTempOffset)
+
+%% Complimentary Filter
+% x rotation test
+tau = .65;
+dt = 1/60; %.005;
+alpha = .7;%tau / (tau + dt);
+
+% low pass filter first
+[m, n] = size(gyroX(:,1:3));
+lpf_accel_Xtest = zeros(m, n);
+
+for i = 1:m
+    if i == 1
+        lpf_accel_Xtest(i,1:3) = (1-alpha)*gyroX(i,1:3);
+    else
+        lpf_accel_Xtest(i,1:3) = (1-alpha)*gyroX(i,1:3) + alpha * lpf_accel_Xtest(i-1,1:3);
+    end
+end
+
+% high pass filter
+
+
+angle_accelX_Xtest = (atan(lpf_accel_Xtest(:,2) ./ sqrt(lpf_accel_Xtest(:,1).^2 + lpf_accel_Xtest(:,3).^2)))*180/pi;
+angle_accelY_Xtest = (- atan(lpf_accel_Xtest(:,1) ./ sqrt(lpf_accel_Xtest(:,2).^2 + lpf_accel_Xtest(:,3).^2)))*180/pi;
+
+angleX_filt = (1-alpha) * angles_gyroX(:,1) + alpha .* angle_accelX_Xtest;
+angleY_filt = (1-alpha) * angles_gyroX(:,2) + alpha .* angle_accelY_Xtest;
+
+figure(36)
+plot(angle_accelX_Xtest)
+figure(37)
+plot(angle_accelY_Xtest)
+
+figure(38)
+plot(angleX_filt)
+hold on
+plot(angles_gyroX(:,1))
+hold off
+legend('show')
+legend('filtered', 'gyroscope')
+meanLine = refline(0, 83);
+meanLine.Color = 'g';
+
+
+figure(39)
+plot(angleX_filt - angles_gyroX(:,1))
+
+
 %%
 
+angle_accelX_Xtest = (atan(gyroX(:,2) ./ sqrt(gyroX(:,1).^2 + gyroX(:,3).^2)))*180/pi;
+angle_accelY_Xtest = (- atan(gyroX(:,1) ./ sqrt(gyroX(:,2).^2 + gyroX(:,3).^2)))*180/pi;
+
+angleX_filt = (1-alpha) * angles_gyroX(:,1) + alpha .* angle_accelX_Xtest;
+angleY_filt = (1-alpha) * angles_gyroX(:,2) + alpha .* angle_accelY_Xtest;
+
+figure(40)
+plot(angle_accelX_Xtest)
+figure(41)
+plot(angle_accelY_Xtest)
+
+figure(42)
+plot(angleX_filt)
+hold on
+plot(angles_gyroX(:,1))
+hold off
+title('X Axis Data for X Rotation Test with Complimentary Filtering') 
+xlabel('samples')
+ylabel('degrees')
+legend('show')
+legend('filtered', 'gyroscope')
+meanLine = refline(0, 83);
+meanLine.Color = 'g';
+
+figure(43)
+plot(angleX_filt - angles_gyroX(:,1))
+
+%%
+% y rotation test
+angle_accelX_Ytest = (atan(gyroY(:,2) ./ sqrt(gyroY(:,1).^2 + gyroY(:,3).^2)))*180/pi;
+angle_accelY_Ytest = (- atan(gyroY(:,1) ./ sqrt(gyroY(:,2).^2 + gyroY(:,3).^2)))*180/pi;
+
+tau = 1.0;
+dt = 1/60; %.005;
+alpha = .35;%tau / (tau + dt);
+
+angleX_filt_Ytest = alpha * angles_gyroY(:,1) + (1-alpha) .* angle_accelX_Ytest;
+angleY_filt_Ytest = alpha * angles_gyroY(:,2) + (1-alpha) .* angle_accelY_Ytest;
+
+figure(44)
+plot(angle_accelX_Ytest)
+figure(45)
+plot(angle_accelY_Ytest)
+
+figure(46)
+plot(angleY_filt_Ytest)
+hold on
+plot(angles_gyroY(:,2))
+hold off
+title('Y Axis Data for Y Rotation Test with Complimentary Filtering')
+xlabel('samples')
+ylabel('degrees')
+legend('show')
+legend('filtered', 'gyroscope')
+meanLine = refline(0, 83);
+meanLine.Color = 'g';
+
+figure(47)
+plot(angleY_filt_Ytest - angles_gyroY(:,2))
+
+
+%%
+%% Drop tests
+
+dropX = importdata('accelDropX.txt');
+dropY = importdata('accelDropY.txt');
+dropZ = importdata('accelDropZ.txt');
+
+%applying offsets
+accelX_offset = 0.0222; %.0222
+accelY_offset = 0.0371;
+accelZ_offset = 0.9134 - 1; %need to subtract 1 to get offset
+gyroX_offset = 0.0084;
+gyroY_offset = 1.2963;
+gyroZ_offset = 1.2545;
+
+offsets = [accelX_offset accelY_offset accelZ_offset gyroX_offset gyroY_offset gyroZ_offset];
+
+for n = 1:6
+    dropX(:,n) = dropX(:,n) - offsets(n);
+    dropY(:,n) = dropY(:,n) - offsets(n);
+    dropZ(:,n) = dropZ(:,n) - offsets(n);
+end
+
+figure(30)
+plot(dropX(:,1:3));
+title('X axis drop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+
+
+figure(31)
+plot(dropY(:,1:3));
+title('Y axis drop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+
+figure(32)
+plot(dropZ(:,1:3));
+title('Z axis drop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+
+%% Drop test with 4g range
+
+dropX4g = importdata('accelDropX_4g.txt');
+dropY4g = importdata('accelDropY_4g.txt');
+dropZ4g = importdata('accelDropZ_4g.txt');
+
+%applying offsets
+accelX_offset = 0.0222; %.0222
+accelY_offset = 0.0371;
+accelZ_offset = 0.9134 - 1; %need to subtract 1 to get offset
+gyroX_offset = 0.0084;
+gyroY_offset = 1.2963;
+gyroZ_offset = 1.2545;
+
+offsets = [accelX_offset accelY_offset accelZ_offset gyroX_offset gyroY_offset gyroZ_offset];
+
+for n = 1:6
+    dropX4g(:,n) = dropX4g(:,n) - offsets(n);
+    dropY4g(:,n) = dropY4g(:,n) - offsets(n);
+    dropZ4g(:,n) = dropZ4g(:,n) - offsets(n);
+end
+
+figure(33)
+plot(dropX4g(:,1:3));
+title('X Axis Drop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+
+figure(34)
+plot(dropY4g(:,1:3));
+title('Y Axis Arop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+
+figure(35)
+plot(dropZ4g(:,1:3));
+title('Z Axis Arop');
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+
+%% Smoothing acceleration to use as metric instead of trying to calculate velocity and displacement 
+
+% low pass filter
+alpha = .65;
+[m, n] = size(accelX(:,1:3));
+lpf_accel_Xtest = zeros(m, n);
+
+for i = 1:m
+    if i == 1
+        lpf_accel_Xtest(i,1:3) = accelX(i,1:3);  %(1-alpha)*accelX(i,1:3);
+    else
+        lpf_accel_Xtest(i,1:3) = (1-alpha)*accelX(i,1:3) + alpha * lpf_accel_Xtest(i-1,1:3);
+    end
+end
+
+figure(48)
+plot(lpf_accel_Xtest(:,1:3))
+figure(49)
+plot(accelX(:,1:3))
+
+temp = rk_integrator(lpf_accel_Xtest(:,1));
+figure(50)
+plot(temp)
+
+%% low pass filter for drop test
+% low pass filter
+alpha = .65;
+[m, n] = size(dropX4g(:,1:3));
+lpf_accel_Xtest = zeros(m, n);
+
+for i = 1:m
+    if i == 1
+        lpf_accel_Xtest(i,1:3) = (1-alpha)*dropX4g(i,1:3);
+    else
+        lpf_accel_Xtest(i,1:3) = (1-alpha)*dropX4g(i,1:3) + alpha * dropX4g(i-1,1:3);
+    end
+end
+
+figure(51)
+subplot(2,1,1)
+plot(lpf_accel_Xtest)
+title('X Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+subplot(2,1,2)
+plot(dropX4g(:,1:3))
+title('X Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+
+%y test
+[m, n] = size(dropY4g(:,1:3));
+lpf_accel_Ytest = zeros(m, n);
+
+for i = 1:m
+    if i == 1
+        lpf_accel_Ytest(i,1:3) = (1-alpha)*dropY4g(i,1:3);
+    else
+        lpf_accel_Ytest(i,1:3) = (1-alpha)*dropY4g(i,1:3) + alpha * dropY4g(i-1,1:3);
+    end
+end
+
+figure(52)
+subplot(2,1,1)
+plot(lpf_accel_Ytest)
+title('Y Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+subplot(2,1,2)
+plot(dropY4g(:,1:3))
+title('Y Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+
+%z test
+[m, n] = size(dropZ4g(:,1:3));
+lpf_accel_Ztest = zeros(m, n);
+
+for i = 1:m
+    if i == 1
+        lpf_accel_Ztest(i,1:3) = (1-alpha)*dropZ4g(i,1:3);
+    else
+        lpf_accel_Ztest(i,1:3) = (1-alpha)*dropZ4g(i,1:3) + alpha * dropZ4g(i-1,1:3);
+    end
+end
+
+figure(53)
+subplot(2,1,1)
+plot(lpf_accel_Ztest)
+title('Z Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+subplot(2,1,2)
+plot(dropZ4g(:,1:3))
+title('Z Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+legend('show');
+legend('AccelX', 'AccelY', 'AccelZ');
+
+% isolated axis plotting for targeted axis being tested
+% x axis
+figure(54)
+subplot(2,1,1)
+plot(lpf_accel_Xtest(:,1))
+title('X Axis Data for X Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+subplot(2,1,2)
+plot(dropX4g(:,1))
+title('X Axis Data for X Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+
+%y axis
+figure(55)
+subplot(2,1,1)
+plot(lpf_accel_Ytest(:,2))
+title('Y Axis Data for Y Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+subplot(2,1,2)
+plot(dropY4g(:,2))
+title('Y Axis Data for Y Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+
+%z axis
+figure(56)
+subplot(2,1,1)
+plot(lpf_accel_Ztest(:,3))
+title('Z Axis Data for Z Axis Drop Test with Low Pass Filter')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
+subplot(2,1,2)
+plot(dropZ4g(:,3))
+title('Z Axis Data for Z Axis Drop Test')
+ylabel('gravity (g)')
+xlabel('samples')
+meanLine = refline(0, 0);
+meanLine.Color = 'g';
+ylabel('gravity (g)')
+xlabel('samples')
 
 
