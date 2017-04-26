@@ -41,7 +41,7 @@ UsedLibrary="D:/Dropbox/UIUC/Spring 2017/ECE 445/eagle/SparkFun-Eagle-Libraries-
 [Win_1]
 Type="Control Panel"
 Loc="0 0 1631 838"
-State=0
+State=2
 Number=0
 
 [Desktop]
