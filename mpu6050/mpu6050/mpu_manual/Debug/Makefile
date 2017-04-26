@@ -42,6 +42,7 @@ SUBDIRS :=  \
 C_SRCS +=  \
 ../i2chw/twimastertimeout.c \
 ../main.c \
+../mpu6050filtering.c \
 ../mpu6050/mpu6050.c \
 ../mpu6050/mpu6050dmp6.c \
 ../uart/uart.c
@@ -56,6 +57,7 @@ ASM_SRCS +=
 OBJS +=  \
 i2chw/twimastertimeout.o \
 main.o \
+mpu6050filtering.o \
 mpu6050/mpu6050.o \
 mpu6050/mpu6050dmp6.o \
 uart/uart.o
@@ -63,6 +65,7 @@ uart/uart.o
 OBJS_AS_ARGS +=  \
 i2chw/twimastertimeout.o \
 main.o \
+mpu6050filtering.o \
 mpu6050/mpu6050.o \
 mpu6050/mpu6050dmp6.o \
 uart/uart.o
@@ -70,6 +73,7 @@ uart/uart.o
 C_DEPS +=  \
 i2chw/twimastertimeout.d \
 main.d \
+mpu6050filtering.d \
 mpu6050/mpu6050.d \
 mpu6050/mpu6050dmp6.d \
 uart/uart.d
@@ -77,6 +81,7 @@ uart/uart.d
 C_DEPS_AS_ARGS +=  \
 i2chw/twimastertimeout.d \
 main.d \
+mpu6050filtering.d \
 mpu6050/mpu6050.d \
 mpu6050/mpu6050dmp6.d \
 uart/uart.d
@@ -95,6 +100,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
