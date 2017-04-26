@@ -24,7 +24,7 @@
 
 
 #define UART_BAUD_RATE 9600
-#define IMU 1
+#define IMU 0
 
 volatile uint8_t escape;
 volatile uint8_t state;
@@ -36,8 +36,19 @@ static struct fat_file_struct* open_file_in_dir(struct fat_fs_struct* fs, struct
 static inline void init_ADC(void);
 static uint8_t FSR_read(int i);
 
+ISR(PCINT2_vect)
+{
+	_delay_ms(10);
+	if(bit_is_clear(PIND, PCINT19))
+	{
+		state = 1;
+		escape = 1;
+	}
+}
+
 ISR(PCINT1_vect)
 {
+	
 	_delay_ms(10);		//primitive debouncing
 	if(bit_is_clear(PINC, PCINT11))
 	{
@@ -54,6 +65,7 @@ ISR(PCINT1_vect)
 				if(state == 2 && escape == 0)
 				{
 					escape = 1;
+					state = 1;
 				}
 				break;
 		}
@@ -83,13 +95,14 @@ int main(void)
 	//*^_^*
 
 	//Init inputs
-	//DDRC &= ~(1 << PORTC3);  //set input mode for button A (start/state switch)
+	DDRC &= ~(1 << PORTC3);  //set input mode for button A (start/state switch)
+    DDRD &= ~(1 << PORTD3); //set input mode for button B (reset state switch)	
 	DDRD |= (1 << PORTD6) | (1 << PORTD7);	//Set LEDs as output
 
-	//Init interrupts
-	PCICR |= (1 << PCIE2);		//Set port-change interrupt to port C
+	//Init interrupt
+	PCICR |= (1 << PCIE1) | (1 << PCIE2);		//Set port-change interrupt to port C &D
 	PCMSK1 |= (1 << PCINT11);	//Set port-change mask to PCINT11 (PC3)
-
+	PCMSK2 |= (1 << PCINT19);   //set port-change mask to PCINT19 (PD3)
 	//Init UART
 	uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU) ); 
 
@@ -185,7 +198,13 @@ int main(void)
 			//idle
 			case 1: ;
 				//Wait for button A
-				state = 2;//TODO: THIS IS A MARKER
+				while(state == 1)
+				{
+					PORTD |= (1 << PORTD7);
+					_delay_ms(500);
+					PORTD &= ~(1 << PORTD7);
+					_delay_ms(500);
+				}
 				break;
 			case 2: ;
 				//Data collection
@@ -214,7 +233,7 @@ int main(void)
 					break;
 				}
 				escape = 0;
-				uint16_t index = 0;
+				uint16_t index = 1;
 				uint16_t Vbattery = 9;
 				char itmp[10];
 				char fatbuf[70];
@@ -280,7 +299,8 @@ int main(void)
 						DDRD &= ~(1 << PD4);
 					}
 					//itoa((TIFR0 & (1 << TOV0) ) > 0,itmp,10);
-					//uart_putc(*itmp);
+					//uart_putc(*itmp);4
+					index ++;
 					while( (TIFR0 & (1 << TOV0) ) > 0) //wait for timer overflow event
 					{
 					}
@@ -288,7 +308,6 @@ int main(void)
 				}
 				sd_raw_sync();
 				fat_close_file(fd);
-				state = 1;
 				
 				//TODO(???): after the interrupt, some of the following must be called:
 					//sd_raw_sync();
