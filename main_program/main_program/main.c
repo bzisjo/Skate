@@ -300,7 +300,7 @@ int main(void)
 						state = 0;	
 						error = 1; //*this is baaaaaaaaaaaaaad
 						}
-						//PORTD &= ~(1 << PD4);
+						PORTD &= ~(1 << PD4);
 					}
 					strcat(fatbuf, "\r\n");
 					fat_write_file(fd, (uint8_t*) fatbuf, strlen(fatbuf));
