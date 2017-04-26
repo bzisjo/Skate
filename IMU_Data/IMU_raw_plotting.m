@@ -175,15 +175,15 @@ accelZ_mean = mean(accelZ_offsets)
 accelZ_std = std(accelZ_offsets)
 
 gyroX_mean = mean(gyroX_offsets)
-gyroX_median = median(gyroX_offsets)
+gyroX_median = median(gyroX_offsets);
 gyroX_std = std(gyroX_offsets)
 
 gyroY_mean = mean(gyroY_offsets)
-gyroY_median = median(gyroY_offsets)
+gyroY_median = median(gyroY_offsets);
 gyroY_std = std(gyroY_offsets)
 
 gyroZ_mean = mean(gyroZ_offsets)
-gyroZ_median = median(gyroZ_offsets)
+gyroZ_median = median(gyroZ_offsets);
 gyroZ_std = std(gyroZ_offsets)
 
 %% Graphs for accelerometer still offsets
@@ -420,5 +420,25 @@ legend('show');
 legend('GyroX', 'GyroY', 'GyroZ');
 title('Rotational Data of Z axis Translational Test (100ms)')
 axis([0 120 -400 400]);
+
+%% Loading for replotting tests done with 10 ms between data reads instead of 1 s
+accelX_move_10ms = importdata('accelX_10ms.txt');
+accelY_move_10ms = importdata('accelY_10ms.txt');
+accelZ_move_10ms = importdata('accelZ_10ms.txt');
+
+%% testing integration with matlab int function
+time = 0:.01:.01*(size(accelX_move_10ms(:,1))-1);
+integral = cumtrapz(accelX_move_10ms(:,1))
+figure()
+plot(integral)
+
+
+%% Speed Verification Test
+ speed = importdata('speedVerification_10ms.txt')
+
+
+
+
+
 
 

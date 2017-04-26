@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000a8  00000000  00000000  00000290  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000c27  00000000  00000000  00000338  2**0
+  6 .debug_info   00000c1e  00000000  00000000  00000338  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000007a9  00000000  00000000  00000f5f  2**0
+  7 .debug_abbrev 00000793  00000000  00000000  00000f56  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000055c  00000000  00000000  00001708  2**0
+  8 .debug_line   00000552  00000000  00000000  000016e9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000218  00000000  00000000  00001c64  2**2
+  9 .debug_frame  00000218  00000000  00000000  00001c3c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000004b2  00000000  00000000  00001e7c  2**0
+ 10 .debug_str    000004d6  00000000  00000000  00001e54  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000763  00000000  00000000  0000232e  2**0
+ 11 .debug_loc    00000763  00000000  00000000  0000232a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000a0  00000000  00000000  00002a91  2**0
+ 12 .debug_ranges 000000a0  00000000  00000000  00002a8d  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -107,7 +107,6 @@ Disassembly of section .text:
 		uart_putc('U');
   9a:	85 e5       	ldi	r24, 0x55	; 85
   9c:	0e 94 bf 00 	call	0x17e	; 0x17e <uart_putc>
-	}
   a0:	fc cf       	rjmp	.-8      	; 0x9a <main+0xa>
 
 000000a2 <__vector_18>:
