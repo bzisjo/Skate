@@ -24,7 +24,7 @@
 
 
 #define UART_BAUD_RATE 9600
-#define IMU 0
+#define IMU 1
 
 volatile uint8_t escape;
 volatile uint8_t state;
@@ -181,6 +181,8 @@ int main(void)
 
 	PORTD |= (1 << PORTD6);		//power LED on
 	//uart_putc('b');
+	DDRD |= (1 << PD4);
+	PORTD |= (1 << PD4);
     while (1) 
     {
 		switch(state)
@@ -234,7 +236,7 @@ int main(void)
 				}
 				escape = 0;
 				uint16_t index = 1;
-				uint16_t Vbattery = 9;
+				double Vbattery = 9;
 				char itmp[10];
 				char fatbuf[70];
 				uint8_t fsr[3];
@@ -276,28 +278,33 @@ int main(void)
 					strcat(fatbuf, itmp);
 					#endif
 
-					strcat(fatbuf, "\r\n");
-					fat_write_file(fd, (uint8_t*) fatbuf, strlen(fatbuf));
+
 					
 					//approximately check battery volrage every 16s
 					if(index % 500 == 0)
 					{   //DIGITAL PIN TO TURN ON NMOS
 						//enables PD4 as digital output and set PD4 HIGH
-						DDRD |= (1 << PD4);
-						PORTD |= (1 << PD4);
-						fsr[3] = FSR_read(1);
+
+						fsr[2] = FSR_read(1);
 						//let's do math here
 						//fsr3 is a 8-bit value ranging from 0-255, correction factor k = (0.3943/0.3532)
 						//in terms of voltage, Vsense = Vbattery * (6.05/(6.05+11.96)) * k = (fsr[3]/255) * 3.3
-						Vbattery = (fsr[3]/255) * 3.3 / ((6.05/(6.05+11.96)) * (0.3943/0.3532));
-						if(Vbattery < 5)
+						//Vbattery = (double)(fsr[2]/255) * 3.3 / ((6.05/(6.05+11.96)) * (0.3943/0.3532));
+						//dtostrf(Vbattery, 3, 5, itmp);
+						itoa(fsr[2],itmp,10);
+						strcat(fatbuf, itmp);
+						strcat(fatbuf, " ");
+						if(fsr[2] < 142)
 						{
 						escape = 1;
 						state = 0;	
 						error = 1; //*this is baaaaaaaaaaaaaad
 						}
-						DDRD &= ~(1 << PD4);
+						//PORTD &= ~(1 << PD4);
 					}
+					strcat(fatbuf, "\r\n");
+					fat_write_file(fd, (uint8_t*) fatbuf, strlen(fatbuf));
+
 					//itoa((TIFR0 & (1 << TOV0) ) > 0,itmp,10);
 					//uart_putc(*itmp);4
 					index ++;
