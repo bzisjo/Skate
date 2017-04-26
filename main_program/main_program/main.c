@@ -138,44 +138,7 @@ int main(void)
 		error = 1;
 		state = 0;
 	}
-	//Open partition
-	struct partition_struct* partition = partition_open(sd_raw_read, sd_raw_read_interval, sd_raw_write, sd_raw_write_interval, 0);
-	if(!partition)
-    {
-        /* If the partition did not open, assume the storage device
-            * is a "superfloppy", i.e. has no MBR.
-            */
-        partition = partition_open(sd_raw_read,
-                                    sd_raw_read_interval,
-                                    sd_raw_write,
-                                    sd_raw_write_interval,
-                                    -1
-                                    );
-        if(!partition)
-        {
-            //TODO: LED error pattern 2, opening partition fail
-			error = 1;
-			state = 0;
-        }
-    }
-	//Open file system
-	struct fat_fs_struct* fs = fat_open(partition);
-	if(!fs)
-	{
-		//TODO: LED error pattern 2, opening file partition fail
-		error = 1;
-		state = 0;
-	}
-	//Open root directory
-	struct fat_dir_entry_struct directory;
-	fat_get_dir_entry_of_path(fs, "/", &directory);
-	struct fat_dir_struct* dd = fat_open_dir(fs, &directory);
-	if(!dd)
-	{
-		//TODO: LED error pattern 2, opening root directory failed
-		error = 1;
-		state = 0;
-	}
+	
 	
 
 
@@ -207,6 +170,48 @@ int main(void)
 				}
 				break;
 			case 2: ;
+
+
+				//Open partition
+				struct partition_struct* partition = partition_open(sd_raw_read, sd_raw_read_interval, sd_raw_write, sd_raw_write_interval, 0);
+				if(!partition)
+			    {
+			        /* If the partition did not open, assume the storage device
+			            * is a "superfloppy", i.e. has no MBR.
+			            */
+			        partition = partition_open(sd_raw_read,
+			                                    sd_raw_read_interval,
+			                                    sd_raw_write,
+			                                    sd_raw_write_interval,
+			                                    -1
+			                                    );
+			        if(!partition)
+			        {
+			            //TODO: LED error pattern 2, opening partition fail
+						error = 1;
+						state = 0;
+			        }
+			    }
+				//Open file system
+				struct fat_fs_struct* fs = fat_open(partition);
+				if(!fs)
+				{
+					//TODO: LED error pattern 2, opening file partition fail
+					error = 1;
+					state = 0;
+				}
+				//Open root directory
+				struct fat_dir_entry_struct directory;
+				fat_get_dir_entry_of_path(fs, "/", &directory);
+				struct fat_dir_struct* dd = fat_open_dir(fs, &directory);
+				if(!dd)
+				{
+					//TODO: LED error pattern 2, opening root directory failed
+					error = 1;
+					state = 0;
+				}
+
+
 				//Data collection
 				char file1[] = "masterdata.txt";
 				struct fat_dir_entry_struct file_entry;
@@ -315,6 +320,9 @@ int main(void)
 				}
 				sd_raw_sync();
 				fat_close_file(fd);
+				fat_close_dir(dd);
+				fat_close(fs);
+				partition_close(partition);
 				
 				//TODO(???): after the interrupt, some of the following must be called:
 					//sd_raw_sync();
