@@ -24,7 +24,7 @@
 
 
 #define UART_BAUD_RATE 9600
-#define IMU 0
+#define IMU 1
 
 volatile uint8_t escape;
 volatile uint8_t state;
@@ -138,44 +138,7 @@ int main(void)
 		error = 1;
 		state = 0;
 	}
-	//Open partition
-	struct partition_struct* partition = partition_open(sd_raw_read, sd_raw_read_interval, sd_raw_write, sd_raw_write_interval, 0);
-	if(!partition)
-    {
-        /* If the partition did not open, assume the storage device
-            * is a "superfloppy", i.e. has no MBR.
-            */
-        partition = partition_open(sd_raw_read,
-                                    sd_raw_read_interval,
-                                    sd_raw_write,
-                                    sd_raw_write_interval,
-                                    -1
-                                    );
-        if(!partition)
-        {
-            //TODO: LED error pattern 2, opening partition fail
-			error = 1;
-			state = 0;
-        }
-    }
-	//Open file system
-	struct fat_fs_struct* fs = fat_open(partition);
-	if(!fs)
-	{
-		//TODO: LED error pattern 2, opening file partition fail
-		error = 1;
-		state = 0;
-	}
-	//Open root directory
-	struct fat_dir_entry_struct directory;
-	fat_get_dir_entry_of_path(fs, "/", &directory);
-	struct fat_dir_struct* dd = fat_open_dir(fs, &directory);
-	if(!dd)
-	{
-		//TODO: LED error pattern 2, opening root directory failed
-		error = 1;
-		state = 0;
-	}
+	
 	
 
 
@@ -207,6 +170,48 @@ int main(void)
 				}
 				break;
 			case 2: ;
+
+
+				//Open partition
+				struct partition_struct* partition = partition_open(sd_raw_read, sd_raw_read_interval, sd_raw_write, sd_raw_write_interval, 0);
+				if(!partition)
+			    {
+			        /* If the partition did not open, assume the storage device
+			            * is a "superfloppy", i.e. has no MBR.
+			            */
+			        partition = partition_open(sd_raw_read,
+			                                    sd_raw_read_interval,
+			                                    sd_raw_write,
+			                                    sd_raw_write_interval,
+			                                    -1
+			                                    );
+			        if(!partition)
+			        {
+			            //TODO: LED error pattern 2, opening partition fail
+						error = 1;
+						state = 0;
+			        }
+			    }
+				//Open file system
+				struct fat_fs_struct* fs = fat_open(partition);
+				if(!fs)
+				{
+					//TODO: LED error pattern 2, opening file partition fail
+					error = 1;
+					state = 0;
+				}
+				//Open root directory
+				struct fat_dir_entry_struct directory;
+				fat_get_dir_entry_of_path(fs, "/", &directory);
+				struct fat_dir_struct* dd = fat_open_dir(fs, &directory);
+				if(!dd)
+				{
+					//TODO: LED error pattern 2, opening root directory failed
+					error = 1;
+					state = 0;
+				}
+
+
 				//Data collection
 				char file1[] = "masterdata.txt";
 				struct fat_dir_entry_struct file_entry;
@@ -234,7 +239,7 @@ int main(void)
 				}
 				escape = 0;
 				uint16_t index = 1;
-				uint16_t Vbattery = 9;
+				//double Vbattery = 9;
 				char itmp[10];
 				char fatbuf[70];
 				uint8_t fsr[3];
@@ -276,28 +281,35 @@ int main(void)
 					strcat(fatbuf, itmp);
 					#endif
 
-					strcat(fatbuf, "\r\n");
-					fat_write_file(fd, (uint8_t*) fatbuf, strlen(fatbuf));
+
 					
 					//approximately check battery volrage every 16s
 					if(index % 500 == 0)
 					{   //DIGITAL PIN TO TURN ON NMOS
 						//enables PD4 as digital output and set PD4 HIGH
+
 						DDRD |= (1 << PD4);
 						PORTD |= (1 << PD4);
-						fsr[3] = FSR_read(1);
+						fsr[2] = FSR_read(1);
 						//let's do math here
 						//fsr3 is a 8-bit value ranging from 0-255, correction factor k = (0.3943/0.3532)
 						//in terms of voltage, Vsense = Vbattery * (6.05/(6.05+11.96)) * k = (fsr[3]/255) * 3.3
-						Vbattery = (fsr[3]/255) * 3.3 / ((6.05/(6.05+11.96)) * (0.3943/0.3532));
-						if(Vbattery < 5)
+						//Vbattery = (double)(fsr[2]/255) * 3.3 / ((6.05/(6.05+11.96)) * (0.3943/0.3532));
+						//dtostrf(Vbattery, 3, 5, itmp);
+						//itoa(fsr[2],itmp,10);
+						//strcat(fatbuf, itmp);
+						//strcat(fatbuf, " ");
+						if(fsr[2] < 142)
 						{
 						escape = 1;
 						state = 0;	
 						error = 1; //*this is baaaaaaaaaaaaaad
 						}
-						DDRD &= ~(1 << PD4);
+						PORTD &= ~(1 << PD4);
 					}
+					strcat(fatbuf, "\r\n");
+					fat_write_file(fd, (uint8_t*) fatbuf, strlen(fatbuf));
+
 					//itoa((TIFR0 & (1 << TOV0) ) > 0,itmp,10);
 					//uart_putc(*itmp);4
 					index ++;
@@ -308,6 +320,9 @@ int main(void)
 				}
 				sd_raw_sync();
 				fat_close_file(fd);
+				fat_close_dir(dd);
+				fat_close(fs);
+				partition_close(partition);
 				
 				//TODO(???): after the interrupt, some of the following must be called:
 					//sd_raw_sync();
