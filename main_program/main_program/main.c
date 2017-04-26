@@ -21,6 +21,7 @@
 #include "sd_raw_config.h"
 #include "uart.h"
 #include "mpu6050/mpu6050.h"
+#include "mpu6050filtering.h"
 
 
 #define UART_BAUD_RATE 9600
@@ -29,6 +30,7 @@
 volatile uint8_t escape;
 volatile uint8_t state;
 volatile uint8_t error;
+volatile uint8_t session_counter;
 
 //static uint8_t read_line(char* buffer, uint8_t buffer_length);
 static uint8_t find_file_in_dir(struct fat_fs_struct* fs, struct fat_dir_struct* dd, const char* name, struct fat_dir_entry_struct* dir_entry);
@@ -43,6 +45,7 @@ ISR(PCINT2_vect)
 	{
 		state = 1;
 		escape = 1;
+		error = 0;
 	}
 }
 
@@ -55,8 +58,8 @@ ISR(PCINT1_vect)
 		switch(state)
 		{
 			case 0: ;
-				if(error)
-					error = ~error;
+				// if(error)
+				// 	//error = ~error;
 				break;
 			case 1: ;
 				state = 2;
@@ -123,6 +126,19 @@ int main(void)
 	double gxds = 0;
 	double gyds = 0;
 	double gzds = 0;
+	//for runge-kutta integrator
+	double angleX = 0.0;	//roll
+	double angleY = 0.0;	//pitch
+	double angleZ = 0.0;	//yaw
+	// Buffers to hold previous values needed for the runge kutta integrator
+	double prev_Xdps[3] = {0.0, 0.0, 0.0};	
+	double prev_Ydps[3] = {0.0, 0.0, 0.0};	
+	double prev_Zdps[3] = {0.0, 0.0, 0.0};
+	double outAngleX = 0.0;		//angles that are outputted to serial port
+	double outAngleY = 0.0;
+	//double outAngleZ = 0.0;
+	double rollAccel = 0.0;	//angles calculated from acceleration data
+	double pitchAccel = 0.0;
 	mpu6050_init();
 	_delay_ms(50);
 	#endif
@@ -130,14 +146,9 @@ int main(void)
 
 	//Init state
 	state = 1;
+	session_counter = 0;
 	//uart_putc('a');
-	//Init SD
-	if(!sd_raw_init())
-	{
-		//TODO: LED error pattern 1, init failed
-		error = 1;
-		state = 0;
-	}
+
 	
 	
 
@@ -169,9 +180,14 @@ int main(void)
 					_delay_ms(500);
 				}
 				break;
-			case 2: ;
-
-
+			case 2: ;	
+				//Init SD
+				if(!sd_raw_init())
+				{
+					//TODO: LED error pattern 1, init failed
+					error = 1;
+					state = 0;
+				}
 				//Open partition
 				struct partition_struct* partition = partition_open(sd_raw_read, sd_raw_read_interval, sd_raw_write, sd_raw_write_interval, 0);
 				if(!partition)
@@ -241,7 +257,7 @@ int main(void)
 				uint16_t index = 1;
 				//double Vbattery = 9;
 				char itmp[10];
-				char fatbuf[70];
+				char fatbuf[100];
 				uint8_t fsr[3];
 				while(escape == 0)
 				{   
@@ -254,9 +270,11 @@ int main(void)
 					fsr[0] = FSR_read(0); 
 					fsr[1] = FSR_read(0);
 
-
-					itoa(fsr[0],itmp,10);
+					itoa(session_counter,itmp,10);
 					strcpy(fatbuf, itmp);			//watch out this is special.
+					strcat(fatbuf, " ");
+					itoa(fsr[0],itmp,10);
+					strcat(fatbuf, itmp);
 					strcat(fatbuf, " ");
 					itoa(fsr[1],itmp,10);
 					strcat(fatbuf, itmp);
@@ -264,6 +282,14 @@ int main(void)
 
 					#if(IMU)
 					mpu6050_getConvData(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
+					applyOffset(&axg, &ayg, &azg, &gxds, &gyds, &gzds);
+					//integrate all three axis
+					rk_integrator(&angleX, gxds, prev_Xdps);
+					rk_integrator(&angleY, gyds, prev_Ydps);
+					rk_integrator(&angleZ, gzds, prev_Zdps);
+					anglesFromAccel(&rollAccel, &pitchAccel, axg, ayg, azg);
+					applyCompFilter(&outAngleX, rollAccel, angleX);
+					applyCompFilter(&outAngleY, pitchAccel, angleY);
 					dtostrf(axg, 3, 5, itmp); 
 					strcat(fatbuf, itmp);
 					strcat(fatbuf, " ");
@@ -273,12 +299,29 @@ int main(void)
 					dtostrf(azg, 3, 5, itmp);
 					strcat(fatbuf, itmp);
 					strcat(fatbuf, " ");
-					dtostrf(gxds, 3, 5, itmp);
+
+					dtostrf(gxds, 3, 5, itmp); 
 					strcat(fatbuf, itmp);
 					strcat(fatbuf, " ");
-					//dtostrf(gyds, 3, 5, itmp);
+					dtostrf(gyds, 3, 5, itmp);
+					strcat(fatbuf, itmp);
+					strcat(fatbuf, " ");
 					dtostrf(gzds, 3, 5, itmp);
 					strcat(fatbuf, itmp);
+					strcat(fatbuf, " ");
+
+
+/*					dtostrf(outAngleX, 3, 5, itmp);
+					strcat(fatbuf, itmp);
+					strcat(fatbuf, " ");
+					dtostrf(outAngleY, 3, 5, itmp);
+					strcat(fatbuf, itmp);
+					strcat(fatbuf, " ");
+					dtostrf(angleZ, 3, 5, itmp);
+					strcat(fatbuf, itmp);
+					strcat(fatbuf, " ");
+					dtostrf(gzds, 3, 5, itmp);
+					strcat(fatbuf, itmp);*/
 					#endif
 
 
@@ -330,6 +373,7 @@ int main(void)
 					//fat_close_dir(dd);
 					//fat_close(fs);
 					//partition_close(partition);
+				session_counter++;
 				break;
 		}
 		
