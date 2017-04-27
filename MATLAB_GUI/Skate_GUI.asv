@@ -305,12 +305,10 @@ else
         
         dps_filt = [rect_lpf(dps(:,1),cutoff); rect_lpf(dps(:,2),cutoff); rect_lpf(dps(:,3),cutoff)];
         dps_filt = dps_filt.';
+        handles. = dps_filt;
         
-        handles.fsr1 = rect_lpf(FSR1, cutoff);
-        handles.fsr2 = rect_lpf(FSR2, cutoff);
-                
         % integrate
-        angles_int = [rk_integrator(dps_filt(:,1)/60); rk_integrator(-dps_filt(:,2)/60); rk_integrator(dps_filt(:,3)/60)];
+        angles_int = [rk_integrator(dps(:,1)/60); rk_integrator(-dps(:,2)/60); rk_integrator(dps(:,3)/60)];
         angles_int = (angles_int).';
         handles.angle = angles_int;
         
@@ -321,8 +319,6 @@ else
         alpha = .9;
         angleX_filt = (1-alpha) * angles_int(:,1) + alpha .* angle_accelX;
         angleY_filt = (1-alpha) * angles_int(:,2) + alpha .* angle_accelY;
-        disp(size(angleX_filt))
-        disp(size(angles_int))
         
         handles.angle = [angleX_filt angleY_filt angles_int(:,3)];
         
