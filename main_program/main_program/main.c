@@ -24,13 +24,14 @@
 #include "mpu6050filtering.h"
 
 
-#define UART_BAUD_RATE 9600
+#define UART_BAUD_RATE 115200
 #define IMU 1
 
 volatile uint8_t escape;
 volatile uint8_t state;
 volatile uint8_t error;
 volatile uint8_t session_counter;
+volatile uint8_t waiting_for_timer;
 
 //static uint8_t read_line(char* buffer, uint8_t buffer_length);
 static uint8_t find_file_in_dir(struct fat_fs_struct* fs, struct fat_dir_struct* dd, const char* name, struct fat_dir_entry_struct* dir_entry);
@@ -41,11 +42,27 @@ static uint8_t FSR_read(int i);
 ISR(PCINT2_vect)
 {
 	_delay_ms(10);
-	if(bit_is_clear(PIND, PCINT19))
+/*	if(bit_is_clear(PIND, PCINT19))
 	{
 		state = 1;
 		escape = 1;
 		error = 0;
+	}*/
+	if(bit_is_clear(PIND, PCINT19))
+	{
+		switch(state)
+		{
+			case 0: ;
+				break;
+			case 1: ;
+				state = 3;
+				break;
+			case 2: ;
+				break;
+			case 3: ;
+				break;
+			default : ;
+		}
 	}
 }
 
@@ -58,6 +75,8 @@ ISR(PCINT1_vect)
 		switch(state)
 		{
 			case 0: ;
+				state = 1;
+				error = 0;
 				// if(error)
 				// 	//error = ~error;
 				break;
@@ -71,8 +90,15 @@ ISR(PCINT1_vect)
 					state = 1;
 				}
 				break;
+			default :;
 		}
 	}
+}
+
+ISR(TIMER1_COMPA_vect)
+{
+	if(waiting_for_timer)
+		waiting_for_timer = 0;
 }
 
 int main(void)
@@ -83,12 +109,15 @@ int main(void)
 	//Using 16-bit timer 1, each count up takes 1/16M*1024 = 64us
 	//To achieve 31.2Hz, use count top = 499
 	//Period = 64u * 500 = 0.032s
- 	OCR1A = 0xFFFF;
-	//OCR1A = 0x0003;
+ 	OCR1A = 0x01f3;
+	//OCR1A = 0xFFFF;
 
     // Mode 4, CTC top on OCR1A
     TCCR1B |= (1 << WGM12);
  
+ 	//Set interrupt on compare match
+ 	TIMSK1 |= (1 << OCIE1A);
+
     //disbale timer for now by setting CS12 and CS10 to 0 
     TCCR1B &= ~(1 << CS12);
     TCCR1B &= ~(1 << CS10);
@@ -107,7 +136,7 @@ int main(void)
 	PCMSK1 |= (1 << PCINT11);	//Set port-change mask to PCINT11 (PC3)
 	PCMSK2 |= (1 << PCINT19);   //set port-change mask to PCINT19 (PD3)
 	//Init UART
-	uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU) ); 
+	uart_init( UART_BAUD_SELECT_DOUBLE_SPEED(UART_BAUD_RATE,F_CPU) ); 
 
 	//Init interrupt
 	sei();
@@ -142,19 +171,18 @@ int main(void)
 	mpu6050_init();
 	_delay_ms(50);
 	#endif
-	
-
+	//declarations
+	struct partition_struct* partition;
+	struct fat_fs_struct* fs;
+	struct fat_dir_entry_struct directory;
+	struct fat_dir_struct* dd;
+	struct fat_file_struct* fd;
+	int32_t offset;
 	//Init state
 	state = 1;
 	session_counter = 0;
-	//uart_putc('a');
-
-	
-	
-
-
 	PORTD |= (1 << PORTD6);		//power LED on
-	//uart_putc('b');
+
     while (1) 
     {
 		switch(state)
@@ -187,44 +215,46 @@ int main(void)
 					//TODO: LED error pattern 1, init failed
 					error = 1;
 					state = 0;
+					break;
 				}
 				//Open partition
-				struct partition_struct* partition = partition_open(sd_raw_read, sd_raw_read_interval, sd_raw_write, sd_raw_write_interval, 0);
+				//struct partition_struct* 
+				partition = partition_open(sd_raw_read, sd_raw_read_interval, sd_raw_write, sd_raw_write_interval, 0);
 				if(!partition)
 			    {
 			        /* If the partition did not open, assume the storage device
 			            * is a "superfloppy", i.e. has no MBR.
 			            */
-			        partition = partition_open(sd_raw_read,
-			                                    sd_raw_read_interval,
-			                                    sd_raw_write,
-			                                    sd_raw_write_interval,
-			                                    -1
-			                                    );
+			        partition = partition_open(sd_raw_read,sd_raw_read_interval,sd_raw_write,sd_raw_write_interval,-1);
 			        if(!partition)
 			        {
 			            //TODO: LED error pattern 2, opening partition fail
 						error = 1;
 						state = 0;
+						break;
 			        }
 			    }
 				//Open file system
-				struct fat_fs_struct* fs = fat_open(partition);
+				//struct fat_fs_struct* 
+				fs = fat_open(partition);
 				if(!fs)
 				{
 					//TODO: LED error pattern 2, opening file partition fail
 					error = 1;
 					state = 0;
+					break;
 				}
 				//Open root directory
-				struct fat_dir_entry_struct directory;
+				//struct fat_dir_entry_struct directory;
 				fat_get_dir_entry_of_path(fs, "/", &directory);
-				struct fat_dir_struct* dd = fat_open_dir(fs, &directory);
+				//struct fat_dir_struct* 
+				dd = fat_open_dir(fs, &directory);
 				if(!dd)
 				{
 					//TODO: LED error pattern 2, opening root directory failed
 					error = 1;
 					state = 0;
+					break;
 				}
 
 
@@ -237,7 +267,8 @@ int main(void)
 					state = 0;
 					break;
 				}
-				struct fat_file_struct* fd = open_file_in_dir(fs, dd, file1);
+				//struct fat_file_struct* 
+				fd = open_file_in_dir(fs, dd, file1);
 				if(!fd)
 				{
 					//TODO: LED error pattern 2, open error
@@ -245,7 +276,7 @@ int main(void)
 					state = 0;
 					break;
 				}
-				int32_t offset = 0;
+				offset = 0;
 				if(!fat_seek_file(fd, &offset, FAT_SEEK_END))
 				{
 					//TODO: LED error pattern 2, fat seek error
@@ -261,6 +292,7 @@ int main(void)
 				uint8_t fsr[3];
 				while(escape == 0)
 				{   
+					waiting_for_timer = 1;
 					//set prescaler for Timer 1 to clk/1024
 					TCCR1B |= (1 << CS12) | (1 << CS10);
 					//start timer count	
@@ -356,10 +388,13 @@ int main(void)
 					//itoa((TIFR0 & (1 << TOV0) ) > 0,itmp,10);
 					//uart_putc(*itmp);4
 					index ++;
-					while( (TIFR0 & (1 << TOV0) ) > 0) //wait for timer overflow event
+					while(waiting_for_timer){
+						//waiting for timer
+					}
+/*					while( (TIFR1 & (1 << TOV1) ) > 0) //wait for timer overflow event
 					{
 					}
-					
+					TIFR1 &= ~(1 << TOV1);*/
 				}
 				sd_raw_sync();
 				fat_close_file(fd);
@@ -374,6 +409,83 @@ int main(void)
 					//fat_close(fs);
 					//partition_close(partition);
 				session_counter++;
+				break;
+
+			case 3: ;
+				if(!sd_raw_init())
+				{
+					//TODO: LED error pattern 1, init failed
+					error = 1;
+					state = 0;
+					break;
+				}
+				//Open partition
+				//struct partition_struct* 
+				partition = partition_open(sd_raw_read, sd_raw_read_interval, sd_raw_write, sd_raw_write_interval, 0);
+				if(!partition)
+			    {
+			        /* If the partition did not open, assume the storage device
+			            * is a "superfloppy", i.e. has no MBR.
+			            */
+			        partition = partition_open(sd_raw_read,sd_raw_read_interval,sd_raw_write,sd_raw_write_interval,-1);
+			        if(!partition)
+			        {
+			            //TODO: LED error pattern 2, opening partition fail
+						error = 1;
+						state = 0;
+						break;
+			        }
+			    }
+				//Open file system
+				//struct fat_fs_struct* 
+				fs = fat_open(partition);
+				if(!fs)
+				{
+					//TODO: LED error pattern 2, opening file partition fail
+					error = 1;
+					state = 0;
+					break;
+				}
+				//Open root directory
+				//struct fat_dir_entry_struct directory;
+				fat_get_dir_entry_of_path(fs, "/", &directory);
+				//struct fat_dir_struct* 
+				dd = fat_open_dir(fs, &directory);
+				if(!dd)
+				{
+					//TODO: LED error pattern 2, opening root directory failed
+					error = 1;
+					state = 0;
+					break;
+				}
+
+				char file2[] = "masterdata.txt";
+        		//struct fat_file_struct* 
+        		fd = open_file_in_dir(fs, dd, file2);
+        		if(!fd)
+        		{
+        			error = 1;
+        			state = 0;
+        			break;
+        		}
+
+        		uint8_t printbuffer[8];
+        		offset = 0;
+        		intptr_t count;
+        		//buffer undeclared, I assumed you meant printbuffer
+        		while((count = fat_read_file(fd, printbuffer, sizeof(printbuffer))) > 0)
+                {
+                    for(intptr_t i = 0; i < count; ++i)
+                    {
+                        uart_putc(printbuffer[i]);
+                    }
+                    offset += 8;
+                }
+				fat_close_file(fd);
+				fat_close_dir(dd);
+				fat_close(fs);
+				partition_close(partition);
+				state = 1;
 				break;
 		}
 		
