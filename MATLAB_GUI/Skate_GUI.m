@@ -22,7 +22,7 @@ function varargout = Skate_GUI(varargin)
 
 % Edit the above text to modify the response to help Skate_GUI
 
-% Last Modified by GUIDE v2.5 26-Apr-2017 20:13:49
+% Last Modified by GUIDE v2.5 26-Apr-2017 23:16:34
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -51,6 +51,8 @@ function Skate_GUI_OpeningFcn(hObject, eventdata, handles, varargin)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to Skate_GUI (see VARARGIN)
+
+%initialize some variables
 
 %test
 t = 0:.01:pi;
@@ -100,8 +102,14 @@ else
     disp(['User selected ', fullfile(pathname, filename)])
 end
 
-handles.skate_data = importdata(fullfile(pathname, filename));
+test_data = importdata(fullfile(pathname, filename));
+session1_ind = find(test_data(:,1) == 0);
+handles.session1_data = test_data(session1_ind(1):session1_ind(length(session1_ind)),:);
 
+session2_ind = find(test_data(:,1) == 1);
+handles.session2_data = test_data(session2_ind(1):session2_ind(length(session2_ind)),:);
+
+handles.data = test_data;
 
 % Choose default command line output for Skate_GUI
 handles.output = hObject;
@@ -129,3 +137,209 @@ function uibuttongroup1_ButtonDownFcn(hObject, eventdata, handles)
 % hObject    handle to uibuttongroup1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+temp = get(hObject, 'Value');
+disp(temp);
+
+
+% --- Executes on button press in pushbutton3.
+function pushbutton3_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in force_radio.
+function force_radio_Callback(hObject, eventdata, handles)
+% hObject    handle to force_radio (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of force_radio
+%handles.analysis = 12;
+%disp(handles.hi)
+
+% Choose default command line output for Skate_GUI
+handles.output = hObject;
+
+% Update handles structure
+guidata(hObject, handles);
+
+
+% --- Executes when selected object is changed in data_displayed.
+function data_displayed_SelectionChangedFcn(hObject, eventdata, handles)
+% hObject    handle to the selected object in data_displayed 
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+data_type = get(hObject, 'String');
+switch data_type
+    case 'Force'
+        plot(handles.left_graph, handles.fsr1);
+        title(handles.left_graph, 'Force from Toe FSR')
+        ylabel(handles.left_graph, 'lbs')
+
+        plot(handles.middle_graph, handles.fsr2);
+        title(handles.middle_graph, 'Force from Heel FSR')
+        ylabel(handles.middle_graph, 'lbs')
+        
+        cla(handles.right_graph, 'reset');   %clears right figure
+    case 'Acceleration'
+        plot(handles.left_graph, handles.accel(:,1));
+        title(handles.left_graph, 'X Axis Accelerometer Data')
+        ylabel(handles.left_graph, 'gravity (g)')
+
+        plot(handles.middle_graph, handles.accel(:,2));
+        title(handles.middle_graph, 'Y Axis Accelerometer Data')
+        ylabel(handles.middle_graph, 'gravity (g)')
+        
+        plot(handles.right_graph, handles.accel(:,3));
+        title(handles.middle_graph, 'Z Axis Accelerometer Data')
+        ylabel(handles.middle_graph, 'gravity (g)')
+    case 'Angles'
+        plot(handles.left_graph, handles.angle(:,1));
+        plot(handles.middle_graph, handles.angle(:,2));
+        plot(handles.right_graph, handles.angle(:,3));
+        
+        % labeling based on analysis type choosen
+        if strcmp(handles.analysis_type, 'Raw')
+            title(handles.left_graph, 'X Axis Rotational Speed')
+            ylabel(handles.left_graph, 'degrees/second')
+            title(handles.middle_graph, 'Y Axis Rotational Speed')
+            ylabel(handles.middle_graph, 'degrees/second')
+            title(handles.right_graph, 'Z Axis Rotational Speed')
+            ylabel(handles.right_graph, 'degrees/second')
+        else
+            title(handles.left_graph, 'X Axis Rotation')
+            ylabel(handles.left_graph, 'degrees')
+            title(handles.middle_graph, 'Y Axis Rotation')
+            ylabel(handles.middle_graph, 'degrees')
+            title(handles.right_graph, 'Z Axis Rotation')
+            ylabel(handles.right_graph, 'degrees')
+        end
+end
+
+% Choose default command line output for Skate_GUI
+handles.output = hObject;
+
+% Update handles structure
+guidata(hObject, handles);
+
+
+% --- Executes on selection change in analysis_type.
+function analysis_type_Callback(hObject, eventdata, handles)
+% hObject    handle to analysis_type (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns analysis_type contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from analysis_type
+
+contents = cellstr(get(hObject,'String'));
+disp(contents{get(hObject,'Value')});
+curr_anly = contents{get(hObject,'Value')};
+handles.current_analysis = curr_anly;
+
+if isempty(handles.data)
+    disp('Load File First')
+else
+    if strcmp(curr_anly, 'Raw')
+        handles.analysis_type = 'Raw';
+        handles.fsr1 = convertFSR(handles.session2_data(:,2));
+        handles.fsr2 = convertFSR(handles.session2_data(:,3));
+        
+        handles.angle = handles.session2_data(:,7:9);
+        handles.accel = handles.session2_data(:,4:6);
+        
+        % initialized plotting 
+        plot(handles.left_graph, handles.fsr1);
+        title(handles.left_graph, 'Force from Toe FSR')
+        ylabel(handles.left_graph, 'lbs')
+
+        plot(handles.middle_graph, handles.fsr2);
+        title(handles.middle_graph, 'Force from Heel FSR')
+        ylabel(handles.middle_graph, 'lbs')
+
+        cla(handles.right_graph, 'reset');   %clears right figure
+        set(handles.data_displayed,'selectedobject',handles.force_radio)
+    elseif strcmp(curr_anly, 'Integrated')
+        handles.analysis_type = 'Integrated';
+        handles.fsr1 = convertFSR(handles.session2_data(:,2));
+        handles.fsr2 = convertFSR(handles.session2_data(:,3));
+        
+        handles.accel = handles.session2_data(:,4:6);
+        
+        dps = handles.session2_data(:,7:9);
+        angles_int = [rk_integrator(dps(:,1)/60); rk_integrator(-dps(:,2)/60); rk_integrator(dps(:,3)/60)];
+        angles_int = (angles_int).';
+        handles.angle = angles_int;
+        
+        % initialized plotting 
+        plot(handles.left_graph, handles.fsr1);
+        title(handles.left_graph, 'Force from Toe FSR')
+        ylabel(handles.left_graph, 'lbs')
+
+        plot(handles.middle_graph, handles.fsr2);
+        title(handles.middle_graph, 'Force from Heel FSR')
+        ylabel(handles.middle_graph, 'lbs')
+
+        cla(handles.right_graph, 'reset');   %clears right figure
+        set(handles.data_displayed,'selectedobject',handles.force_radio)
+    elseif strcmp(curr_anly, 'Filtered')
+        handles.analysis_type = 'Filtered';
+        FSR1 = convertFSR(handles.session2_data(:,2));
+        FSR2 = convertFSR(handles.session2_data(:,3));
+        accel = handles.session2_data(:,4:6);
+        dps = handles.session2_data(:,7:9);
+        
+        % integrate
+        angles_int = [rk_integrator(dps(:,1)/60); rk_integrator(-dps(:,2)/60); rk_integrator(dps(:,3)/60)];
+        angles_int = (angles_int).';
+        handles.angle = angles_int;
+        
+        % low pass filtering algorithm
+        
+        
+        handles.accel = accel;
+        
+        % complimentary filter
+        angle_accelX= (atan(accel(:,2) ./ sqrt(accel(:,1).^2 + accel(:,3).^2)))*180/pi;
+        angle_accelY = (- atan(accel(:,1) ./ sqrt(accel(:,2).^2 + accel(:,3).^2)))*180/pi;
+        
+        alpha = .9;
+        angleX_filt = (1-alpha) * angles_int(:,1) + alpha .* angle_accelX;
+        angleY_filt = (1-alpha) * angles_int(:,2) + alpha .* angle_accelY;
+        
+        handles.angle = [angleX_filt angleY_filt angles_int(:,3)];
+        
+        % initialized plotting 
+        plot(handles.left_graph, handles.fsr1);
+        title(handles.left_graph, 'Force from Toe FSR')
+        ylabel(handles.left_graph, 'lbs')
+
+        plot(handles.middle_graph, handles.fsr2);
+        title(handles.middle_graph, 'Force from Heel FSR')
+        ylabel(handles.middle_graph, 'lbs')
+        
+        cla(handles.right_graph, 'reset');   %clears right figure
+        set(handles.data_displayed,'selectedobject',handles.force_radio)
+    end
+end
+
+% Choose default command line output for Skate_GUI
+handles.output = hObject;
+
+% Update handles structure
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function analysis_type_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to analysis_type (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
