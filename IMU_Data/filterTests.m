@@ -456,9 +456,9 @@ gyroZ = importdata('re_gyroZ.txt');
 accelX_offset = 0.0222; %.0222
 accelY_offset = 0.0371;
 accelZ_offset = 0.9134-1;
-gyroX_offset = 0.0084;
-gyroY_offset = 1.2963;
-gyroZ_offset = 1.2545;
+gyroX_offset = 0.0076; %0.0084;
+gyroY_offset = 1.2977; %1.2963;
+gyroZ_offset = 1.2519; %1.2545;
 
 offsets = [accelX_offset accelY_offset accelZ_offset gyroX_offset gyroY_offset gyroZ_offset];
 
@@ -675,10 +675,12 @@ tempOffsetData = offsetData;
 %including offsets (median)
 accelX_offset = 0.0222; %.0222
 accelY_offset = 0.0371;
-accelZ_offset = 0.9134;
+accelZ_offset = 0.9134-1;
 gyroX_offset = 0.0084;
 gyroY_offset = 1.2963;
 gyroZ_offset = 1.2545;
+
+alpha = .7;
 
 offsets = [accelX_offset accelY_offset accelZ_offset gyroX_offset gyroY_offset gyroZ_offset];
 
@@ -686,11 +688,42 @@ for n = 1:6
     tempOffsetData(:,n) = tempOffsetData(:,n) - offsets(n);
 end
 
-angleTempOffset = [rk_integrator(tempOffsetData(:,4)/60); rk_integrator(tempOffsetData(:,5)/60); rk_integrator(tempOffsetData(:,6)/60)];
+%angleTempOffset = [rk_integrator(tempOffsetData(1:100,4)/60); rk_integrator(tempOffsetData(1:100,5)/60); rk_integrator(tempOffsetData(1:100,6)/60)];
+%angleTempOffset = (angleTempOffset).';
+
+%angle_accelX_offset = (atan(tempOffsetData(1:100,2) ./ sqrt(tempOffsetData(1:100,1).^2 + tempOffsetData(1:100,3).^2)))*180/pi;
+%angle_accelY_offset = (- atan(tempOffsetData(1:100,1) ./ sqrt(tempOffsetData(1:100,2).^2 + tempOffsetData(1:100,3).^2)))*180/pi;
+
+
+%angleTempOffset = [rk_integrator(tempOffsetData(:,4)/60); rk_integrator(tempOffsetData(:,5)/60); rk_integrator(tempOffsetData(:,6)/60)];
+%angleTempOffset = (angleTempOffset).';
+
+angleTempOffset = [rk_integrator_test(tempOffsetData(:,4)); rk_integrator_test(tempOffsetData(:,5)); rk_integrator_test(tempOffsetData(:,6)/60)];
 angleTempOffset = (angleTempOffset).';
 
-figure()
+
+angle_accelX_offset = (atan(tempOffsetData(:,2) ./ sqrt(tempOffsetData(:,1).^2 + tempOffsetData(:,3).^2)))*180/pi;
+angle_accelY_offset = (- atan(tempOffsetData(:,1) ./ sqrt(tempOffsetData(:,2).^2 + tempOffsetData(:,3).^2)))*180/pi;
+
+
+angleX_filt = (1-alpha) * angleTempOffset(:,1) + alpha .* angle_accelX_offset;
+angleY_filt = (1-alpha) * angleTempOffset(:,2) + alpha .* angle_accelY_offset;
+
+figure(5)
 plot(angleTempOffset)
+figure(3)
+plot(tempOffsetData(:,5))
+figure(1)
+plot(angle_accelX_offset)
+figure(2)
+plot(angle_accelY_offset)
+
+
+figure(4)
+plot(angleX_filt)
+hold on
+plot(angleY_filt)
+hold off
 
 %% Complimentary Filter
 % x rotation test
@@ -1069,5 +1102,80 @@ meanLine = refline(0, 0);
 meanLine.Color = 'g';
 ylabel('gravity (g)')
 xlabel('samples')
+
+%% Second batch of rotation tests. From arduino
+%% Load Data set
+arduino_still = importdata('arduino_still.txt');
+arduino_XRot = importdata('arduino_XRot.txt');
+arduino_YRot = importdata('arduino_YRot.txt');
+%%
+figure()
+plot(arduino_still.data)
+%% x rot test
+alpha = .65;
+
+angles_gyroX = [rk_integrator(arduino_XRot(:,4)/58); rk_integrator(arduino_XRot(:,5)/58); rk_integrator(arduino_XRot(:,6)/58)];
+angles_gyroX = (angles_gyroX).';
+
+angle_accelX_Xtest = (atan(arduino_XRot(:,2) ./ sqrt(arduino_XRot(:,1).^2 + arduino_XRot(:,3).^2)))*180/pi;
+angle_accelY_Xtest = (- atan(arduino_XRot(:,1) ./ sqrt(arduino_XRot(:,2).^2 + arduino_XRot(:,3).^2)))*180/pi;
+
+angleX_filt = (1-alpha) * angles_gyroX(:,1) + alpha .* angle_accelX_Xtest;
+angleY_filt = (1-alpha) * angles_gyroX(:,2) + alpha .* angle_accelY_Xtest;
+
+figure(40)
+plot(angle_accelX_Xtest)
+figure(41)
+plot(angle_accelY_Xtest)
+
+figure(42)
+plot(angleX_filt)
+hold on
+plot(angles_gyroX(:,1))
+hold off
+title('X Axis Data for X Rotation Test with Complimentary Filtering') 
+xlabel('samples')
+ylabel('degrees')
+legend('show')
+legend('filtered', 'gyroscope')
+meanLine = refline(0, 83);
+meanLine.Color = 'g';
+
+figure(43)
+plot(angleX_filt - angles_gyroX(:,1))
+
+%%
+% y rotation test
+angles_gyroY = [rk_integrator(arduino_YRot(:,4)/58); rk_integrator(arduino_YRot(:,5)/58); rk_integrator(arduino_YRot(:,6)/58)];
+angles_gyroY = (angles_gyroY).';
+
+
+angle_accelX_Ytest = (atan(arduino_YRot(:,2) ./ sqrt(arduino_YRot(:,1).^2 + arduino_YRot(:,3).^2)))*180/pi;
+angle_accelY_Ytest = (- atan(arduino_YRot(:,1) ./ sqrt(arduino_YRot(:,2).^2 + arduino_YRot(:,3).^2)))*180/pi;
+
+tau = 1.0;
+dt = 1/60; %.005;
+alpha = .35;%tau / (tau + dt);
+
+angleX_filt_Ytest = (1-alpha) * angles_gyroY(:,1) + alpha .* angle_accelX_Ytest;
+angleY_filt_Ytest = (1-alpha) * angles_gyroY(:,2) + alpha .* angle_accelY_Ytest;
+
+figure(44)
+plot(angle_accelX_Ytest)
+figure(45)
+plot(angle_accelY_Ytest)
+
+figure(46)
+plot(angleY_filt_Ytest)
+hold on
+plot(angles_gyroY(:,2))
+hold off
+title('X Axis Data for X Rotation Test with Complimentary Filtering')
+xlabel('samples')
+ylabel('degrees')
+legend('show')
+legend('filtered', 'gyroscope')
+meanLine = refline(0, 83);
+meanLine.Color = 'g';
 
 
