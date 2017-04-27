@@ -38,7 +38,7 @@ References:
 //definitions for raw data
 //gyro and acc scale
 #define MPU6050_GYRO_FS MPU6050_GYRO_FS_2000
-#define MPU6050_ACCEL_FS MPU6050_ACCEL_FS_2
+#define MPU6050_ACCEL_FS MPU6050_ACCEL_FS_4
 
 #define MPU6050_GYRO_LSB_250 131.0
 #define MPU6050_GYRO_LSB_500 65.5
