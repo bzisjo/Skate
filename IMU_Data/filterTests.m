@@ -1038,6 +1038,7 @@ ylabel('gravity (g)')
 xlabel('samples')
 legend('show');
 legend('AccelX', 'AccelY', 'AccelZ');
+axis([0 800 -2 4])
 
 % isolated axis plotting for targeted axis being tested
 % x axis
@@ -1098,10 +1099,10 @@ plot(dropZ4g(:,3))
 title('Z Axis Data for Z Axis Drop Test')
 ylabel('gravity (g)')
 xlabel('samples')
+axis([0 700 -2 4])
 meanLine = refline(0, 0);
 meanLine.Color = 'g';
-ylabel('gravity (g)')
-xlabel('samples')
+
 
 %% Second batch of rotation tests. From arduino
 %% Load Data set
