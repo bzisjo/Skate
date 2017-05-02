@@ -205,8 +205,8 @@ switch data_type
         ylabel(handles.middle_graph, 'gravity (g)')
         
         plot(handles.right_graph, 1:length(handles.accel(:,3)), right_plot);
-        title(handles.middle_graph, 'Z Axis Accelerometer Data')
-        ylabel(handles.middle_graph, 'gravity (g)')
+        title(handles.right_graph, 'Z Axis Accelerometer Data')
+        ylabel(handles.right_graph, 'gravity (g)')
     case 'Angles'
         %checks if filtered analysis type choosen
         if strcmp(handles.analysis_type, 'Filtered')
