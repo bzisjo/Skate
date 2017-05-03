@@ -667,6 +667,7 @@ figure(38)      %% looks kind of bad
 plot(angles_gyroZ);
 title('Z Rotation Test');
 ylabel('degrees')
+xlabel('samples')
 legend('show');
 legend('GyroX', 'GyroY', 'GyroZ');
 
